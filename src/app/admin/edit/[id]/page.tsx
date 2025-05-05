@@ -1,7 +1,7 @@
 // src/app/admin/edit/[id]/page.tsx
 
 import React from "react";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation"; // Import redirect
 import prisma from "@/app/lib/prisma"; // Use alias
 
 // Import Post type correctly using alias
@@ -34,13 +34,14 @@ async function getPost(id: string): Promise<Post | null> {
   }
 }
 
-interface EditPostPageProps {
-  params: { id: string };
-}
-
 // --- Server Component (Default Export) ---
-export default async function EditPostPage({ params }: EditPostPageProps) {
-  const id = params.id; // Removed optional chaining
+// Directly define the type for params in the function signature
+export default async function EditPostPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const id = params.id;
   // Add extra check for ID validity here as well
   if (!id || typeof id !== "string") {
     console.error(
