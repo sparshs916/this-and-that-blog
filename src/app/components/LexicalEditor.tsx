@@ -391,6 +391,7 @@ function ToolbarPluginContext() {
       ref={toolbarRef}
     >
       <button
+        type="button"
         onClick={() => editor.dispatchCommand(UNDO_COMMAND, undefined)}
         disabled={!canUndo}
         className="p-1 rounded hover:bg-gray-200 disabled:opacity-50 text-black"
@@ -400,6 +401,7 @@ function ToolbarPluginContext() {
         <FaRotateLeft /> {/* Changed from FaUndo */}
       </button>
       <button
+        type="button"
         onClick={() => editor.dispatchCommand(REDO_COMMAND, undefined)}
         disabled={!canRedo}
         className="p-1 rounded hover:bg-gray-200 disabled:opacity-50 text-black"
@@ -430,6 +432,7 @@ function ToolbarPluginContext() {
         ))}
       </select>
       <button
+        type="button"
         onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold")}
         className={`p-1 rounded hover:bg-gray-200 ${
           isBold ? "bg-gray-300" : ""
@@ -440,6 +443,7 @@ function ToolbarPluginContext() {
         <FaBold />
       </button>
       <button
+        type="button"
         onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic")}
         className={`p-1 rounded hover:bg-gray-200 ${
           isItalic ? "bg-gray-300" : ""
@@ -450,6 +454,7 @@ function ToolbarPluginContext() {
         <FaItalic />
       </button>
       <button
+        type="button"
         onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline")}
         className={`p-1 rounded hover:bg-gray-200 ${
           isUnderline ? "bg-gray-300" : ""
@@ -460,6 +465,7 @@ function ToolbarPluginContext() {
         <FaUnderline />
       </button>
       <button
+        type="button"
         onClick={() =>
           editor.dispatchCommand(FORMAT_TEXT_COMMAND, "strikethrough")
         }
@@ -472,6 +478,7 @@ function ToolbarPluginContext() {
         <FaStrikethrough />
       </button>
       <button
+        type="button"
         onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "code")}
         className={`p-1 rounded hover:bg-gray-200 ${
           isCode ? "bg-gray-300" : ""
@@ -482,6 +489,7 @@ function ToolbarPluginContext() {
         <FaCode />
       </button>
       <button
+        type="button"
         onClick={insertLink}
         className={`p-1 rounded hover:bg-gray-200 ${
           isLink ? "bg-gray-300" : ""
@@ -492,6 +500,7 @@ function ToolbarPluginContext() {
         <FaLink />
       </button>
       <button
+        type="button"
         onClick={() => formatAlignment("left")}
         className="p-1 rounded hover:bg-gray-200 text-black"
         aria-label="Align Left"
@@ -500,6 +509,7 @@ function ToolbarPluginContext() {
         <FaAlignLeft />
       </button>
       <button
+        type="button"
         onClick={() => formatAlignment("center")}
         className="p-1 rounded hover:bg-gray-200 text-black"
         aria-label="Align Center"
@@ -508,6 +518,7 @@ function ToolbarPluginContext() {
         <FaAlignCenter />
       </button>
       <button
+        type="button"
         onClick={() => formatAlignment("right")}
         className="p-1 rounded hover:bg-gray-200 text-black"
         aria-label="Align Right"
@@ -516,6 +527,7 @@ function ToolbarPluginContext() {
         <FaAlignRight />
       </button>
       <button
+        type="button"
         onClick={() => formatAlignment("justify")}
         className="p-1 rounded hover:bg-gray-200 text-black"
         aria-label="Align Justify"

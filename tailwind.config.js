@@ -1,4 +1,6 @@
-module.exports = {
+import typography from "@tailwindcss/typography";
+
+const config = {
   theme: {
     container: {
       center: true,
@@ -11,5 +13,7 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@tailwindcss/typography")],
+  plugins: [typography],
 };
+
+export default config;

@@ -78,8 +78,8 @@ export default function PostForm({
       {initialData?.id && (
         <input type="hidden" name="id" value={initialData.id} />
       )}
-      {/* Add hidden input for SLUG if editing */}
-      {initialData?.slug && (
+      {/* Add hidden input for SLUG ONLY if editing */}
+      {isEditing && initialData?.slug && (
         <input type="hidden" name="slug" value={initialData.slug} />
       )}
 
