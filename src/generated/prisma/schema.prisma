@@ -5,8 +5,9 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  provider      = "prisma-client-js"
+  output        = "../src/generated/prisma"
+  binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"] // Add this line
 }
 
 datasource db {
@@ -27,4 +28,20 @@ model Post {
   // Optional: Add author relation later if needed
   // author    User?    @relation(fields: [authorId], references: [id])
   // authorId  String?
+}
+
+model Recipe {
+  id           String   @id @default(cuid())
+  title        String
+  slug         String   @unique
+  description  String   @db.Text // Description or intro
+  ingredients  String   @db.Text // Could be JSON, Markdown, or plain text
+  instructions String   @db.Text // Could be JSON, Markdown, or plain text
+  prepTime     String? // e.g., "15 mins"
+  cookTime     String? // e.g., "30 mins"
+  servings     String? // e.g., "4 servings"
+  imageUrl     String? // Optional image URL
+  published    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }

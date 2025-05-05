@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
 import { getAdminSession } from "@/app/lib/auth";
-import type { Recipe } from "@prisma/client";
+import type { Recipe } from "@/generated/prisma/client"; // Updated import path
 
 // Function to fetch a single recipe by its slug, considering admin status
 async function getRecipeBySlug(slug: string): Promise<Recipe | null> {

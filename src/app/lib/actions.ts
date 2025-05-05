@@ -8,8 +8,8 @@ import { getAdminSession, verifyPassword } from "./auth";
 import slugify from "slugify";
 import { writeFile, mkdir, unlink } from 'fs/promises';
 import path from 'path';
-// Import types from the generated client path
-import type { Post, Recipe } from "@/generated/prisma/client";
+// Import Prisma namespace for types like Prisma.RecipeUpdateInput
+import { Prisma } from "@/generated/prisma/client";
 
 // Helper function to check if an object looks like a File
 function isFileLike(obj: unknown): obj is File {
@@ -547,9 +547,9 @@ export async function createRecipe(
       data: {
         title,
         slug,
-        description,
-        ingredients,
-        instructions,
+        description: description ?? "", // Provide default empty string
+        ingredients: ingredients ?? "", // Provide default empty string
+        instructions: instructions ?? "", // Provide default empty string
         prepTime,
         cookTime,
         servings,
@@ -648,6 +648,13 @@ export async function updateRecipe(
       ...recipeData,
       slug: slug,
       published: published, // Include published status
+      // Ensure optional fields are handled correctly (provide default if needed or let Prisma handle undefined)
+      description: recipeData.description ?? undefined,
+      ingredients: recipeData.ingredients ?? undefined,
+      instructions: recipeData.instructions ?? undefined,
+      prepTime: recipeData.prepTime ?? undefined,
+      cookTime: recipeData.cookTime ?? undefined,
+      servings: recipeData.servings ?? undefined,
     };
 
     if (imageUrl !== undefined) {

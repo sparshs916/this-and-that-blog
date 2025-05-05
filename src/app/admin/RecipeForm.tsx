@@ -2,11 +2,11 @@
 
 import React, { useState } from "react"; // Import useState
 // Import Recipe type directly from @prisma/client
-import type { Recipe } from "@prisma/client"; // Correct import path
-import { useFormStatus } from "react-dom"; // Import for pending state
+import type { Recipe } from "@/generated/prisma/client";
+import { useFormStatus } from "react-dom"; // Import useFormStatus for pending state
 import type { State } from "@/app/lib/actions"; // Import the State type for errors
 import Image from "next/image"; // Import Next.js Image component
-import LexicalEditorComponent from "../components/LexicalEditor"; // Import the Lexical editor
+import LexicalEditorComponent from "@/app/components/LexicalEditor"; // Updated import path
 
 // Submit Button Component (copied from PostForm for consistency)
 function SubmitButton({ isUpdating }: { isUpdating: boolean }) {

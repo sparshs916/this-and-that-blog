@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import prisma from "@/app/lib/prisma";
-import type { Recipe } from "@prisma/client";
+import type { Recipe } from "@/generated/prisma/client"; // Updated import path
 
 // Fetch published recipes
 async function getPublishedRecipes() {
@@ -51,7 +51,9 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
             {recipe.title}
           </h2>
           {/* Updated time/servings display format - Removed 'Published:' label */}
-          <div className="text-xs text-gray-600 mb-3 space-y-1"> {/* Use space-y for vertical spacing */}
+          <div className="text-xs text-gray-600 mb-3 space-y-1">
+            {" "}
+            {/* Use space-y for vertical spacing */}
             <div>
               <time dateTime={recipe.createdAt.toISOString()}>
                 {formattedDate}
@@ -59,17 +61,20 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
             </div>
             {recipe.prepTime && (
               <div>
-                <span className="font-semibold">Prep time:</span> {recipe.prepTime}
+                <span className="font-semibold">Prep time:</span>{" "}
+                {recipe.prepTime}
               </div>
             )}
             {recipe.cookTime && (
               <div>
-                <span className="font-semibold">Cook time:</span> {recipe.cookTime}
+                <span className="font-semibold">Cook time:</span>{" "}
+                {recipe.cookTime}
               </div>
             )}
             {recipe.servings && (
               <div>
-                <span className="font-semibold">Servings:</span> {recipe.servings}
+                <span className="font-semibold">Servings:</span>{" "}
+                {recipe.servings}
               </div>
             )}
           </div>
@@ -77,7 +82,8 @@ function RecipeCard({ recipe }: { recipe: Recipe }) {
           <div className="flex-grow"></div>
           <span className="text-indigo-500 hover:text-indigo-700 font-medium text-sm mt-auto self-start">
             View Recipe &rarr;
-          </span> {/* Correctly close span tag, removed extra space */}
+          </span>{" "}
+          {/* Correctly close span tag, removed extra space */}
         </div>
       </Link>
     </article>

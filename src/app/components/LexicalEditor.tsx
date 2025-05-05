@@ -65,8 +65,8 @@ import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext
 import { $createQuoteNode } from "@lexical/rich-text";
 import { $setBlocksType } from "@lexical/selection";
 import {
-  FaUndo,
-  FaRedo,
+  FaRotateLeft, // Changed from FaUndo
+  FaRotateRight, // Changed from FaRedo
   FaBold,
   FaItalic,
   FaUnderline,
@@ -77,7 +77,7 @@ import {
   FaAlignCenter,
   FaAlignRight,
   FaAlignJustify,
-} from "react-icons/fa";
+} from "react-icons/fa6";
 
 // --- Editor Theme ---
 const editorTheme = {
@@ -397,7 +397,7 @@ function ToolbarPluginContext() {
         aria-label="Undo"
         title="Undo (Ctrl+Z)"
       >
-        <FaUndo />
+        <FaRotateLeft /> {/* Changed from FaUndo */}
       </button>
       <button
         onClick={() => editor.dispatchCommand(REDO_COMMAND, undefined)}
@@ -406,7 +406,7 @@ function ToolbarPluginContext() {
         aria-label="Redo"
         title="Redo (Ctrl+Y)"
       >
-        <FaRedo />
+        <FaRotateRight /> {/* Changed from FaRedo */}
       </button>
       <select
         value={blockType}
@@ -431,7 +431,9 @@ function ToolbarPluginContext() {
       </select>
       <button
         onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold")}
-        className={`p-1 rounded hover:bg-gray-200 ${isBold ? "bg-gray-300" : ""} text-black`}
+        className={`p-1 rounded hover:bg-gray-200 ${
+          isBold ? "bg-gray-300" : ""
+        } text-black`}
         aria-label="Format Bold"
         title="Bold (Ctrl+B)"
       >
@@ -439,7 +441,9 @@ function ToolbarPluginContext() {
       </button>
       <button
         onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic")}
-        className={`p-1 rounded hover:bg-gray-200 ${isItalic ? "bg-gray-300" : ""} text-black`}
+        className={`p-1 rounded hover:bg-gray-200 ${
+          isItalic ? "bg-gray-300" : ""
+        } text-black`}
         aria-label="Format Italic"
         title="Italic (Ctrl+I)"
       >
@@ -447,7 +451,9 @@ function ToolbarPluginContext() {
       </button>
       <button
         onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline")}
-        className={`p-1 rounded hover:bg-gray-200 ${isUnderline ? "bg-gray-300" : ""} text-black`}
+        className={`p-1 rounded hover:bg-gray-200 ${
+          isUnderline ? "bg-gray-300" : ""
+        } text-black`}
         aria-label="Format Underline"
         title="Underline (Ctrl+U)"
       >
@@ -457,7 +463,9 @@ function ToolbarPluginContext() {
         onClick={() =>
           editor.dispatchCommand(FORMAT_TEXT_COMMAND, "strikethrough")
         }
-        className={`p-1 rounded hover:bg-gray-200 ${isStrikethrough ? "bg-gray-300" : ""} text-black`}
+        className={`p-1 rounded hover:bg-gray-200 ${
+          isStrikethrough ? "bg-gray-300" : ""
+        } text-black`}
         aria-label="Format Strikethrough"
         title="Strikethrough"
       >
@@ -465,7 +473,9 @@ function ToolbarPluginContext() {
       </button>
       <button
         onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "code")}
-        className={`p-1 rounded hover:bg-gray-200 ${isCode ? "bg-gray-300" : ""} text-black`}
+        className={`p-1 rounded hover:bg-gray-200 ${
+          isCode ? "bg-gray-300" : ""
+        } text-black`}
         aria-label="Insert Code"
         title="Inline Code"
       >
@@ -473,7 +483,9 @@ function ToolbarPluginContext() {
       </button>
       <button
         onClick={insertLink}
-        className={`p-1 rounded hover:bg-gray-200 ${isLink ? "bg-gray-300" : ""} text-black`}
+        className={`p-1 rounded hover:bg-gray-200 ${
+          isLink ? "bg-gray-300" : ""
+        } text-black`}
         aria-label="Insert Link"
         title="Insert Link"
       >

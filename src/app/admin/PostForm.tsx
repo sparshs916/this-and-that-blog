@@ -3,8 +3,8 @@
 import React, { useState } from "react"; // Import useState
 import { useFormStatus } from "react-dom"; // Import hooks
 import type { State } from "@/app/lib/actions"; // Import the State type
-import type { Post } from "@prisma/client"; // Import Post type directly from @prisma/client
-import LexicalEditorComponent from "../components/LexicalEditor"; // Corrected import path
+import type { Post } from "@/generated/prisma/client"; // Updated import path
+import LexicalEditorComponent from "@/app/components/LexicalEditor"; // Corrected import path
 
 // Submit Button Component
 function SubmitButton({ isUpdating }: { isUpdating: boolean }) {

@@ -1,9 +1,9 @@
 import React from "react";
 import Link from "next/link";
-import prisma from "../lib/prisma"; // Changed path
+import prisma from "@/app/lib/prisma";
+import type { Post, Recipe } from "@/generated/prisma/client"; // Updated import path
 import PostActions from "./PostActions"; // Import the new client component
 import RecipeActions from "./RecipeActions"; // Import the RecipeActions component
-import type { Post, Recipe } from "@prisma/client"; // Correct import path for Post and Recipe types
 
 // Fetch both posts and recipes
 async function getData() {

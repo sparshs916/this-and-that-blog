@@ -131,6 +131,22 @@ exports.Prisma.PostScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.RecipeScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  slug: 'slug',
+  description: 'description',
+  ingredients: 'ingredients',
+  instructions: 'instructions',
+  prepTime: 'prepTime',
+  cookTime: 'cookTime',
+  servings: 'servings',
+  imageUrl: 'imageUrl',
+  published: 'published',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -148,7 +164,8 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
-  Post: 'Post'
+  Post: 'Post',
+  Recipe: 'Recipe'
 };
 
 /**

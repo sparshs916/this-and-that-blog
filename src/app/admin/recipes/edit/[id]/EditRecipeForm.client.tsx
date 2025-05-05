@@ -7,7 +7,7 @@ import Link from "next/link"; // Add import for Link
 import { updateRecipe, State } from "@/app/lib/actions"; // Add import for updateRecipe and State
 import RecipeForm from "@/app/admin/RecipeForm"; // Add import for RecipeForm
 
-import type { Recipe } from "@prisma/client";
+import type { Recipe } from "@/generated/prisma/client"; // Updated import path
 
 interface EditRecipeFormClientProps {
   recipe: Recipe;

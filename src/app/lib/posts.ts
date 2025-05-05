@@ -1,6 +1,6 @@
 // filepath: /Users/sparshsaini/Documents/Ally-Blog-Website/ally-blog/src/app/lib/posts.ts
-import prisma from "@/app/lib/prisma";
-import type { Post } from "@prisma/client"; // Import Post type from Prisma
+import prisma from "./prisma";
+import type { Post } from "@/generated/prisma/client"; // Updated import path
 
 export async function getAllPublishedPosts(): Promise<Post[]> {
   try {

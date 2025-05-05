@@ -1,18 +1,14 @@
 // src/app/admin/edit/[id]/page.tsx
 
 import React from "react";
-import { notFound, redirect } from "next/navigation"; // Import redirect
-import prisma from "@/app/lib/prisma"; // Use alias
+import { notFound, redirect } from "next/navigation";
+import prisma from "@/app/lib/prisma";
+import type { Post } from "@/generated/prisma/client";
+import EditPostFormClient from "./EditPostForm.client";
 
-// Import Post type correctly using alias
-import type { Post } from "@prisma/client"; // Import directly from @prisma/client
-import EditPostFormClient from "./EditPostForm.client"; // Import the new client component
-
-// getPost function can stay here or be moved to lib
 async function getPost(id: string): Promise<Post | null> {
   console.log(`[EditPage Server] getPost called with ID: ${id}`);
   try {
-    // Ensure ID is valid before querying
     if (!id || typeof id !== "string") {
       console.error(`[EditPage Server] Invalid ID received: ${id}`);
       return null;
@@ -32,23 +28,24 @@ async function getPost(id: string): Promise<Post | null> {
     );
     return null;
   }
+  // Add a return statement here to satisfy TypeScript, although it should be unreachable
+  return null;
 }
 
-// --- Server Component (Default Export) ---
-// Directly define the type for params in the function signature
-export default async function EditPostPage({
-  params,
-}: {
+interface EditPostPageProps {
   params: { id: string };
-}) {
-  const id = params.id;
-  // Add extra check for ID validity here as well
+}
+
+export default async function EditPostPage({ params }: EditPostPageProps) {
+  const id = params.id; // Ensure id is correctly defined within the function scope
+
   if (!id || typeof id !== "string") {
     console.error(
       `[EditPage Server] Invalid or missing ID in params: '${id}'. Redirecting.`
     );
-    redirect("/admin"); // Or show a specific error page
+    redirect("/admin");
   }
+
   const post = await getPost(id);
 
   if (!post) {
@@ -58,6 +55,6 @@ export default async function EditPostPage({
     notFound();
   }
 
-  // Render the new client component, passing the post data
+  // Ensure the return statement is correctly placed within the function
   return <EditPostFormClient post={post} />;
-}
+} // Ensure the function closing brace is correctly placed

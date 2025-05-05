@@ -3,9 +3,10 @@
 import React from "react";
 import { useActionState } from "react";
 import Link from "next/link";
-import type { Post } from "@prisma/client"; // Correct import path
+import type { Post } from "@/generated/prisma/client";
 import PostForm from "@/app/admin/PostForm";
-import { updatePost, type State } from "@/app/lib/actions"; // Correct import path
+// Import updatePost instead of savePost
+import { updatePost, type State } from "@/app/lib/actions";
 
 interface EditPostFormClientProps {
   post: Post; // Use the imported Post type
@@ -14,6 +15,7 @@ interface EditPostFormClientProps {
 export default function EditPostFormClient({ post }: EditPostFormClientProps) {
   // Provide a default initial state instead of undefined
   const initialState: State = { message: null, errors: {} };
+  // Use updatePost action
   const [state, formActionDispatch] = useActionState(updatePost, initialState);
 
   return (
