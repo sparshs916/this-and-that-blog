@@ -2,7 +2,8 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  /* Change foreground to a dark color for light theme text */
+  --foreground: #111827; /* Example: Tailwind gray-900 */
 }
 
 @theme inline {
@@ -14,7 +15,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #ededed;
     --foreground: #ededed;
   }
 }
@@ -22,5 +23,97 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Remove generic font-family, let Tailwind/fonts handle it */
+  /* font-family: Arial, Helvetica, sans-serif; */
+}
+
+/* Lexical Editor Styles */
+.editor-placeholder {
+  color: #9ca3af; /* gray-400 */
+  position: absolute;
+  top: 0.5rem; /* Adjusted based on ContentEditable padding */
+  left: 0.5rem; /* Adjusted based on ContentEditable padding */
+  pointer-events: none;
+  font-style: italic;
+}
+
+.editor-paragraph {
+  margin-bottom: 0.5rem; /* Add some spacing between paragraphs */
+}
+
+.editor-list-ol {
+  list-style-type: decimal;
+  margin-left: 1.5rem; /* Indent ordered lists */
+   margin-bottom: 0.5rem;
+}
+
+.editor-list-ul {
+  list-style-type: disc;
+  margin-left: 1.5rem; /* Indent unordered lists */
+   margin-bottom: 0.5rem;
+}
+
+.editor-listitem {
+  margin-bottom: 0.25rem; /* Spacing between list items */
+}
+
+.editor-link {
+  color: #4f46e5; /* indigo-600 */
+  text-decoration: underline;
+}
+
+.editor-text-bold {
+  font-weight: bold;
+}
+
+.editor-text-italic {
+  font-style: italic;
+}
+
+.editor-text-underline {
+  text-decoration: underline;
+}
+
+.editor-text-strikethrough {
+  text-decoration: line-through;
+}
+
+.editor-text-code {
+  background-color: #f3f4f6; /* gray-100 */
+  padding: 0.1rem 0.3rem;
+  font-family: monospace;
+  border-radius: 0.25rem;
+}
+
+/* Ensure ContentEditable has a base text color */
+.editor-content-editable {
+  color: #1f2937; /* gray-800 or your desired base text color */
+  padding: 0.5rem; /* Add padding to match placeholder offset */
+}
+
+/* Add more styles for headings, quotes, etc. as needed */
+.editor-heading-h1 {
+  font-size: 2em;
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+}
+.editor-heading-h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+   margin-bottom: 0.6rem;
+}
+.editor-heading-h3 {
+  font-size: 1.25em;
+  font-weight: bold;
+   margin-bottom: 0.5rem;
+}
+
+.editor-quote {
+  border-left: 4px solid #d1d5db; /* gray-300 */
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 1rem;
+  color: #6b7280; /* gray-500 */
+  font-style: italic;
+   margin-bottom: 0.5rem;
 }

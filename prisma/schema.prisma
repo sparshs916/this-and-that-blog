@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../src/generated/prisma" // Use default output location
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id        String   @id @default(cuid()) // Unique ID, cuid is a good default
+  title     String
+  slug      String   @unique // Unique slug for the URL
+  content   String   @db.Text // Use Text for potentially long content
+  imageUrl  String?  // Optional image URL
+  published Boolean  @default(false) // Flag to control visibility
+  createdAt DateTime @default(now()) // Automatically set on creation
+  updatedAt DateTime @updatedAt // Automatically set on update
+
+  // Optional: Add author relation later if needed
+  // author    User?    @relation(fields: [authorId], references: [id])
+  // authorId  String?
+}
+
+model Recipe {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String   @db.Text // Description or intro
+  ingredients String   @db.Text // Could be JSON, Markdown, or plain text
+  instructions String  @db.Text // Could be JSON, Markdown, or plain text
+  prepTime    String?  // e.g., "15 mins"
+  cookTime    String?  // e.g., "30 mins"
+  servings    String?  // e.g., "4 servings"
+  imageUrl    String?  // Optional image URL
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

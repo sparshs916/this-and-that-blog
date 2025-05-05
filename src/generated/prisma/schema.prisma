@@ -1,0 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id        String   @id @default(cuid()) // Unique ID, cuid is a good default
+  title     String
+  slug      String   @unique // Unique slug for the URL
+  content   String   @db.Text // Use Text for potentially long content
+  imageUrl  String? // Optional image URL
+  published Boolean  @default(false) // Flag to control visibility
+  createdAt DateTime @default(now()) // Automatically set on creation
+  updatedAt DateTime @updatedAt // Automatically set on update
+
+  // Optional: Add author relation later if needed
+  // author    User?    @relation(fields: [authorId], references: [id])
+  // authorId  String?
+}
