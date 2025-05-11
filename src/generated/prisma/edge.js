@@ -167,7 +167,7 @@ const config = {
       },
       {
         "fromEnvVar": null,
-        "value": "linux-musl-arm64-openssl-3.0.x"
+        "value": "rhel-openssl-1.0.x"
       }
     ],
     "previewFeatures": [],
@@ -185,16 +185,17 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://postgres:yessir@localhost:5432/this-and-that"
+        "value": null
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../src/generated/prisma\"\n  binaryTargets = [\"native\", \"linux-musl-arm64-openssl-3.0.x\"] // Add this line\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Post {\n  id          String   @id @default(cuid()) // Unique ID, cuid is a good default\n  title       String\n  slug        String   @unique // Unique slug for the URL\n  description String?  @db.Text // Optional short description for summaries/previews\n  content     String   @db.Text // Use Text for potentially long content\n  imageUrl    String? // Optional image URL\n  published   Boolean  @default(false) // Flag to control visibility\n  category    String? // Optional category for the post\n  createdAt   DateTime @default(now()) // Automatically set on creation\n  updatedAt   DateTime @updatedAt // Automatically set on update\n\n  // Optional: Add author relation later if needed\n  // author    User?    @relation(fields: [authorId], references: [id])\n  // authorId  String?\n}\n\nmodel Recipe {\n  id           String   @id @default(cuid())\n  title        String\n  slug         String   @unique\n  description  String   @db.Text // Description or intro\n  ingredients  String   @db.Text // Could be JSON, Markdown, or plain text\n  instructions String   @db.Text // Could be JSON, Markdown, or plain text\n  prepTime     String? // e.g., \"15 mins\"\n  cookTime     String? // e.g., \"30 mins\"\n  servings     String? // e.g., \"4 servings\"\n  category     String? // Optional category for the recipe\n  imageUrl     String? // Optional image URL\n  published    Boolean  @default(false)\n  createdAt    DateTime @default(now())\n  updatedAt    DateTime @updatedAt\n}\n",
-  "inlineSchemaHash": "56f4805ff6b375a494ede09e88752015bff600d873cdbf60865321a71c5ec9a7",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  output        = \"../src/generated/prisma\"\n  binaryTargets = [\"native\", \"rhel-openssl-1.0.x\"]\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Post {\n  id          String   @id @default(cuid()) // Unique ID, cuid is a good default\n  title       String\n  slug        String   @unique // Unique slug for the URL\n  description String?  @db.Text // Optional short description for summaries/previews\n  content     String   @db.Text // Use Text for potentially long content\n  imageUrl    String? // Optional image URL\n  published   Boolean  @default(false) // Flag to control visibility\n  category    String? // Optional category for the post\n  createdAt   DateTime @default(now()) // Automatically set on creation\n  updatedAt   DateTime @updatedAt // Automatically set on update\n\n  // Optional: Add author relation later if needed\n  // author    User?    @relation(fields: [authorId], references: [id])\n  // authorId  String?\n}\n\nmodel Recipe {\n  id           String   @id @default(cuid())\n  title        String\n  slug         String   @unique\n  description  String   @db.Text // Description or intro\n  ingredients  String   @db.Text // Could be JSON, Markdown, or plain text\n  instructions String   @db.Text // Could be JSON, Markdown, or plain text\n  prepTime     String? // e.g., \"15 mins\"\n  cookTime     String? // e.g., \"30 mins\"\n  servings     String? // e.g., \"4 servings\"\n  category     String? // Optional category for the recipe\n  imageUrl     String? // Optional image URL\n  published    Boolean  @default(false)\n  createdAt    DateTime @default(now())\n  updatedAt    DateTime @updatedAt\n}\n",
+  "inlineSchemaHash": "9f7560f6687cab6084b9df894393da3c9e8a8d38613dc2e01f4ae9c7a689766f",
   "copyEngine": true
 }
 config.dirname = '/'

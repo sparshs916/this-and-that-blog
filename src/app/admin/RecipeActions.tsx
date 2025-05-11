@@ -20,7 +20,8 @@ export default function RecipeActions({
   const handleTogglePublish = () => {
     void (async () => {
       try {
-        await toggleRecipePublishStatus(recipeId, !isPublished);
+        // Pass the current status directly, the server action will toggle it
+        await toggleRecipePublishStatus(recipeId, isPublished);
         // Consider adding toast notifications or better feedback
       } catch (error) {
         alert("Failed to toggle publish status. Please try again.");

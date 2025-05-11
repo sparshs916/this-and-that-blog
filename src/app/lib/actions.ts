@@ -6,8 +6,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getAdminSession, verifyPassword } from "./auth";
 import slugify from "slugify";
-import { writeFile, mkdir, unlink } from 'fs/promises';
-import path from 'path';
+import { put, del } from '@vercel/blob';
 // Import Prisma namespace for types like Prisma.RecipeUpdateInput
 import { Prisma } from "@/generated/prisma/client";
 
@@ -101,7 +100,7 @@ interface PrismaError extends Error {
 // Helper function to handle image upload
 async function handleImageUpload(image: File | undefined, currentImageUrl?: string | null): Promise<string | null | undefined> {
     if (!image || image.size === 0) {
-        // No new image provided or empty file, return current URL (undefined means no change)
+        // No new image provided or empty file, return undefined (no change to DB)
         return undefined;
     }
 
@@ -110,35 +109,37 @@ async function handleImageUpload(image: File | undefined, currentImageUrl?: stri
         throw new Error('Invalid file type. Only images are allowed.');
     }
 
-    // Define upload directory and ensure it exists
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-    await mkdir(uploadDir, { recursive: true });
+    // Generate a unique blob name (e.g., uploads/timestamp-filename)
+    // Vercel Blob doesn't use traditional paths but a flat structure. 
+    // You can use slashes in names for organization if desired.
+    const blobName = `uploads/${Date.now()}-${image.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
 
-    // Generate a unique filename
-    const uniqueSuffix = `${Date.now()}-${image.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
-    const filePath = path.join(uploadDir, uniqueSuffix);
-    const fileUrl = `/uploads/${uniqueSuffix}`; // URL path relative to public folder
+    try {
+        const blob = await put(blobName, image, {
+            access: 'public',
+            contentType: image.type, // Pass content type
+        });
 
-    // Convert file to buffer and write to disk
-    const bytes = await image.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    await writeFile(filePath, buffer);
-
-    // Delete old image if it exists and a new one was uploaded
-    if (currentImageUrl) {
-        const oldFilePath = path.join(process.cwd(), 'public', currentImageUrl);
-        try {
-            await unlink(oldFilePath);
-            // console.log(`Deleted old image: ${oldFilePath}`); // Removed log
-        } catch (unlinkError: unknown) {
-            // Ignore error if file doesn't exist, log others
-            if (typeof unlinkError === 'object' && unlinkError !== null && 'code' in unlinkError && (unlinkError as { code?: string }).code !== 'ENOENT') {
-                // console.error(`Failed to delete old image ${oldFilePath}:`, unlinkError); // Removed log
+        // If there was an old image URL, attempt to delete it from Vercel Blob
+        if (currentImageUrl) {
+            try {
+                await del(currentImageUrl); 
+            } catch (deleteError: unknown) {
+                // Log deletion error but don't let it fail the upload of the new image
+                console.error(`Failed to delete old image ${currentImageUrl} from Vercel Blob:`, deleteError);
             }
         }
-    }
+        return blob.url; // Return the public URL of the new image from Vercel Blob
 
-    return fileUrl; // Return the URL path of the new image
+    } catch (uploadError: unknown) {
+        console.error(`Failed to upload image ${blobName} to Vercel Blob:`, uploadError);
+        // Re-throw or handle as appropriate for your application
+        // For now, let's re-throw a generic error to be caught by the calling action
+        if (uploadError instanceof Error) {
+            throw new Error(`Image upload failed: ${uploadError.message}`);
+        }
+        throw new Error('Image upload failed due to an unknown error.');
+    }
 }
 
 // Type for state management with useFormState

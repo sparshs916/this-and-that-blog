@@ -1,16 +1,21 @@
-import { PrismaClient } from "@/generated/prisma/client"; // Correct import path
+import { PrismaClient } from "@/generated/prisma/client";
+import { withAccelerate } from "@prisma/extension-accelerate";
 
-// Check and log the DATABASE_URL, only on the server
-if (typeof window === 'undefined') {
-  if (!process.env.DATABASE_URL) {
-    // console.error("DATABASE_URL environment variable is not set on the server!"); // Removed log
-  } else {
-    // Log the URL being used to verify it's correct inside the container
-    // console.log("DATABASE_URL found on server:", process.env.DATABASE_URL); // Removed log
-  }
+// Define a global variable to hold the Prisma client instance
+declare global {
+  // eslint-disable-next-line no-var
+  var prisma: PrismaClient | undefined;
 }
 
-// Directly instantiate and export the client
-const prisma = new PrismaClient();
+// Initialize Prisma Client with Accelerate extension
+const prisma =
+  global.prisma ||
+  new PrismaClient().$extends(withAccelerate());
+
+// In development, assign the Prisma client to the global variable
+// This prevents creating a new client on every hot reload
+if (process.env.NODE_ENV !== "production") {
+  global.prisma = prisma;
+}
 
 export default prisma;

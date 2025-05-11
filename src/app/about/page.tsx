@@ -17,7 +17,7 @@ export default function AboutPage() {
         <section className="mb-10 md:mb-12">
           <div className="relative w-full h-64 md:h-80 lg:h-96 rounded-lg overflow-hidden shadow-xl mb-8">
             <Image
-              src="/img/stock_photo.jpeg" // Replace with a relevant, high-quality image
+              src="/uploads/1746403678439-stock_photo.jpeg" // Updated path
               alt="A vibrant display of fresh ingredients or a kitchen scene"
               layout="fill"
               objectFit="cover"
