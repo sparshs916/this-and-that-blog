@@ -58,9 +58,10 @@ interface BlogPostPageProps {
 
 // Generate Metadata for SEO
 export async function generateMetadata({
-  params,
+  params, // This is Promise<{ slug: string }>
 }: BlogPostPageProps): Promise<Metadata> {
-  const { slug } = await params; // Await params and destructure id
+  const actualParams = await params; // Await the promise to get the actual params
+  const { slug } = actualParams; // Destructure slug from the resolved params
   if (!slug || typeof slug !== "string" || slug.trim() === "") {
     return { title: "Post Not Found" };
   }
@@ -110,7 +111,9 @@ export async function generateStaticParams() {
 
 // The Page Component
 const BlogPostPage: React.FC<BlogPostPageProps> = async ({ params }) => {
-  const { slug } = await params; // Await params and destructure id
+  // params is Promise<{ slug: string }>
+  const actualParams = await params; // Await the promise
+  const { slug } = actualParams; // Destructure slug from the resolved params
   console.log(`[BlogPostPage] Rendering page for slug: '${slug}'`);
   if (!slug || typeof slug !== "string" || slug.trim() === "") {
     notFound();
