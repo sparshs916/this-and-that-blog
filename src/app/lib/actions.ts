@@ -383,6 +383,7 @@ export async function deletePost(id: string): Promise<State> {
     revalidatePath("/admin"); // Revalidate the admin dashboard
     revalidatePath("/blog"); // Revalidate the main blog page
     revalidatePath(`/blog/[slug]`); // Revalidate individual blog post pages (template)
+    revalidatePath("/"); // Revalidate home page
 
     return {
       message: "Post deleted successfully.",
@@ -427,6 +428,7 @@ export async function togglePublishStatus(id: string, currentStatus: boolean): P
     revalidatePath("/admin");
     revalidatePath("/blog");
     revalidatePath(`/blog/${updatedPost.slug}`);
+    revalidatePath("/"); // Revalidate home page
 
     return {
       message: `Post ${updatedPost.published ? "published" : "unpublished"} successfully.`,
@@ -630,6 +632,7 @@ export async function createRecipe(
 
   revalidatePath("/admin");
   revalidatePath("/recipes");
+  revalidatePath("/"); // Revalidate home page
 
   redirect("/admin");
 }
@@ -759,6 +762,7 @@ export async function updateRecipe(
   revalidatePath("/admin");
   revalidatePath("/recipes");
   revalidatePath(`/recipes/${slugToUse}`);
+  revalidatePath("/"); // Revalidate home page
 
   redirect("/admin");
 }
@@ -802,6 +806,7 @@ export async function deleteRecipe(id: string): Promise<State> {
     revalidatePath("/admin");
     revalidatePath("/recipes");
     revalidatePath(`/recipes/[slug]`);
+    revalidatePath("/"); // Revalidate home page
 
     return {
       message: "Recipe deleted successfully.",
@@ -845,6 +850,7 @@ export async function toggleRecipePublishStatus(id: string, currentStatus: boole
     revalidatePath("/admin");
     revalidatePath("/recipes"); // Revalidate the main recipes page
     revalidatePath(`/recipes/${updatedRecipe.slug}`); // Revalidate individual recipe pages
+    revalidatePath("/"); // Revalidate home page
 
     return {
       message: `Recipe ${updatedRecipe.published ? "published" : "unpublished"} successfully.`,
