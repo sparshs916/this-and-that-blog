@@ -16,15 +16,13 @@ async function getPostById(id: string): Promise<Post | null> {
   });
 }
 
-// Define the standard Props type for Next.js App Router pages
-type Props = {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined }; // Include searchParams even if unused
-};
-
 // Use the standard Props type for the component signature
-export default async function EditPostPage(props: Props) {
-  const id = props.params.id; // Access id from props.params
+export default async function EditPostPage({
+  params, // params is now a Promise
+}: {
+  params: Promise<{ id: string }>; // Updated type for params
+}) {
+  const { id } = await params; // Await params and destructure id
 
   if (!id || typeof id !== "string") {
     redirect("/admin");

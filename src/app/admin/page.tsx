@@ -68,12 +68,13 @@ async function getData(params: GetDataParams) {
 export default async function AdminDashboard({
   searchParams,
 }: {
-  searchParams: AdminDashboardSearchParams;
+  searchParams: Promise<AdminDashboardSearchParams>; // searchParams is now a Promise
 }) {
   // Helper function to process searchParams asynchronously
   async function getProcessedSearchParams(
-    rawParams: AdminDashboardSearchParams
+    rawParamsPromise: Promise<AdminDashboardSearchParams> // Parameter is now a Promise
   ) {
+    const rawParams = await rawParamsPromise; // Await the promise to get the raw parameters
     // It's good practice to ensure this runs after the current macrotask,
     // though simply awaiting this function call might be sufficient.
     await new Promise((resolve) => setTimeout(resolve, 0)); // Ensure async boundary for searchParams resolution
@@ -106,7 +107,7 @@ export default async function AdminDashboard({
     pageForRecipes,
     sortByForRecipes,
     sortOrderForRecipes,
-  } = await getProcessedSearchParams(searchParams);
+  } = await getProcessedSearchParams(searchParams); // Pass the searchParams Promise directly
 
   // Fetch data using the processed parameters
   const { postsData, recipesData } = await getData({

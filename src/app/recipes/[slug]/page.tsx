@@ -61,16 +61,14 @@ async function getRecipeBySlug(slug: string): Promise<Recipe | null> {
 }
 
 interface RecipePageProps {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>; // params is now a Promise
 }
 
 // Generate Metadata for SEO
 export async function generateMetadata({
   params,
 }: RecipePageProps): Promise<Metadata> {
-  const slug = params.slug;
+  const { slug } = await params; // Await params and destructure slug
   console.log(`[generateMetadata - Recipe] Received slug: '${slug}'`);
   if (!slug || typeof slug !== "string" || slug.trim() === "") {
     console.error(
@@ -144,7 +142,7 @@ export async function generateStaticParams() {
 
 // The Page Component
 const RecipePage: React.FC<RecipePageProps> = async ({ params }) => {
-  const slug = params.slug;
+  const { slug } = await params; // Await params and destructure slug
   console.log(`[RecipePage] Rendering page for slug: '${slug}'`);
   if (!slug || typeof slug !== "string" || slug.trim() === "") {
     console.error(

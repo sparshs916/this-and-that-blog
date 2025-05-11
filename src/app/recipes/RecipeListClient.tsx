@@ -63,7 +63,18 @@ export default function RecipeListClient({
       {filteredRecipes.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredRecipes.map((recipe) => (
-            <RecipeCard key={recipe.id} recipe={recipe} />
+            <RecipeCard
+              key={recipe.id}
+              title={recipe.title}
+              date={recipe.createdAt.toISOString()} // Make sure to convert Date to string
+              category={recipe.category}
+              description={recipe.description} // Or use an excerpt function if preferred
+              slug={recipe.slug}
+              imageUrl={recipe.imageUrl}
+              prepTime={recipe.prepTime}
+              cookTime={recipe.cookTime}
+              // Pass any other props that RecipeCard expects
+            />
           ))}
         </div>
       ) : (

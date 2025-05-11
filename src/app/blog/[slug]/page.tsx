@@ -53,16 +53,14 @@ async function getPostBySlug(slug: string): Promise<Post | null> {
 }
 
 interface BlogPostPageProps {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>; // params is now a Promise
 }
 
 // Generate Metadata for SEO
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
-  const slug = params.slug;
+  const { slug } = await params; // Await params and destructure id
   if (!slug || typeof slug !== "string" || slug.trim() === "") {
     return { title: "Post Not Found" };
   }
@@ -112,7 +110,8 @@ export async function generateStaticParams() {
 
 // The Page Component
 const BlogPostPage: React.FC<BlogPostPageProps> = async ({ params }) => {
-  const slug = params.slug;
+  const { slug } = await params; // Await params and destructure id
+  console.log(`[BlogPostPage] Rendering page for slug: '${slug}'`);
   if (!slug || typeof slug !== "string" || slug.trim() === "") {
     notFound();
   }

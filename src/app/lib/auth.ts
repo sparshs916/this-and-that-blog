@@ -27,8 +27,8 @@ export async function getAdminSession(): Promise<IronSession<AdminSessionData>> 
 export async function getAdminSessionFromRequest(req: NextRequest, _res: NextResponse): Promise<IronSession<AdminSessionData>> { // Prefixed res with _
     // iron-session v8 requires response object even for getting session in middleware
     // See: https://github.com/vvo/iron-session/discussions/677
-    // Pass req.cookies directly if compatible, otherwise might need adaptation
-    return getIronSession<AdminSessionData>(req.cookies, sessionOptions); // Removed 'as any'
+    // Pass req and res directly to getIronSession
+    return getIronSession<AdminSessionData>(req, _res, sessionOptions);
 }
 
 // Function to verify password (simple comparison for now)

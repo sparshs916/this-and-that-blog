@@ -16,11 +16,12 @@ async function getRecipeById(id: string): Promise<Recipe | null> {
 }
 
 interface EditRecipePageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>; // params is now a Promise
 }
 
 export default async function EditRecipePage({ params }: EditRecipePageProps) {
-  const recipe = await getRecipeById(params.id);
+  const { id } = await params; // Await params and destructure id
+  const recipe = await getRecipeById(id); // Use the awaited id
   // Fetch categories using the server action
   const existingCategories = await getRecipeCategories();
 
