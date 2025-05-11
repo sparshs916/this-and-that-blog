@@ -1,14 +1,15 @@
 "use server";
+// Import Prisma namespace for types like Prisma.RecipeUpdateInput
 
+// Import PrismaClient for casting
+import { PrismaClient } from "@/generated/prisma/client";
+import prisma from "@/app/lib/prisma"; // Ensure prisma is imported
 import { z } from "zod";
-import prisma from "./prisma";
+import slugify from "slugify";
+import { put, del } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getAdminSession, verifyPassword } from "./auth";
-import slugify from "slugify";
-import { put, del } from '@vercel/blob';
-// Import Prisma namespace for types like Prisma.RecipeUpdateInput
-import { Prisma } from "@/generated/prisma/client";
 
 // Helper function to check if an object looks like a File
 function isFileLike(obj: unknown): obj is File {
@@ -66,10 +67,9 @@ async function generateUniquePostSlug(title: string, currentId?: string): Promis
   const baseSlug = slugify(title, { lower: true, strict: true, remove: /[*+~.()'"!:@]/g });
   let uniqueSlug = baseSlug;
   let counter = 1;
-  const MAX_SLUG_LENGTH = 255; // Example max length, adjust if needed
-
+  const MAX_SLUG_LENGTH = 255;
   while (
-    await prisma.post.findFirst({
+    await (prisma as PrismaClient).post.findFirst({
       where: {
         slug: uniqueSlug.substring(0, MAX_SLUG_LENGTH), // Check truncated slug
         NOT: {
@@ -84,7 +84,7 @@ async function generateUniquePostSlug(title: string, currentId?: string): Promis
     const availableLength = MAX_SLUG_LENGTH - suffix.length;
     uniqueSlug = `${baseSlug.substring(0, availableLength)}${suffix}`;
     counter++;
-    if (counter > 100) { // Add a safety break
+     if (counter > 100) { // Add a safety break
         throw new Error("Could not generate a unique slug after 100 attempts.");
     }
   }
@@ -207,7 +207,7 @@ export async function createPost(
     const imageUrl = await handleImageUpload(image);
 
     // Create the post in the database
-    await prisma.post.create({
+    await (prisma as PrismaClient).post.create({
       data: {
         title,
         slug,
@@ -285,7 +285,7 @@ export async function updatePost(
   }
 
   // Fetch the current post to get existing image URL and slug (if needed)
-  const currentPost = await prisma.post.findUnique({ where: { id } });
+  const currentPost = await (prisma as PrismaClient).post.findUnique({ where: { id } });
   if (!currentPost) {
     return { message: "Post not found." };
   }
@@ -306,7 +306,7 @@ export async function updatePost(
     const imageUrl = await handleImageUpload(image, currentPost.imageUrl);
 
     // Update the post in the database
-    await prisma.post.update({
+    await (prisma as PrismaClient).post.update({
       where: { id },
       data: {
         title,
@@ -363,34 +363,34 @@ export async function deletePost(id: string): Promise<State> {
     }
 
     // Check if post exists before attempting to delete
-    const existingPost = await prisma.post.findUnique({
+    const existingPost = await (prisma as PrismaClient).post.findUnique({
       where: { id },
-      select: { id: true }, // Only select id for efficiency
+      select: { id: true, imageUrl: true }, // Select imageUrl to delete from blob storage
     });
 
     if (!existingPost) {
-      return {
-        message: "Post not found. It may have already been deleted.",
-        status: 404,
-        errors: {},
-      };
+      return { message: "Post not found.", status: 404 };
     }
 
-    await prisma.post.delete({
+    // Delete image from Vercel Blob if it exists
+    if (existingPost.imageUrl) {
+      try {
+        await del(existingPost.imageUrl);
+      } catch (blobError: unknown) {
+        console.error(`Failed to delete image ${existingPost.imageUrl} from Vercel Blob:`, blobError);
+        // Optionally, decide if this should prevent post deletion or just be logged
+      }
+    }
+
+    await (prisma as PrismaClient).post.delete({
       where: { id },
     });
 
-    revalidatePath("/admin"); // Revalidate the admin dashboard
-    revalidatePath("/blog"); // Revalidate the main blog page
-    revalidatePath(`/blog/[slug]`); // Revalidate individual blog post pages (template)
-    revalidatePath("/"); // Revalidate home page
-
-    return {
-      message: "Post deleted successfully.",
-      status: 200,
-      errors: {},
-    };
-  } catch (error: unknown) { // Changed from 'e' to 'error' for clarity if it was 'e'
+    revalidatePath("/admin");
+    revalidatePath("/blog");
+    revalidatePath("/");
+    return { message: "Post deleted successfully.", status: 200 };
+  } catch (error: unknown) {
     // console.error("Error deleting post:", error); // Removed log
     // Check for specific Prisma errors if needed, e.g., P2025 (Record to delete does not exist)
     if (error instanceof Object && 'code' in error && typeof error.code === 'string' && error.code === "P2025") {
@@ -420,21 +420,15 @@ export async function togglePublishStatus(id: string, currentStatus: boolean): P
   }
 
   try {
-    const updatedPost = await prisma.post.update({
+    await (prisma as PrismaClient).post.update({
       where: { id },
       data: { published: !currentStatus },
     });
-
     revalidatePath("/admin");
-    revalidatePath("/blog");
-    revalidatePath(`/blog/${updatedPost.slug}`);
-    revalidatePath("/"); // Revalidate home page
-
-    return {
-      message: `Post ${updatedPost.published ? "published" : "unpublished"} successfully.`,
-      status: 200,
-      errors: {},
-    };
+    revalidatePath("/blog"); // Revalidate blog listing
+    revalidatePath(`/blog/${id}`); // Revalidate specific post page if slug is id, or fetch slug
+    revalidatePath("/");
+    return { message: `Post ${!currentStatus ? "published" : "unpublished"} successfully.`, status: 200 };
   } catch (error) {
     // console.error("Error toggling post publish status:", error); // Removed log
     return {
@@ -515,10 +509,9 @@ async function generateUniqueRecipeSlug(title: string, currentId?: string): Prom
   const baseSlug = slugify(title, { lower: true, strict: true, remove: /[*+~.()'"!:@]/g });
   let uniqueSlug = baseSlug;
   let counter = 1;
-  const MAX_SLUG_LENGTH = 255; // Example max length, adjust if needed
-
+  const MAX_SLUG_LENGTH = 255;
   while (
-    await prisma.recipe.findFirst({
+    await (prisma as PrismaClient).recipe.findFirst({
       where: {
         slug: uniqueSlug.substring(0, MAX_SLUG_LENGTH), // Check truncated slug
         NOT: {
@@ -547,7 +540,7 @@ export async function createRecipe(
 ): Promise<State> {
   const session = await getAdminSession();
   if (!session?.isLoggedIn) {
-    return { message: "Authentication required." };
+    return { message: "Unauthorized", status: 401 };
   }
 
   const validatedFields = RecipeSchema.safeParse({
@@ -586,13 +579,16 @@ export async function createRecipe(
   let slug: string;
 
   try {
-    slug = await generateUniqueRecipeSlug(title);
-    imageUrl = await handleImageUpload(image);
+    // Handle image upload
+    imageUrl = await handleImageUpload(image); // Pass undefined for currentImageUrl on create
 
-    await prisma.recipe.create({
+    // Generate slug
+    slug = await generateUniqueRecipeSlug(title); // Generate slug from title
+
+    await (prisma as PrismaClient).recipe.create({
       data: {
         title,
-        slug,
+        slug, // Use generated slug
         description,
         ingredients,
         instructions,
@@ -644,7 +640,7 @@ export async function updateRecipe(
 ): Promise<State> {
   const session = await getAdminSession();
   if (!session?.isLoggedIn) {
-    return { message: "Authentication required." };
+    return { message: "Unauthorized", status: 401 };
   }
 
   const id = formData.get("id") as string; // Get ID from form data
@@ -681,12 +677,12 @@ export async function updateRecipe(
     category = category.trim();
     category = category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
   } else if (typeof category === 'string' && category.trim() === '') {
-    category = null;
+    category = null; 
   }
 
-  const currentRecipe = await prisma.recipe.findUnique({ where: { id } });
+  const currentRecipe = await (prisma as PrismaClient).recipe.findUnique({ where: { id } });
   if (!currentRecipe) {
-    return { message: "Recipe not found." };
+    return { message: "Recipe not found.", status: 404 };
   }
 
   // Determine the slug to use
@@ -702,36 +698,24 @@ export async function updateRecipe(
   let imageUrl: string | null | undefined = undefined;
 
   try {
-    // The following lines from the original file seem to have a less robust slug logic.
-    // if (title !== currentRecipe.title) {
-    //   slug = await generateUniqueRecipeSlug(title, id);
-    // } else {
-    //   slug = currentRecipe.slug;
-    // }
-    // Replaced by the slugToUse logic above.
-
+    // Handle image upload, passing the current image URL for potential deletion
     imageUrl = await handleImageUpload(image, currentRecipe.imageUrl);
 
-    const updateData: Prisma.RecipeUpdateInput = {
-      title,
-      slug: slugToUse, // Use the determined slugToUse
-      description,
-      ingredients,
-      instructions,
-      prepTime,
-      cookTime,
-      servings,
-      category, // Add category
-      published,
-    };
-
-    if (imageUrl !== undefined) {
-      updateData.imageUrl = imageUrl;
-    }
-
-    await prisma.recipe.update({
-      where: { id: id },
-      data: updateData,
+    await (prisma as PrismaClient).recipe.update({
+      where: { id },
+      data: {
+        title,
+        slug: slugToUse,
+        description,
+        ingredients,
+        instructions,
+        prepTime,
+        cookTime,
+        servings,
+        category,
+        imageUrl, // This will be undefined if no new image, null if image removed, or new URL
+        published,
+      },
     });
   } catch (error: unknown) {
     // console.error("Database or File System Error:", error); // Removed log
@@ -769,64 +753,46 @@ export async function updateRecipe(
 
 // --- DELETE RECIPE ACTION ---
 export async function deleteRecipe(id: string): Promise<State> {
+  const session = await getAdminSession();
+  if (!session?.isLoggedIn) {
+    return { message: "Unauthorized", status: 401 };
+  }
+
   if (!id) {
-    return {
-      message: "Recipe ID is required for deletion.",
-      status: 400,
-      errors: {},
-    };
+    return { message: "Recipe ID is required.", status: 400 };
   }
   try {
-    const session = await getAdminSession();
-    if (!session?.isLoggedIn) {
-      return {
-        message: "Authentication required.",
-        status: 401,
-        errors: {},
-      };
-    }
-
-    const existingRecipe = await prisma.recipe.findUnique({
+    const existingRecipe = await (prisma as PrismaClient).recipe.findUnique({
       where: { id },
-      select: { id: true },
+      select: { id: true, imageUrl: true, slug: true },
     });
 
     if (!existingRecipe) {
-      return {
-        message: "Recipe not found. It may have already been deleted.",
-        status: 404,
-        errors: {},
-      };
+      return { message: "Recipe not found.", status: 404 };
     }
 
-    await prisma.recipe.delete({
+    if (existingRecipe.imageUrl) {
+      try {
+        await del(existingRecipe.imageUrl);
+      } catch (blobError) {
+        console.error(`Failed to delete recipe image ${existingRecipe.imageUrl} from Vercel Blob:`, blobError);
+      }
+    }
+
+    await (prisma as PrismaClient).recipe.delete({
       where: { id },
     });
 
     revalidatePath("/admin");
     revalidatePath("/recipes");
-    revalidatePath(`/recipes/[slug]`);
-    revalidatePath("/"); // Revalidate home page
-
-    return {
-      message: "Recipe deleted successfully.",
-      status: 200,
-      errors: {},
-    };
-  } catch (error: unknown) { // Changed from 'e' to 'error' for clarity
-    // console.error("Error deleting recipe:", error); // Removed log
-    if (error instanceof Object && 'code' in error && typeof error.code === 'string' && error.code === "P2025") {
-      return {
-        message: "Recipe not found or already deleted.",
-        status: 404,
-        errors: {},
-      };
+    if (existingRecipe.slug) {
+      revalidatePath(`/recipes/${existingRecipe.slug}`);
     }
-    return {
-      message: "Failed to delete recipe due to a server error. Please try again.",
-      status: 500,
-      errors: {},
-    };
+    revalidatePath("/");
+    return { message: "Recipe deleted successfully.", status: 200 };
+  } catch (error) {
+    console.error("Failed to delete recipe:", error);
+    return { message: "Database Error: Failed to delete recipe.", status: 500 };
   }
 }
 
@@ -835,83 +801,91 @@ export async function toggleRecipePublishStatus(id: string, currentStatus: boole
   const session = await getAdminSession();
   if (!session?.isLoggedIn) {
     return {
-      message: "Authentication required.",
+      message: "Unauthorized",
       status: 401,
-      errors: {},
     };
   }
 
   try {
-    const updatedRecipe = await prisma.recipe.update({
+    const recipe = await (prisma as PrismaClient).recipe.update({
       where: { id },
       data: { published: !currentStatus },
+      select: { slug: true } // Select slug for revalidation
     });
 
     revalidatePath("/admin");
-    revalidatePath("/recipes"); // Revalidate the main recipes page
-    revalidatePath(`/recipes/${updatedRecipe.slug}`); // Revalidate individual recipe pages
-    revalidatePath("/"); // Revalidate home page
-
-    return {
-      message: `Recipe ${updatedRecipe.published ? "published" : "unpublished"} successfully.`,
-      status: 200,
-      errors: {},
-    };
+    revalidatePath("/recipes");
+    if (recipe.slug) {
+      revalidatePath(`/recipes/${recipe.slug}`);
+    }
+    revalidatePath("/");
+    return { message: `Recipe ${!currentStatus ? "published" : "unpublished"} successfully.`, status: 200 };
   } catch (error) {
-    // console.error("Error toggling recipe publish status:", error); // Removed log
-    return {
-      message: "Failed to toggle recipe publish status.",
-      status: 500,
-      errors: {},
-    };
+    console.error("Failed to toggle recipe publish status:", error);
+    return { message: "Database Error: Failed to toggle recipe status.", status: 500 };
   }
 }
 
 // Action to get unique post categories
 export async function getPostCategories(): Promise<string[]> {
   try {
-    const categories = await prisma.post.findMany({
+    const categories = await (prisma as PrismaClient).post.findMany({
       where: {
         category: {
-          not: null,
-          notIn: [''], // Exclude empty strings if necessary
+          not: null, // Ensure category is not null
         },
+        AND: {
+          category: {
+            not: "", // Ensure category is not an empty string
+          }
+        }
       },
+      distinct: ["category"],
       select: {
         category: true,
       },
-      distinct: ["category"],
+      orderBy: {
+        category: "asc",
+      },
     });
-    // Ensure categories are strings and filter out any null/undefined if they somehow pass the query
+    // Ensure all categories are non-null and non-empty before mapping
     return categories
       .map((p) => p.category)
-      .filter((c): c is string => c !== null && c !== undefined && c.trim() !== '');
+      .filter((c): c is string => c !== null && c !== undefined && c.trim() !== "");
   } catch (error) {
-    // console.error("Error fetching post categories:", error); // Removed log
-    return []; // Return empty array on error
+    console.error("Failed to fetch post categories:", error);
+    return [];
   }
 }
 
 // Action to get unique recipe categories
 export async function getRecipeCategories(): Promise<string[]> {
   try {
-    const categories = await prisma.recipe.findMany({
+    const categories = await (prisma as PrismaClient).recipe.findMany({
       where: {
         category: {
-          not: null,
-          notIn: [''], // Exclude empty strings
+          not: null, // Ensure category is not null
         },
+        AND: {
+          category: {
+            not: "", // Ensure category is not an empty string
+          }
+        }
       },
+      distinct: ["category"],
       select: {
         category: true,
       },
-      distinct: ["category"],
+      orderBy: {
+        category: "asc",
+      },
     });
+    // Ensure all categories are non-null and non-empty before mapping
     return categories
       .map((r) => r.category)
-      .filter((c): c is string => c !== null && c !== undefined && c.trim() !== '');
+      .filter((c): c is string => c !== null && c !== undefined && c.trim() !== "");
   } catch (error) {
-    // console.error("Error fetching recipe categories:", error); // Removed log
+    console.error("Failed to fetch recipe categories:", error);
     return [];
   }
 }

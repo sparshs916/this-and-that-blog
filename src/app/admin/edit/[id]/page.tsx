@@ -8,10 +8,14 @@ import type { Post } from "@/generated/prisma/client"; // Updated import path
 // Import the server action for getting post categories
 import { getPostCategories } from "@/app/lib/actions";
 
+// Import PrismaClient for casting
+import { PrismaClient } from "@/generated/prisma/client";
+
 // Function to fetch a single post by its ID
 async function getPostById(id: string): Promise<Post | null> {
   if (!id) return null;
-  return prisma.post.findUnique({
+  // Cast prisma to the base PrismaClient type
+  return (prisma as PrismaClient).post.findUnique({
     where: { id },
   });
 }

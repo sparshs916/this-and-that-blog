@@ -2,6 +2,7 @@
 'use server';
 import prisma from "./prisma";
 import type { Post } from "@/generated/prisma/client"; // Updated import path
+import { PrismaClient } from "@/generated/prisma/client"; // Import PrismaClient
 
 export async function getAllPublishedPosts(
   page: number = 1,
@@ -9,7 +10,7 @@ export async function getAllPublishedPosts(
 ): Promise<{ posts: Post[]; totalPosts: number; totalPages: number }> {
   try {
     const skip = (page - 1) * limit;
-    const posts = await prisma.post.findMany({
+    const posts = await (prisma as PrismaClient).post.findMany({
       where: {
         published: true,
       },
@@ -17,7 +18,7 @@ export async function getAllPublishedPosts(
       skip: skip,
       take: limit,
     });
-    const totalPosts = await prisma.post.count({
+    const totalPosts = await (prisma as PrismaClient).post.count({
       where: {
         published: true,
       },
@@ -39,7 +40,7 @@ export async function getAllPublishedPosts(
 
 export async function getUniquePostCategories(): Promise<string[]> {
   try {
-    const categories = await prisma.post.findMany({
+    const categories = await (prisma as PrismaClient).post.findMany({
       select: {
         category: true,
       },
@@ -62,7 +63,7 @@ export async function getUniquePostCategories(): Promise<string[]> {
 
 export async function getUniqueRecipeCategories(): Promise<string[]> {
   try {
-    const categories = await prisma.recipe.findMany({
+    const categories = await (prisma as PrismaClient).recipe.findMany({
       select: {
         category: true,
       },

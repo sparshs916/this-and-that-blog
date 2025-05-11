@@ -2,6 +2,7 @@
 
 import prisma from "@/app/lib/prisma"; // Corrected import path
 import type { Recipe } from "@/generated/prisma/client";
+import { PrismaClient } from "@/generated/prisma/client"; // Import PrismaClient
 
 export type SortableRecipeFields = "title" | "category" | "createdAt" | "published";
 export type SortOrder = "asc" | "desc";
@@ -39,7 +40,7 @@ export async function getRecipes({
       where.published = published;
     }
 
-    const recipes = await prisma.recipe.findMany({
+    const recipes = await (prisma as PrismaClient).recipe.findMany({
       where,
       orderBy: {
         [sortBy]: sortOrder,
@@ -48,7 +49,7 @@ export async function getRecipes({
       take,
     });
 
-    const totalRecipes = await prisma.recipe.count({ where });
+    const totalRecipes = await (prisma as PrismaClient).recipe.count({ where });
     const totalPages = Math.ceil(totalRecipes / limit);
 
     return {
@@ -70,7 +71,7 @@ export async function getRecipes({
 
 export async function getUniqueRecipeCategories(): Promise<string[]> {
   try {
-    const categories = await prisma.recipe.findMany({
+    const categories = await (prisma as PrismaClient).recipe.findMany({
       distinct: ["category"],
       select: {
         category: true,

@@ -6,6 +6,9 @@ import Link from "next/link"; // Import Link for the back button
 import { Metadata } from "next"; // Import Metadata type
 import { getAdminSession } from "@/app/lib/auth"; // Import admin session helper
 
+// Import PrismaClient for casting
+import { PrismaClient } from "@/generated/prisma/client";
+
 // Define the structure for a Post (matching Prisma schema)
 // You might already have this in a definitions file, import if so
 interface Post {
@@ -42,7 +45,7 @@ async function getPostBySlug(slug: string): Promise<Post | null> {
       whereClause.published = true;
     }
 
-    const post = await prisma.post.findUnique({
+    const post = await (prisma as PrismaClient).post.findUnique({
       where: whereClause,
     });
 
@@ -90,7 +93,7 @@ export async function generateMetadata({
 // Generate Static Paths (Optional but recommended for performance)
 export async function generateStaticParams() {
   try {
-    const posts = await prisma.post.findMany({
+    const posts = await (prisma as PrismaClient).post.findMany({
       where: { published: true },
       select: { slug: true },
     });

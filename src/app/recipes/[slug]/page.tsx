@@ -7,6 +7,9 @@ import { Metadata } from "next";
 import { getAdminSession } from "@/app/lib/auth";
 import type { Recipe } from "@/generated/prisma/client"; // Updated import path
 
+// Import PrismaClient for casting
+import { PrismaClient } from "@/generated/prisma/client";
+
 // Function to fetch a single recipe by its slug, considering admin status
 async function getRecipeBySlug(slug: string): Promise<Recipe | null> {
   console.log(
@@ -35,7 +38,7 @@ async function getRecipeBySlug(slug: string): Promise<Recipe | null> {
 
     console.log(`[getRecipeBySlug] Fetching with where clause:`, whereClause);
 
-    const recipe = await prisma.recipe.findUnique({
+    const recipe = await (prisma as PrismaClient).recipe.findUnique({
       where: whereClause,
     });
 
@@ -102,7 +105,7 @@ export async function generateMetadata({
 export async function generateStaticParams() {
   console.log("[generateStaticParams - Recipe] Starting generation...");
   try {
-    const recipes = await prisma.recipe.findMany({
+    const recipes = await (prisma as PrismaClient).recipe.findMany({
       where: { published: true },
       select: { slug: true },
     });

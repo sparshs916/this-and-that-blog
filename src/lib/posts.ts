@@ -1,5 +1,6 @@
 import prisma from "@/app/lib/prisma"; // Corrected import path
 import type { Post } from "@/generated/prisma/client";
+import { PrismaClient } from "@/generated/prisma/client"; // Import PrismaClient
 
 export type SortablePostFields = "title" | "category" | "createdAt" | "published";
 export type SortOrder = "asc" | "desc";
@@ -32,7 +33,7 @@ export async function getPosts({
 
     const where = {}; // Add any default filtering conditions here if needed
 
-    const posts = await prisma.post.findMany({
+    const posts = await (prisma as PrismaClient).post.findMany({
       where,
       orderBy: {
         [sortBy]: sortOrder,
@@ -41,7 +42,7 @@ export async function getPosts({
       take,
     });
 
-    const totalPosts = await prisma.post.count({ where });
+    const totalPosts = await (prisma as PrismaClient).post.count({ where });
     const totalPages = Math.ceil(totalPosts / limit);
 
     return {
@@ -66,7 +67,7 @@ export async function getPosts({
 // Function to get all unique categories for filtering/sorting if needed
 export async function getUniquePostCategories(): Promise<string[]> {
   try {
-    const categories = await prisma.post.findMany({
+    const categories = await (prisma as PrismaClient).post.findMany({
       distinct: ["category"],
       select: {
         category: true,

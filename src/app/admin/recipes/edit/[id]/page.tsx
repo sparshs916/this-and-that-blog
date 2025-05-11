@@ -7,10 +7,14 @@ import type { Recipe } from "@/generated/prisma/client"; // Updated import path
 import { getRecipeCategories } from "@/app/lib/actions";
 import { notFound } from "next/navigation"; // Import notFound
 
+// Import PrismaClient for casting
+import { PrismaClient } from "@/generated/prisma/client";
+
 // Function to fetch a single recipe by its ID
 async function getRecipeById(id: string): Promise<Recipe | null> {
   if (!id) return null;
-  return prisma.recipe.findUnique({
+  // Cast prisma to the base PrismaClient type
+  return (prisma as PrismaClient).recipe.findUnique({
     where: { id },
   });
 }
