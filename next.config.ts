@@ -10,6 +10,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "4.5mb", // Or any other value like 2097152 for 2MB in bytes
+    },
+  },
 };
 
 export default nextConfig;
