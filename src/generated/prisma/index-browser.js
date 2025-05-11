@@ -124,9 +124,11 @@ exports.Prisma.PostScalarFieldEnum = {
   id: 'id',
   title: 'title',
   slug: 'slug',
+  description: 'description',
   content: 'content',
   imageUrl: 'imageUrl',
   published: 'published',
+  category: 'category',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -141,6 +143,7 @@ exports.Prisma.RecipeScalarFieldEnum = {
   prepTime: 'prepTime',
   cookTime: 'cookTime',
   servings: 'servings',
+  category: 'category',
   imageUrl: 'imageUrl',
   published: 'published',
   createdAt: 'createdAt',

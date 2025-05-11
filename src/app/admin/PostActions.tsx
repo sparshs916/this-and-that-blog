@@ -16,32 +16,49 @@ export default function PostActions({
   isPublished,
 }: PostActionsProps) {
   // Wrapper function for delete action
-  const handleDelete = async () => {
+  const handleDelete = () => {
     // Add confirmation dialog
     if (!confirm("Are you sure you want to delete this post?")) {
       return; // Stop execution if user cancels
     }
-    try {
-      await deletePost(postId);
-      // Optionally show a success notification
-    } catch (error) {
-      // Optionally show an error notification
-      console.error("Failed to delete post:", error);
-      // You might want to show an alert to the user here as well
-      alert("Failed to delete the post. Please try again.");
-    }
+    void (async () => {
+      try {
+        const result = await deletePost(postId);
+
+        if (result.status && result.status >= 400) {
+          // Server action reported an error
+          alert(
+            result.message || "Failed to delete the post. Please try again."
+          );
+        } else if (result.status === 200) {
+          // Successfully deleted, revalidation will update the UI.
+          // Optionally, show a success message, e.g., using a toast notification library.
+        } else {
+          // Unexpected result structure, though deletePost should conform to State interface
+          alert(
+            "Received an unexpected response after attempting to delete the post."
+          );
+        }
+      } catch (error) {
+        // Catch client-side errors or if the promise from deletePost rejects unexpectedly
+        alert(
+          "An unexpected error occurred while trying to delete the post. Please try again."
+        );
+      }
+    })();
   };
 
   // Wrapper function for toggle publish status action
-  const handleTogglePublish = async () => {
-    try {
-      await togglePublishStatus(postId, isPublished);
-      // Optionally show a success notification
-    } catch (error) {
-      // Optionally show an error notification
-      console.error("Failed to toggle publish status:", error);
-      alert("Failed to toggle publish status. Please try again."); // Added alert for toggle failure
-    }
+  const handleTogglePublish = () => {
+    void (async () => {
+      try {
+        await togglePublishStatus(postId, isPublished);
+        // Optionally show a success notification
+      } catch (error) {
+        // Optionally show an error notification
+        alert("Failed to toggle publish status. Please try again."); // Added alert for toggle failure
+      }
+    })();
   };
 
   return (

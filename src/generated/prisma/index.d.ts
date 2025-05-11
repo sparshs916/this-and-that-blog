@@ -974,9 +974,11 @@ export namespace Prisma {
     id: string | null
     title: string | null
     slug: string | null
+    description: string | null
     content: string | null
     imageUrl: string | null
     published: boolean | null
+    category: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -985,9 +987,11 @@ export namespace Prisma {
     id: string | null
     title: string | null
     slug: string | null
+    description: string | null
     content: string | null
     imageUrl: string | null
     published: boolean | null
+    category: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -996,9 +1000,11 @@ export namespace Prisma {
     id: number
     title: number
     slug: number
+    description: number
     content: number
     imageUrl: number
     published: number
+    category: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -1009,9 +1015,11 @@ export namespace Prisma {
     id?: true
     title?: true
     slug?: true
+    description?: true
     content?: true
     imageUrl?: true
     published?: true
+    category?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1020,9 +1028,11 @@ export namespace Prisma {
     id?: true
     title?: true
     slug?: true
+    description?: true
     content?: true
     imageUrl?: true
     published?: true
+    category?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1031,9 +1041,11 @@ export namespace Prisma {
     id?: true
     title?: true
     slug?: true
+    description?: true
     content?: true
     imageUrl?: true
     published?: true
+    category?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -1115,9 +1127,11 @@ export namespace Prisma {
     id: string
     title: string
     slug: string
+    description: string | null
     content: string
     imageUrl: string | null
     published: boolean
+    category: string | null
     createdAt: Date
     updatedAt: Date
     _count: PostCountAggregateOutputType | null
@@ -1143,9 +1157,11 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     slug?: boolean
+    description?: boolean
     content?: boolean
     imageUrl?: boolean
     published?: boolean
+    category?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["post"]>
@@ -1154,9 +1170,11 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     slug?: boolean
+    description?: boolean
     content?: boolean
     imageUrl?: boolean
     published?: boolean
+    category?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["post"]>
@@ -1165,9 +1183,11 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     slug?: boolean
+    description?: boolean
     content?: boolean
     imageUrl?: boolean
     published?: boolean
+    category?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["post"]>
@@ -1176,14 +1196,16 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     slug?: boolean
+    description?: boolean
     content?: boolean
     imageUrl?: boolean
     published?: boolean
+    category?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "content" | "imageUrl" | "published" | "createdAt" | "updatedAt", ExtArgs["result"]["post"]>
+  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "description" | "content" | "imageUrl" | "published" | "category" | "createdAt" | "updatedAt", ExtArgs["result"]["post"]>
 
   export type $PostPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Post"
@@ -1192,9 +1214,11 @@ export namespace Prisma {
       id: string
       title: string
       slug: string
+      description: string | null
       content: string
       imageUrl: string | null
       published: boolean
+      category: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["post"]>
@@ -1623,9 +1647,11 @@ export namespace Prisma {
     readonly id: FieldRef<"Post", 'String'>
     readonly title: FieldRef<"Post", 'String'>
     readonly slug: FieldRef<"Post", 'String'>
+    readonly description: FieldRef<"Post", 'String'>
     readonly content: FieldRef<"Post", 'String'>
     readonly imageUrl: FieldRef<"Post", 'String'>
     readonly published: FieldRef<"Post", 'Boolean'>
+    readonly category: FieldRef<"Post", 'String'>
     readonly createdAt: FieldRef<"Post", 'DateTime'>
     readonly updatedAt: FieldRef<"Post", 'DateTime'>
   }
@@ -2014,6 +2040,7 @@ export namespace Prisma {
     prepTime: string | null
     cookTime: string | null
     servings: string | null
+    category: string | null
     imageUrl: string | null
     published: boolean | null
     createdAt: Date | null
@@ -2030,6 +2057,7 @@ export namespace Prisma {
     prepTime: string | null
     cookTime: string | null
     servings: string | null
+    category: string | null
     imageUrl: string | null
     published: boolean | null
     createdAt: Date | null
@@ -2046,6 +2074,7 @@ export namespace Prisma {
     prepTime: number
     cookTime: number
     servings: number
+    category: number
     imageUrl: number
     published: number
     createdAt: number
@@ -2064,6 +2093,7 @@ export namespace Prisma {
     prepTime?: true
     cookTime?: true
     servings?: true
+    category?: true
     imageUrl?: true
     published?: true
     createdAt?: true
@@ -2080,6 +2110,7 @@ export namespace Prisma {
     prepTime?: true
     cookTime?: true
     servings?: true
+    category?: true
     imageUrl?: true
     published?: true
     createdAt?: true
@@ -2096,6 +2127,7 @@ export namespace Prisma {
     prepTime?: true
     cookTime?: true
     servings?: true
+    category?: true
     imageUrl?: true
     published?: true
     createdAt?: true
@@ -2185,6 +2217,7 @@ export namespace Prisma {
     prepTime: string | null
     cookTime: string | null
     servings: string | null
+    category: string | null
     imageUrl: string | null
     published: boolean
     createdAt: Date
@@ -2218,6 +2251,7 @@ export namespace Prisma {
     prepTime?: boolean
     cookTime?: boolean
     servings?: boolean
+    category?: boolean
     imageUrl?: boolean
     published?: boolean
     createdAt?: boolean
@@ -2234,6 +2268,7 @@ export namespace Prisma {
     prepTime?: boolean
     cookTime?: boolean
     servings?: boolean
+    category?: boolean
     imageUrl?: boolean
     published?: boolean
     createdAt?: boolean
@@ -2250,6 +2285,7 @@ export namespace Prisma {
     prepTime?: boolean
     cookTime?: boolean
     servings?: boolean
+    category?: boolean
     imageUrl?: boolean
     published?: boolean
     createdAt?: boolean
@@ -2266,13 +2302,14 @@ export namespace Prisma {
     prepTime?: boolean
     cookTime?: boolean
     servings?: boolean
+    category?: boolean
     imageUrl?: boolean
     published?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type RecipeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "description" | "ingredients" | "instructions" | "prepTime" | "cookTime" | "servings" | "imageUrl" | "published" | "createdAt" | "updatedAt", ExtArgs["result"]["recipe"]>
+  export type RecipeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "description" | "ingredients" | "instructions" | "prepTime" | "cookTime" | "servings" | "category" | "imageUrl" | "published" | "createdAt" | "updatedAt", ExtArgs["result"]["recipe"]>
 
   export type $RecipePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Recipe"
@@ -2287,6 +2324,7 @@ export namespace Prisma {
       prepTime: string | null
       cookTime: string | null
       servings: string | null
+      category: string | null
       imageUrl: string | null
       published: boolean
       createdAt: Date
@@ -2723,6 +2761,7 @@ export namespace Prisma {
     readonly prepTime: FieldRef<"Recipe", 'String'>
     readonly cookTime: FieldRef<"Recipe", 'String'>
     readonly servings: FieldRef<"Recipe", 'String'>
+    readonly category: FieldRef<"Recipe", 'String'>
     readonly imageUrl: FieldRef<"Recipe", 'String'>
     readonly published: FieldRef<"Recipe", 'Boolean'>
     readonly createdAt: FieldRef<"Recipe", 'DateTime'>
@@ -3111,9 +3150,11 @@ export namespace Prisma {
     id: 'id',
     title: 'title',
     slug: 'slug',
+    description: 'description',
     content: 'content',
     imageUrl: 'imageUrl',
     published: 'published',
+    category: 'category',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -3131,6 +3172,7 @@ export namespace Prisma {
     prepTime: 'prepTime',
     cookTime: 'cookTime',
     servings: 'servings',
+    category: 'category',
     imageUrl: 'imageUrl',
     published: 'published',
     createdAt: 'createdAt',
@@ -3228,9 +3270,11 @@ export namespace Prisma {
     id?: StringFilter<"Post"> | string
     title?: StringFilter<"Post"> | string
     slug?: StringFilter<"Post"> | string
+    description?: StringNullableFilter<"Post"> | string | null
     content?: StringFilter<"Post"> | string
     imageUrl?: StringNullableFilter<"Post"> | string | null
     published?: BoolFilter<"Post"> | boolean
+    category?: StringNullableFilter<"Post"> | string | null
     createdAt?: DateTimeFilter<"Post"> | Date | string
     updatedAt?: DateTimeFilter<"Post"> | Date | string
   }
@@ -3239,9 +3283,11 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     slug?: SortOrder
+    description?: SortOrderInput | SortOrder
     content?: SortOrder
     imageUrl?: SortOrderInput | SortOrder
     published?: SortOrder
+    category?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -3253,9 +3299,11 @@ export namespace Prisma {
     OR?: PostWhereInput[]
     NOT?: PostWhereInput | PostWhereInput[]
     title?: StringFilter<"Post"> | string
+    description?: StringNullableFilter<"Post"> | string | null
     content?: StringFilter<"Post"> | string
     imageUrl?: StringNullableFilter<"Post"> | string | null
     published?: BoolFilter<"Post"> | boolean
+    category?: StringNullableFilter<"Post"> | string | null
     createdAt?: DateTimeFilter<"Post"> | Date | string
     updatedAt?: DateTimeFilter<"Post"> | Date | string
   }, "id" | "slug">
@@ -3264,9 +3312,11 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     slug?: SortOrder
+    description?: SortOrderInput | SortOrder
     content?: SortOrder
     imageUrl?: SortOrderInput | SortOrder
     published?: SortOrder
+    category?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: PostCountOrderByAggregateInput
@@ -3281,9 +3331,11 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Post"> | string
     title?: StringWithAggregatesFilter<"Post"> | string
     slug?: StringWithAggregatesFilter<"Post"> | string
+    description?: StringNullableWithAggregatesFilter<"Post"> | string | null
     content?: StringWithAggregatesFilter<"Post"> | string
     imageUrl?: StringNullableWithAggregatesFilter<"Post"> | string | null
     published?: BoolWithAggregatesFilter<"Post"> | boolean
+    category?: StringNullableWithAggregatesFilter<"Post"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Post"> | Date | string
   }
@@ -3301,6 +3353,7 @@ export namespace Prisma {
     prepTime?: StringNullableFilter<"Recipe"> | string | null
     cookTime?: StringNullableFilter<"Recipe"> | string | null
     servings?: StringNullableFilter<"Recipe"> | string | null
+    category?: StringNullableFilter<"Recipe"> | string | null
     imageUrl?: StringNullableFilter<"Recipe"> | string | null
     published?: BoolFilter<"Recipe"> | boolean
     createdAt?: DateTimeFilter<"Recipe"> | Date | string
@@ -3317,6 +3370,7 @@ export namespace Prisma {
     prepTime?: SortOrderInput | SortOrder
     cookTime?: SortOrderInput | SortOrder
     servings?: SortOrderInput | SortOrder
+    category?: SortOrderInput | SortOrder
     imageUrl?: SortOrderInput | SortOrder
     published?: SortOrder
     createdAt?: SortOrder
@@ -3336,6 +3390,7 @@ export namespace Prisma {
     prepTime?: StringNullableFilter<"Recipe"> | string | null
     cookTime?: StringNullableFilter<"Recipe"> | string | null
     servings?: StringNullableFilter<"Recipe"> | string | null
+    category?: StringNullableFilter<"Recipe"> | string | null
     imageUrl?: StringNullableFilter<"Recipe"> | string | null
     published?: BoolFilter<"Recipe"> | boolean
     createdAt?: DateTimeFilter<"Recipe"> | Date | string
@@ -3352,6 +3407,7 @@ export namespace Prisma {
     prepTime?: SortOrderInput | SortOrder
     cookTime?: SortOrderInput | SortOrder
     servings?: SortOrderInput | SortOrder
+    category?: SortOrderInput | SortOrder
     imageUrl?: SortOrderInput | SortOrder
     published?: SortOrder
     createdAt?: SortOrder
@@ -3374,6 +3430,7 @@ export namespace Prisma {
     prepTime?: StringNullableWithAggregatesFilter<"Recipe"> | string | null
     cookTime?: StringNullableWithAggregatesFilter<"Recipe"> | string | null
     servings?: StringNullableWithAggregatesFilter<"Recipe"> | string | null
+    category?: StringNullableWithAggregatesFilter<"Recipe"> | string | null
     imageUrl?: StringNullableWithAggregatesFilter<"Recipe"> | string | null
     published?: BoolWithAggregatesFilter<"Recipe"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Recipe"> | Date | string
@@ -3384,9 +3441,11 @@ export namespace Prisma {
     id?: string
     title: string
     slug: string
+    description?: string | null
     content: string
     imageUrl?: string | null
     published?: boolean
+    category?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3395,9 +3454,11 @@ export namespace Prisma {
     id?: string
     title: string
     slug: string
+    description?: string | null
     content: string
     imageUrl?: string | null
     published?: boolean
+    category?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3406,9 +3467,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     content?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3417,9 +3480,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     content?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3428,9 +3493,11 @@ export namespace Prisma {
     id?: string
     title: string
     slug: string
+    description?: string | null
     content: string
     imageUrl?: string | null
     published?: boolean
+    category?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3439,9 +3506,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     content?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3450,9 +3519,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     content?: StringFieldUpdateOperationsInput | string
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3467,6 +3538,7 @@ export namespace Prisma {
     prepTime?: string | null
     cookTime?: string | null
     servings?: string | null
+    category?: string | null
     imageUrl?: string | null
     published?: boolean
     createdAt?: Date | string
@@ -3483,6 +3555,7 @@ export namespace Prisma {
     prepTime?: string | null
     cookTime?: string | null
     servings?: string | null
+    category?: string | null
     imageUrl?: string | null
     published?: boolean
     createdAt?: Date | string
@@ -3499,6 +3572,7 @@ export namespace Prisma {
     prepTime?: NullableStringFieldUpdateOperationsInput | string | null
     cookTime?: NullableStringFieldUpdateOperationsInput | string | null
     servings?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3515,6 +3589,7 @@ export namespace Prisma {
     prepTime?: NullableStringFieldUpdateOperationsInput | string | null
     cookTime?: NullableStringFieldUpdateOperationsInput | string | null
     servings?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3531,6 +3606,7 @@ export namespace Prisma {
     prepTime?: string | null
     cookTime?: string | null
     servings?: string | null
+    category?: string | null
     imageUrl?: string | null
     published?: boolean
     createdAt?: Date | string
@@ -3547,6 +3623,7 @@ export namespace Prisma {
     prepTime?: NullableStringFieldUpdateOperationsInput | string | null
     cookTime?: NullableStringFieldUpdateOperationsInput | string | null
     servings?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3563,6 +3640,7 @@ export namespace Prisma {
     prepTime?: NullableStringFieldUpdateOperationsInput | string | null
     cookTime?: NullableStringFieldUpdateOperationsInput | string | null
     servings?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3624,9 +3702,11 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     slug?: SortOrder
+    description?: SortOrder
     content?: SortOrder
     imageUrl?: SortOrder
     published?: SortOrder
+    category?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -3635,9 +3715,11 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     slug?: SortOrder
+    description?: SortOrder
     content?: SortOrder
     imageUrl?: SortOrder
     published?: SortOrder
+    category?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -3646,9 +3728,11 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     slug?: SortOrder
+    description?: SortOrder
     content?: SortOrder
     imageUrl?: SortOrder
     published?: SortOrder
+    category?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -3721,6 +3805,7 @@ export namespace Prisma {
     prepTime?: SortOrder
     cookTime?: SortOrder
     servings?: SortOrder
+    category?: SortOrder
     imageUrl?: SortOrder
     published?: SortOrder
     createdAt?: SortOrder
@@ -3737,6 +3822,7 @@ export namespace Prisma {
     prepTime?: SortOrder
     cookTime?: SortOrder
     servings?: SortOrder
+    category?: SortOrder
     imageUrl?: SortOrder
     published?: SortOrder
     createdAt?: SortOrder
@@ -3753,6 +3839,7 @@ export namespace Prisma {
     prepTime?: SortOrder
     cookTime?: SortOrder
     servings?: SortOrder
+    category?: SortOrder
     imageUrl?: SortOrder
     published?: SortOrder
     createdAt?: SortOrder

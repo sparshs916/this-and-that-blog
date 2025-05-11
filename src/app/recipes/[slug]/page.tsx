@@ -191,7 +191,7 @@ const RecipePage: React.FC<RecipePageProps> = async ({ params }) => {
       <div className="mb-8">
         <Link
           href="/recipes" // Link back to the main recipes page
-          className="text-indigo-600 hover:text-indigo-800 hover:underline"
+          className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 text-sm"
         >
           &larr; Back to Recipes
         </Link>
@@ -199,7 +199,6 @@ const RecipePage: React.FC<RecipePageProps> = async ({ params }) => {
       {/* Card Container */}
       <div className="bg-white rounded-lg shadow-lg overflow-hidden p-6 md:p-8">
         {" "}
-        {/* Added card styling */}
         {/* Use prose for overall styling */}
         <article className="prose prose-lg lg:prose-xl max-w-none text-gray-800">
           {" "}

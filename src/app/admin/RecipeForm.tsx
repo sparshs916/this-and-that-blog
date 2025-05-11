@@ -58,14 +58,16 @@ function SubmitButton({ isUpdating }: { isUpdating: boolean }) {
 
 interface RecipeFormProps {
   initialData?: Recipe | null;
-  state?: State;
-  applyBoxStyling?: boolean; // Add new prop
+  state?: State; // Make state optional as it might not always be present
+  applyBoxStyling?: boolean; // Optional prop to control styling
+  existingCategories?: string[]; // Add this prop
 }
 
 export default function RecipeForm({
   initialData,
-  state,
-  applyBoxStyling = true, // Default to true
+  state = { message: null, errors: {} }, // Provide a default for state
+  applyBoxStyling = false, // Default to false if not provided
+  existingCategories,
 }: RecipeFormProps) {
   const isEditing = !!initialData;
 
@@ -307,6 +309,66 @@ export default function RecipeForm({
           </div>
         )}
       </div>
+
+      {/* Category Input with Datalist */}
+      <div>
+        <label
+          htmlFor="category"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Category
+        </label>
+        <div className="relative mt-1">
+          <input
+            type="text"
+            name="category"
+            id="category"
+            list="recipe-category-list" // Use a unique ID for the datalist
+            defaultValue={initialData?.category || ""}
+            className="block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black appearance-none" // Added appearance-none
+            aria-describedby="category-error"
+          />
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+            <svg
+              className="h-5 w-5 text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 3a.75.75 0 01.53.22l3.5 3.5a.75.75 0 01-1.06 1.06L10 4.81 7.03 7.78a.75.75 0 01-1.06-1.06l3.5-3.5A.75.75 0 0110 3zm-3.72 9.28a.75.75 0 011.06 0L10 15.19l2.97-2.91a.75.75 0 111.06 1.06l-3.5 3.5a.75.75 0 01-1.06 0l-3.5-3.5a.75.75 0 010-1.06z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+        </div>
+        {/* Ensure existingCategories is checked before mapping */}
+        {existingCategories && existingCategories.length > 0 && (
+          <datalist id="recipe-category-list">
+            {" "}
+            {/* Ensure this ID matches the list attribute */}
+            {existingCategories.map((cat) => (
+              <option key={cat} value={cat} />
+            ))}
+          </datalist>
+        )}
+        {/* Display category errors if any */}
+        {state?.errors?.category && (
+          <div
+            id="category-error"
+            aria-live="polite"
+            className="mt-1 text-xs text-red-600"
+          >
+            {Array.isArray(state.errors.category) &&
+              state.errors.category.map((error: string) => (
+                <p key={error}>{error}</p>
+              ))}
+          </div>
+        )}
+      </div>
+
       {/* Image Upload */}
       <div>
         <label

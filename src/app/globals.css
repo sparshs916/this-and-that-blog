@@ -13,6 +13,20 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Apply box-sizing to all elements for easier layout management */
+html {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%; /* Ensure html takes full height */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #ededed;
@@ -23,6 +37,9 @@
 body {
   background: var(--background);
   color: var(--foreground);
+  min-height: 100%; /* Ensure body takes at least full height */
+  display: flex; /* Added for flex-grow in layout */
+  flex-direction: column; /* Added for flex-grow in layout */
   /* Remove generic font-family, let Tailwind/fonts handle it */
   /* font-family: Arial, Helvetica, sans-serif; */
 }
@@ -94,17 +111,14 @@ body {
 /* Add more styles for headings, quotes, etc. as needed */
 .editor-heading-h1 {
   font-size: 2em;
-  font-weight: bold;
   margin-bottom: 0.75rem;
 }
 .editor-heading-h2 {
   font-size: 1.5em;
-  font-weight: bold;
    margin-bottom: 0.6rem;
 }
 .editor-heading-h3 {
   font-size: 1.25em;
-  font-weight: bold;
    margin-bottom: 0.5rem;
 }
 

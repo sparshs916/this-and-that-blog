@@ -1,113 +1,214 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import prisma from "@/app/lib/prisma";
-import type { Recipe } from "@/generated/prisma/client"; // Updated import path
+import { getRecipes, Recipe } from "@/lib/recipes"; // Ensure Recipe type is exported or available
+import { useSearchParams } from "next/navigation";
 
-// Fetch published recipes
-async function getPublishedRecipes() {
-  try {
-    const recipes = await prisma.recipe.findMany({
-      where: { published: true },
-      orderBy: { createdAt: "desc" },
-    });
-    return recipes;
-  } catch (error) {
-    console.error("Failed to fetch published recipes:", error);
-    return [];
+// Helper function to create a plain text excerpt
+function createExcerpt(htmlContent: string, maxLength: number = 100): string {
+  if (!htmlContent) return "";
+  const plainText = htmlContent.replace(/<[^>]+>/g, ""); // Basic strip of HTML tags
+  if (plainText.length <= maxLength) {
+    return plainText;
   }
+  return plainText.substring(0, maxLength) + "...";
 }
 
-// Recipe Card Component (similar to PostCard)
-function RecipeCard({ recipe }: { recipe: Recipe }) {
-  // Format date similar to the single recipe page
-  const formattedDate = new Date(recipe.createdAt).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+const RecipesPage: React.FC = () => {
+  const [allRecipes, setAllRecipes] = useState<Recipe[]>([]);
+  const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const page = parseInt(searchParams.get("page") || "1", 10);
+    setCurrentPage(page);
+  }, [searchParams]);
+
+  useEffect(() => {
+    async function fetchData() {
+      setIsLoading(true);
+      try {
+        const { recipes, totalPages: fetchedTotalPages } = await getRecipes({
+          page: currentPage,
+          limit: 5, // 5 recipes per page
+          published: true, // Only fetch published recipes
+        });
+        setAllRecipes(recipes);
+        setFilteredRecipes(recipes);
+        setTotalPages(fetchedTotalPages);
+
+        // Derive categories from fetched recipes
+        // Consider a separate API call for all unique categories if performance is an issue
+        const uniqueCategories = Array.from(
+          new Set(
+            recipes.map((recipe) => recipe.category).filter(Boolean) as string[]
+          )
+        );
+        setCategories(uniqueCategories);
+      } catch (error) {
+        console.error("Failed to fetch recipes:", error);
+      }
+      setIsLoading(false);
+    }
+    void fetchData();
+  }, [currentPage]);
+
+  const handleCategoryFilter = (category: string | null) => {
+    setSelectedCategory(category);
+    if (category === null) {
+      setFilteredRecipes(allRecipes);
+    } else {
+      setFilteredRecipes(
+        allRecipes.filter((recipe) => recipe.category === category)
+      );
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto max-w-3xl px-4 py-12 text-center">
+        <p className="text-gray-600">Loading recipes...</p>
+      </div>
+    );
+  }
 
   return (
-    // Removed h-full to allow cards to size based on content
-    <article className="bg-white rounded-lg shadow-md overflow-hidden transition-shadow duration-300 hover:shadow-lg flex flex-col">
-      <Link
-        href={`/recipes/${recipe.slug}`}
-        className="group flex flex-col flex-grow" // flex-grow remains on the link to make it fill the article
-      >
-        {recipe.imageUrl && (
-          <div className="relative h-48 w-full">
-            <Image
-              src={recipe.imageUrl}
-              alt={`Image for ${recipe.title}`}
-              fill={true} // Use fill prop instead of layout
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Add sizes prop for optimization
-              className="object-cover transition-transform duration-300 group-hover:scale-105" // Use object-cover class
-            />
-          </div>
-        )}
-        {/* Removed flex-grow from this div, let content determine height */}
-        <div className="p-6 flex flex-col">
-          <h2 className="text-xl font-semibold mb-2 group-hover:text-indigo-600 transition-colors duration-300 text-black">
-            {recipe.title}
-          </h2>
-          {/* Updated time/servings display format - Removed 'Published:' label */}
-          <div className="text-xs text-gray-600 mb-3 space-y-1">
-            {" "}
-            {/* Use space-y for vertical spacing */}
-            <div>
-              <time dateTime={recipe.createdAt.toISOString()}>
-                {formattedDate}
-              </time>
-            </div>
-            {recipe.prepTime && (
-              <div>
-                <span className="font-semibold">Prep time:</span>{" "}
-                {recipe.prepTime}
-              </div>
-            )}
-            {recipe.cookTime && (
-              <div>
-                <span className="font-semibold">Cook time:</span>{" "}
-                {recipe.cookTime}
-              </div>
-            )}
-            {recipe.servings && (
-              <div>
-                <span className="font-semibold">Servings:</span>{" "}
-                {recipe.servings}
-              </div>
-            )}
-          </div>
-          {/* Added flex-grow to push the link down */}
-          <div className="flex-grow"></div>
-          <span className="text-indigo-500 hover:text-indigo-700 font-medium text-sm mt-auto self-start">
-            View Recipe &rarr;
-          </span>{" "}
-          {/* Correctly close span tag, removed extra space */}
-        </div>
-      </Link>
-    </article>
-  );
-}
-
-export default async function RecipesPage() {
-  const recipes = await getPublishedRecipes();
-
-  return (
-    <div className="container mx-auto px-4 py-12">
-      {/* Added text-black */}
-      <h1 className="text-4xl font-bold mb-10 text-center text-black">
+    <div className="container mx-auto max-w-3xl px-4 py-12">
+      <h1 className="text-4xl font-bold text-center mb-8 text-gray-900">
         Recipes
       </h1>
-      {recipes.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {recipes.map((recipe) => (
-            <RecipeCard key={recipe.id} recipe={recipe} />
+
+      <div className="flex flex-wrap justify-center gap-2 mb-10">
+        <button
+          onClick={() => handleCategoryFilter(null)}
+          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+            selectedCategory === null
+              ? "bg-green-600 text-white"
+              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+          }`}
+        >
+          All Categories
+        </button>
+        {categories.map((category) => (
+          <button
+            key={category}
+            onClick={() => handleCategoryFilter(category)}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              selectedCategory === category
+                ? "bg-green-600 text-white"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            }`}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+
+      {filteredRecipes.length === 0 ? (
+        <p className="text-center text-gray-600">
+          {selectedCategory
+            ? `No recipes found in category: "${selectedCategory}".`
+            : "No recipes found."}
+        </p>
+      ) : (
+        <div className="space-y-8">
+          {filteredRecipes.map((recipe) => (
+            <Link
+              key={recipe.id}
+              href={`/recipes/${recipe.slug}`}
+              legacyBehavior
+            >
+              <a className="flex flex-col md:flex-row items-start border rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 bg-white">
+                {recipe.imageUrl && (
+                  <div className="relative w-full md:w-48 h-48 flex-shrink-0">
+                    <Image
+                      src={recipe.imageUrl}
+                      alt={`Image for ${recipe.title}`}
+                      layout="fill"
+                      objectFit="cover"
+                      className="md:rounded-l-lg md:rounded-r-none"
+                    />
+                  </div>
+                )}
+                <div className="p-6 flex-grow">
+                  <h2 className="text-xl font-semibold mb-2 text-gray-800">
+                    {recipe.title}
+                  </h2>
+                  <div className="text-gray-500 text-sm mb-2">
+                    <span>
+                      {new Date(recipe.createdAt).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </span>
+                    {recipe.category && (
+                      <span className="ml-2 px-2 py-0.5 bg-gray-200 text-gray-700 rounded-full text-xs">
+                        {recipe.category}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-gray-600 text-sm">
+                    {createExcerpt(recipe.description)}
+                  </p>
+                </div>
+              </a>
+            </Link>
           ))}
         </div>
-      ) : (
-        <p className="text-center text-gray-500">No recipes published yet.</p>
+      )}
+
+      {totalPages > 1 && (
+        <div className="mt-12 flex justify-center items-center space-x-2">
+          {currentPage > 1 && (
+            <Link
+              href={`/recipes?page=${currentPage - 1}${
+                selectedCategory ? `&category=${selectedCategory}` : ""
+              }`}
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+            >
+              Previous
+            </Link>
+          )}
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+            (pageNumber) => (
+              <Link
+                key={pageNumber}
+                href={`/recipes?page=${pageNumber}${
+                  selectedCategory ? `&category=${selectedCategory}` : ""
+                }`}
+                className={`px-4 py-2 text-sm font-medium rounded-md ${
+                  pageNumber === currentPage
+                    ? "bg-green-600 text-white"
+                    : "text-gray-700 bg-white border border-gray-300 hover:bg-gray-50"
+                }`}
+              >
+                {pageNumber}
+              </Link>
+            )
+          )}
+          {currentPage < totalPages && (
+            <Link
+              href={`/recipes?page=${currentPage + 1}${
+                selectedCategory ? `&category=${selectedCategory}` : ""
+              }`}
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+            >
+              Next
+            </Link>
+          )}
+        </div>
       )}
     </div>
   );
-}
+};
+
+export default RecipesPage;

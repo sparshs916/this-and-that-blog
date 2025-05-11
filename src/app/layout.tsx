@@ -20,10 +20,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${playfairDisplay.className} antialiased`}>
+    <html lang="en" className="h-full">
+      <body
+        className={`${playfairDisplay.className} antialiased flex flex-col min-h-full`}
+      >
         <Header />
-        <div>{children}</div>
+        <main className="flex-grow">{children}</main>
       </body>
     </html>
   );

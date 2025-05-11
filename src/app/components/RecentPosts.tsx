@@ -14,7 +14,7 @@ export default function RecentPosts() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchPosts = () => {
       try {
         // Replace this with mock data or an API call
         const mockPosts: Post[] = [
@@ -41,7 +41,7 @@ export default function RecentPosts() {
       }
     };
 
-    fetchPosts();
+    void fetchPosts();
   }, []);
 
   return (

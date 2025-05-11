@@ -5,6 +5,7 @@ import { useFormStatus } from "react-dom"; // Import hooks
 import type { State } from "@/app/lib/actions"; // Import the State type
 import type { Post } from "@/generated/prisma/client"; // Updated import path
 import LexicalEditorComponent from "@/app/components/LexicalEditor"; // Corrected import path
+import Image from "next/image"; // Import next/image
 
 // Submit Button Component
 function SubmitButton({ isUpdating }: { isUpdating: boolean }) {
@@ -55,13 +56,17 @@ function SubmitButton({ isUpdating }: { isUpdating: boolean }) {
 }
 
 // Component definition
+interface PostFormProps {
+  initialData?: Post | null;
+  state: State;
+  existingCategories?: string[]; // Add this prop
+}
+
 export default function PostForm({
   initialData,
   state, // Add state prop
-}: {
-  initialData?: Post | null; // Use Post type directly
-  state?: State; // Add state type
-}) {
+  existingCategories, // Add existingCategories prop
+}: PostFormProps) {
   const isEditing = !!initialData;
   // State for editor content - used ONLY for the hidden input value
   const [content, setContent] = useState(initialData?.content || "");
@@ -112,6 +117,37 @@ export default function PostForm({
         )}
       </div>
 
+      {/* Description Field */}
+      <div>
+        <label
+          htmlFor="description"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Description (Max 200 characters)
+        </label>
+        <textarea
+          id="description"
+          name="description"
+          rows={3}
+          defaultValue={initialData?.description || ""}
+          maxLength={200} // Enforce max length
+          className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black"
+          aria-describedby="description-error"
+        />
+        {state?.errors?.description && (
+          <div
+            id="description-error"
+            aria-live="polite"
+            className="mt-1 text-sm text-red-500"
+          >
+            {Array.isArray(state.errors.description) &&
+              state.errors.description.map((error: string) => (
+                <p key={error}>{error}</p>
+              ))}
+          </div>
+        )}
+      </div>
+
       {/* Content Field using LexicalEditorComponent */}
       <div>
         <label
@@ -140,6 +176,64 @@ export default function PostForm({
         )}
       </div>
 
+      {/* Category Input with Datalist */}
+      <div>
+        <label
+          htmlFor="category"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Category
+        </label>
+        <div className="relative mt-1">
+          <input
+            type="text"
+            name="category"
+            id="category"
+            list="category-list" // Use a unique ID for the datalist
+            defaultValue={initialData?.category || ""}
+            className="block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black appearance-none" // Added appearance-none
+            aria-describedby="category-error"
+          />
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+            <svg
+              className="h-5 w-5 text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 3a.75.75 0 01.53.22l3.5 3.5a.75.75 0 01-1.06 1.06L10 4.81 7.03 7.78a.75.75 0 01-1.06-1.06l3.5-3.5A.75.75 0 0110 3zm-3.72 9.28a.75.75 0 011.06 0L10 15.19l2.97-2.91a.75.75 0 111.06 1.06l-3.5 3.5a.75.75 0 01-1.06 0l-3.5-3.5a.75.75 0 010-1.06z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+        </div>
+        {/* Ensure existingCategories is checked before mapping */}
+        {existingCategories && existingCategories.length > 0 && (
+          <datalist id="category-list">
+            {" "}
+            {/* Ensure this ID matches the list attribute */}
+            {existingCategories.map((cat) => (
+              <option key={cat} value={cat} />
+            ))}
+          </datalist>
+        )}
+        {/* Make sure state.errors is checked before accessing category */}
+        {state.errors?.category && (
+          <div
+            id="category-error"
+            aria-live="polite"
+            className="mt-1 text-xs text-red-600"
+          >
+            {state.errors.category.map((error: string) => (
+              <p key={error}>{error}</p>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* Image Upload Field */}
       <div>
         <label
@@ -151,10 +245,12 @@ export default function PostForm({
         <div className="mt-1 flex items-center space-x-4">
           {/* Display current image if editing and exists */}
           {initialData?.imageUrl && (
-            <img
+            <Image // Changed from img to Image
               src={initialData.imageUrl}
               alt="Current featured image"
-              className="h-20 w-auto rounded-md object-cover" // Slightly larger preview, rounded
+              width={80} // Provide width, adjust as needed
+              height={80} // Provide height, adjust as needed
+              className="h-20 w-auto rounded-md object-cover" // className might need adjustment for next/image
             />
           )}
           <div className="flex-1">

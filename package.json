@@ -23,7 +23,6 @@
     "@tiptap/starter-kit": "^2.11.9",
     "iron-session": "^8.0.4",
     "lexical": "^0.31.0",
-    "mongoose": "^8.12.2",
     "next": "15.2.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -34,16 +33,19 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@next/eslint-plugin-next": "^15.3.2",
     "@tailwindcss/postcss": "^4",
     "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/react-icons": "^2.2.7",
-    "eslint": "^9",
+    "@typescript-eslint/parser": "^8.32.0",
+    "eslint": "^9.26.0",
     "eslint-config-next": "15.2.3",
     "prisma": "^6.7.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "typescript-eslint": "^8.32.0"
   }
 }

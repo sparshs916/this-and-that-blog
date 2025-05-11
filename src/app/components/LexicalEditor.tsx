@@ -88,11 +88,12 @@ const editorTheme = {
   quote:
     "editor-quote border-l-4 border-gray-300 pl-4 italic text-gray-600 my-2",
   heading: {
-    h1: "editor-heading-h1 text-3xl font-bold my-4",
-    h2: "editor-heading-h2 text-2xl font-bold my-3",
-    h3: "editor-heading-h3 text-xl font-bold my-2",
-    h4: "editor-heading-h4",
-    h5: "editor-heading-h5",
+    h1: "editor-heading-h1 text-3xl my-4 font-normal", // Ensure not bold by default
+    h2: "editor-heading-h2 text-2xl my-3 font-normal", // Ensure not bold by default
+    h3: "editor-heading-h3 text-xl my-2 font-normal", // Ensure not bold by default
+    h4: "editor-heading-h4 text-lg my-1 font-normal", // Ensure not bold by default
+    h5: "editor-heading-h5 text-base my-1 font-normal", // Ensure not bold by default
+    h6: "editor-heading-h6 text-sm my-1 font-normal", // Ensure not bold by default
   },
   list: {
     nested: {
@@ -282,7 +283,10 @@ function ToolbarPluginContext() {
     });
   };
 
-  const formatHeading = (headingSize: "h1" | "h2" | "h3") => {
+  const formatHeading = (
+    headingSize: "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
+  ) => {
+    // Added h4, h5, h6
     if (blockType !== headingSize) {
       editor.update(() => {
         const selection = $getSelection();
@@ -415,7 +419,15 @@ function ToolbarPluginContext() {
         onChange={(e) => {
           const type = e.target.value as keyof typeof blockTypeToBlockName;
           if (type === "paragraph") formatParagraph();
-          else if (type === "h1" || type === "h2" || type === "h3")
+          else if (
+            type === "h1" ||
+            type === "h2" ||
+            type === "h3" ||
+            type === "h4" ||
+            type === "h5" ||
+            type === "h6"
+          )
+            // Added h4, h5, h6
             formatHeading(type);
           else if (type === "ul") formatBulletList();
           else if (type === "ol") formatNumberedList();
@@ -572,9 +584,9 @@ const blockTypeToBlockName = {
   h1: "Heading 1",
   h2: "Heading 2",
   h3: "Heading 3",
-  h4: "Heading 4",
-  h5: "Heading 5",
-  h6: "Heading 6",
+  h4: "Heading 4", // Added
+  h5: "Heading 5", // Added
+  h6: "Heading 6", // Added
   paragraph: "Paragraph",
   quote: "Quote",
   ul: "Bullet List",

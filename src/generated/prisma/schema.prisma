@@ -16,14 +16,16 @@ datasource db {
 }
 
 model Post {
-  id        String   @id @default(cuid()) // Unique ID, cuid is a good default
-  title     String
-  slug      String   @unique // Unique slug for the URL
-  content   String   @db.Text // Use Text for potentially long content
-  imageUrl  String? // Optional image URL
-  published Boolean  @default(false) // Flag to control visibility
-  createdAt DateTime @default(now()) // Automatically set on creation
-  updatedAt DateTime @updatedAt // Automatically set on update
+  id          String   @id @default(cuid()) // Unique ID, cuid is a good default
+  title       String
+  slug        String   @unique // Unique slug for the URL
+  description String?  @db.Text // Optional short description for summaries/previews
+  content     String   @db.Text // Use Text for potentially long content
+  imageUrl    String? // Optional image URL
+  published   Boolean  @default(false) // Flag to control visibility
+  category    String? // Optional category for the post
+  createdAt   DateTime @default(now()) // Automatically set on creation
+  updatedAt   DateTime @updatedAt // Automatically set on update
 
   // Optional: Add author relation later if needed
   // author    User?    @relation(fields: [authorId], references: [id])
@@ -40,6 +42,7 @@ model Recipe {
   prepTime     String? // e.g., "15 mins"
   cookTime     String? // e.g., "30 mins"
   servings     String? // e.g., "4 servings"
+  category     String? // Optional category for the recipe
   imageUrl     String? // Optional image URL
   published    Boolean  @default(false)
   createdAt    DateTime @default(now())

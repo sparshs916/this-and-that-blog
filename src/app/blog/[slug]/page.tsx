@@ -12,6 +12,7 @@ interface Post {
   id: string;
   title: string;
   slug: string;
+  description: string | null; // Added description property
   content: string;
   imageUrl: string | null;
   published: boolean;
@@ -23,13 +24,7 @@ interface Post {
 
 // Function to fetch a single post by its slug, considering admin status
 async function getPostBySlug(slug: string): Promise<Post | null> {
-  console.log(
-    `[getPostBySlug] Attempting to fetch post with slug: '${slug}' (Type: ${typeof slug})`
-  );
   if (!slug || typeof slug !== "string" || slug.trim() === "") {
-    console.error(
-      `[getPostBySlug] Invalid slug detected: '${slug}'. Aborting fetch.`
-    );
     return null;
   }
 
@@ -47,29 +42,12 @@ async function getPostBySlug(slug: string): Promise<Post | null> {
       whereClause.published = true;
     }
 
-    console.log(`[getPostBySlug] Fetching with where clause:`, whereClause);
-
     const post = await prisma.post.findUnique({
       where: whereClause,
     });
 
-    if (!post) {
-      console.log(
-        `[getPostBySlug] Post with slug '${slug}' ${
-          isAdmin ? "not found" : "not found or not published"
-        }.`
-      );
-    } else {
-      console.log(
-        `[getPostBySlug] Successfully fetched post with slug '${slug}'. Published status: ${post.published}, Admin: ${isAdmin}`
-      );
-    }
     return post;
   } catch (error) {
-    console.error(
-      `[getPostBySlug] Prisma error fetching slug '${slug}':`,
-      error
-    );
     return null;
   }
 }
@@ -84,16 +62,11 @@ interface BlogPostPageProps {
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
-  const slug = params.slug; // Removed optional chaining
-  console.log(`[generateMetadata] Received slug: '${slug}'`);
-  // Add stricter check here too
+  const slug = params.slug;
   if (!slug || typeof slug !== "string" || slug.trim() === "") {
-    console.error(
-      `[generateMetadata] Invalid slug received: '${slug}'. Returning default metadata.`
-    );
     return { title: "Post Not Found" };
   }
-  const post = await getPostBySlug(slug); // Pass validated slug
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     return {
@@ -101,86 +74,58 @@ export async function generateMetadata({
     };
   }
 
+  // Use post.description if available, otherwise generate from content
+  const metaDescription = post.description || post.content.substring(0, 160);
+
   return {
     title: post.title,
-    description: post.content.substring(0, 160), // Generate a short description
-    // Add other metadata like openGraph images if desired
-    // openGraph: {
-    //   title: post.title,
-    //   description: post.content.substring(0, 160),
-    //   images: post.imageUrl ? [{ url: post.imageUrl }] : [],
-    // },
+    description: metaDescription,
+    openGraph: {
+      title: post.title,
+      description: metaDescription,
+      images: post.imageUrl ? [{ url: post.imageUrl }] : [],
+    },
   };
 }
 
 // Generate Static Paths (Optional but recommended for performance)
 export async function generateStaticParams() {
-  console.log("[generateStaticParams] Starting generation...");
   try {
     const posts = await prisma.post.findMany({
       where: { published: true },
       select: { slug: true },
     });
-    console.log(
-      `[generateStaticParams] Fetched ${posts.length} potential slugs.`
-    );
     const validSlugs = posts
       .filter((post: { slug: string | null }) => {
-        // Add explicit type for post
-        // Stricter filtering
         const isValid =
           post && typeof post.slug === "string" && post.slug.trim().length > 0;
-        if (!isValid) {
-          console.warn(
-            `[generateStaticParams] Filtering out invalid slug:`,
-            post?.slug
-          );
-        }
         return isValid;
       })
       .map((post: { slug: string }) => ({
-        // Add explicit type for post
-        slug: post.slug.trim(), // Trim the slug just in case
+        slug: post.slug.trim(),
       }));
-    console.log(
-      `[generateStaticParams] Generated ${validSlugs.length} valid static params:`,
-      validSlugs
-    );
     return validSlugs;
-  } catch (error) {
-    console.error("[generateStaticParams] Error fetching slugs:", error);
+  } catch (error: unknown) {
     return [];
   }
 }
 
 // The Page Component
 const BlogPostPage: React.FC<BlogPostPageProps> = async ({ params }) => {
-  const slug = params.slug; // Removed optional chaining
-  console.log(`[BlogPostPage] Rendering page for slug: '${slug}'`);
+  const slug = params.slug;
   if (!slug || typeof slug !== "string" || slug.trim() === "") {
-    console.error(
-      `[BlogPostPage] Invalid slug received in params: '${slug}'. Triggering notFound.`
-    );
     notFound();
   }
 
-  const post = await getPostBySlug(slug.trim()); // Fetch post (handles admin check)
-  const session = await getAdminSession(); // Check session again for display logic
+  const post = await getPostBySlug(slug.trim());
+  const session = await getAdminSession();
   const isAdmin = session?.isLoggedIn === true;
 
   if (!post) {
-    console.log(
-      `[BlogPostPage] Post not found for slug '${slug}'. Triggering notFound.`
-    );
     notFound();
   }
 
-  // If the post is not published AND the user is not an admin, show 404
-  // This is an extra safety check, though getPostBySlug should handle it.
   if (!post.published && !isAdmin) {
-    console.log(
-      `[BlogPostPage] Non-admin attempting to view unpublished post '${slug}'. Triggering notFound.`
-    );
     notFound();
   }
 
@@ -191,7 +136,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = async ({ params }) => {
   });
 
   return (
-    <div className="container mx-auto max-w-3xl px-4 py-12 text-gray-800">
+    <div className="container mx-auto max-w-4xl px-4 py-12">
       {/* Draft Banner for Admins */}
       {!post.published && isAdmin && (
         <div className="mb-6 p-4 bg-yellow-100 border border-yellow-300 text-yellow-800 rounded-md text-center">
@@ -199,16 +144,16 @@ const BlogPostPage: React.FC<BlogPostPageProps> = async ({ params }) => {
           visible to administrators.
         </div>
       )}
-
       <div className="mb-8">
         <Link
-          href="/blog"
-          className="text-indigo-600 hover:text-indigo-800 hover:underline"
+          href="/blog" // Link back to the main blog page
+          className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition duration-300 text-sm"
         >
           &larr; Back to Blog
         </Link>
       </div>
-      <article className="prose prose-lg lg:prose-xl max-w-none">
+      {/* Card Container */}
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden p-6 md:p-8">
         {/* Post Header */}
         <header className="mb-8 border-b border-gray-200 pb-6">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
@@ -233,9 +178,12 @@ const BlogPostPage: React.FC<BlogPostPageProps> = async ({ params }) => {
           </div>
         )}
 
-        {/* Post Content - Remove specific classes, let prose handle it */}
-        <div dangerouslySetInnerHTML={{ __html: post.content }} />
-      </article>
+        {/* Post Content - Add text-gray-900 for black text */}
+        <div
+          className="prose prose-lg max-w-none text-gray-900"
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
+      </div>
     </div>
   );
 };

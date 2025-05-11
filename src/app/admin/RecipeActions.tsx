@@ -16,29 +16,45 @@ export default function RecipeActions({
   recipeSlug,
   isPublished,
 }: RecipeActionsProps) {
-  // Removed useTransition
-
   // Match PostActions handler style
-  const handleTogglePublish = async () => {
-    try {
-      await toggleRecipePublishStatus(recipeId, !isPublished);
-      // Consider adding toast notifications or better feedback
-    } catch (error) {
-      console.error("Failed to toggle recipe publish status:", error);
-      alert("Failed to toggle publish status. Please try again.");
-    }
+  const handleTogglePublish = () => {
+    void (async () => {
+      try {
+        await toggleRecipePublishStatus(recipeId, !isPublished);
+        // Consider adding toast notifications or better feedback
+      } catch (error) {
+        alert("Failed to toggle publish status. Please try again.");
+      }
+    })();
   };
 
   // Match PostActions handler style
-  const handleDelete = async () => {
+  const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this recipe?")) {
-      try {
-        await deleteRecipe(recipeId);
-        // Consider adding toast notifications or better feedback
-      } catch (error) {
-        console.error("Failed to delete recipe:", error);
-        alert("Failed to delete the recipe. Please try again.");
-      }
+      void (async () => {
+        try {
+          const result = await deleteRecipe(recipeId);
+
+          if (result.status && result.status >= 400) {
+            // Server action reported an error
+            alert(
+              result.message || "Failed to delete the recipe. Please try again."
+            );
+          } else if (result.status === 200) {
+            // Successfully deleted, revalidation will update the UI.
+          } else {
+            // Unexpected result structure
+            alert(
+              "Received an unexpected response after attempting to delete the recipe."
+            );
+          }
+        } catch (error) {
+          // Catch client-side errors or if the promise from deleteRecipe rejects unexpectedly
+          alert(
+            "An unexpected error occurred while trying to delete the recipe. Please try again."
+          );
+        }
+      })();
     }
   };
 
