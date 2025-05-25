@@ -1,6 +1,7 @@
 import Hero from "@/app/components/Hero";
 import PostCard from "@/app/components/PostCard";
 import RecipeCard from "@/app/components/RecipeCard"; // Import RecipeCard
+import NewsletterForm from "@/app/components/NewsletterForm.client"; // Import NewsletterForm
 // Import the correct function
 import { getAllPublishedPosts } from "@/app/lib/posts";
 import { getRecipes } from "@/lib/recipes"; // Import getRecipes
@@ -33,8 +34,19 @@ export default async function HomePage() {
   return (
     <div className="flex w-full flex-col">
       <Hero />
-      {/* Constrain the width of the posts list and center it */}
+      {/* Constrain the width of the content and center it */}
       <div className="container mx-auto px-4 py-2 md:py-6 lg:py-8">
+        {/* Newsletter Signup Section - Moved to the top */}
+        {/*
+        <section className="mb-12">
+          {/* Container div for NewsletterForm to allow its own card styling to take effect */}
+        {/*
+          <div className="max-w-2xl mx-auto">
+            <NewsletterForm />
+          </div>
+        </section>
+        */}
+
         {posts.length > 0 && (
           <section className="mb-12">
             <h2 className="text-3xl font-bold text-center mb-8 text-gray-900">

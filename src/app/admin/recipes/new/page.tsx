@@ -4,14 +4,11 @@
 import React from "react";
 import { useActionState } from "react"; // Correct hook
 import RecipeForm from "@/app/admin/RecipeForm"; // Ensure this path is correct
-// Import getRecipeCategories and createRecipe server actions
-import {
-  createRecipe,
-  getRecipeCategories,
-  type State,
-} from "@/app/lib/actions";
+// Import createRecipe server action and State type
+import { createRecipe, type State } from "@/app/lib/actions";
+// Import getUniqueRecipeCategories from "@/app/lib/posts"
+import { getUniqueRecipeCategories } from "@/app/lib/posts";
 import Link from "next/link";
-// Remove import of getUniqueRecipeCategories from "@/app/lib/posts"
 
 export default function NewRecipePage() {
   // Initialize useActionState for recipe creation
@@ -23,8 +20,8 @@ export default function NewRecipePage() {
 
   React.useEffect(() => {
     async function fetchCategories() {
-      // Call the server action to get categories
-      const categories = await getRecipeCategories();
+      // Call the function to get categories
+      const categories = await getUniqueRecipeCategories(); // Changed usage
       setExistingCategories(categories);
     }
     void fetchCategories();

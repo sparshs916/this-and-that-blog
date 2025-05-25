@@ -6,7 +6,8 @@ import React from "react";
 import { useActionState } from "react";
 import PostForm from "@/app/admin/PostForm"; // Ensure this path is correct
 // Import getPostCategories and createPost server actions
-import { createPost, getPostCategories, type State } from "@/app/lib/actions";
+import { createPost, type State } from "@/app/lib/actions"; // Removed getPostCategories
+import { getUniquePostCategories } from "@/app/lib/posts"; // Added import for getUniquePostCategories
 import Link from "next/link";
 
 // Remove the local getUniquePostCategories function as we'll use the server action
@@ -24,7 +25,7 @@ export default function NewPostPage() {
   React.useEffect(() => {
     async function fetchCategories() {
       // Call the server action to get categories
-      const categories = await getPostCategories();
+      const categories = await getUniquePostCategories(); // Corrected function call
       setExistingCategories(categories);
     }
     void fetchCategories();

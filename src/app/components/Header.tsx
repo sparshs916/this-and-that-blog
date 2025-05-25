@@ -2,7 +2,11 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Great_Vibes, Libre_Baskerville } from "next/font/google"; // Import fonts
+import {
+  Great_Vibes,
+  Libre_Baskerville,
+  Playfair_Display,
+} from "next/font/google"; // Import fonts // Added Playfair_Display
 
 // Initialize fonts
 const greatVibes = Great_Vibes({
@@ -15,6 +19,13 @@ const libreBaskerville = Libre_Baskerville({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-libre-baskerville", // Add variable for Tailwind
+});
+
+const playfairDisplay = Playfair_Display({
+  // Added initialization for playfairDisplay
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-playfair-display",
 });
 
 export default function Header() {
@@ -44,7 +55,7 @@ export default function Header() {
 
   return (
     <header
-      className={`${greatVibes.variable} ${libreBaskerville.variable} bg-white drop-shadow-md sticky top-0 z-50`}
+      className={`${greatVibes.variable} ${libreBaskerville.variable} ${playfairDisplay.variable} bg-white drop-shadow-md sticky top-0 z-50`} // Added playfairDisplay.variable
     >
       <nav className="container mx-auto flex items-center justify-between px-4 py-3 tracking-wide text-black">
         <div className="text-lg font-semibold">
@@ -52,9 +63,7 @@ export default function Header() {
             href="/"
             className="hover:text-indigo-600 transition-colors flex items-baseline"
           >
-            <span
-              className={`${libreBaskerville.className} text-black text-base`}
-            >
+            <span className={`${greatVibes.className} text-black text-xl`}>
               This
             </span>
             <span
@@ -62,8 +71,11 @@ export default function Header() {
             >
               and
             </span>
-            <span className={`${greatVibes.className} text-black text-xl`}>
-              That
+            <span
+              className={`${playfairDisplay.className} text-black text-base`}
+            >
+              {" "}
+              {/* Using Playfair Display for "That" */} That
             </span>
           </Link>
         </div>

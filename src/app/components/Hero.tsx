@@ -1,4 +1,8 @@
-import { Great_Vibes, Libre_Baskerville } from "next/font/google";
+import {
+  Great_Vibes,
+  Libre_Baskerville,
+  Playfair_Display,
+} from "next/font/google";
 
 const greatVibes = Great_Vibes({
   subsets: ["latin"],
@@ -10,18 +14,27 @@ const libreBaskerville = Libre_Baskerville({
   weight: "400",
 });
 
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  weight: "400",
+});
+
 export default function Hero() {
   return (
     <section className="flex flex-col justify-center items-center text-[min(15vw,70px)] py-8 md:py-12">
       <h1 className="flex items-baseline">
-        <div className="mr-1 md:mr-1">
+        <div className="mr-2 md:mr-3">
+          {" "}
+          {/* Increased margin-right */}
           <span
-            className={`${libreBaskerville.className} text-black text-[min(15vw,70px)]`}
+            className={`${greatVibes.className} text-black text-[min(15vw,80px)]`} // Switched to greatVibes and adjusted size
           >
             This
           </span>
         </div>
-        <div className="mr-0.5 md:mr-1">
+        <div className="mr-1.5 md:mr-2">
+          {" "}
+          {/* Increased margin-right */}
           <span
             className={`${libreBaskerville.className} text-gray-500 text-[min(15vw,40px)] relative bottom-1 md:bottom-2`}
           >
@@ -30,7 +43,7 @@ export default function Hero() {
         </div>
         <div>
           <span
-            className={`${greatVibes.className} text-black text-[min(15vw,80px)]`}
+            className={`${playfairDisplay.className} text-black text-[min(15vw,70px)]`} // Switched to Playfair Display and adjusted size
           >
             That
           </span>

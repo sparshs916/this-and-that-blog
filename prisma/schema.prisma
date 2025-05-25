@@ -42,9 +42,49 @@ model Recipe {
   prepTime    String?  // e.g., "15 mins"
   cookTime    String?  // e.g., "30 mins"
   servings    String?  // e.g., "4 servings"
-  category    String?  // Optional category for the recipe
+  category    String?  // Optional category for the recipe - simple string field
   imageUrl    String?  // Optional image URL
   published   Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  recipeCategoryId String? // Foreign key for RecipeCategory
+  recipeCategory   RecipeCategory? @relation(fields: [recipeCategoryId], references: [id])
+}
+
+model RecipeCategory {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  recipes   Recipe[] @relation
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model NewsletterSubscription {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  subscribed Boolean  @default(true) // Added field to track subscription status
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Enum for NewsletterIssue status
+enum NewsletterStatus {
+  DRAFT
+  READY_TO_SEND // Added READY_TO_SEND status
+  SENT
+  ARCHIVED
+}
+
+// Model to store each newsletter issue
+model NewsletterIssue {
+  id        String   @id @default(cuid())
+  title     String // Changed from subject to title
+  content   String   @db.Text
+  newsletterImage String? // Added newsletterImage field
+  status    NewsletterStatus @default(DRAFT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  sentAt    DateTime?
+  scheduledAt DateTime? // Added scheduledAt field
 }

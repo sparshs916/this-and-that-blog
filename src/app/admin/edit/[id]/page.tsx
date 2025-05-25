@@ -6,7 +6,7 @@ import prisma from "@/app/lib/prisma";
 import EditPostFormClient from "./EditPostForm.client";
 import type { Post } from "@/generated/prisma/client"; // Updated import path
 // Import the server action for getting post categories
-import { getPostCategories } from "@/app/lib/actions";
+import { getUniquePostCategories } from "@/app/lib/posts"; // Corrected import path and function name
 
 // Import PrismaClient for casting
 import { PrismaClient } from "@/generated/prisma/client";
@@ -34,7 +34,7 @@ export default async function EditPostPage({
 
   const post = await getPostById(id);
   // Fetch categories using the server action
-  const existingCategories = await getPostCategories();
+  const existingCategories = await getUniquePostCategories(); // Corrected function call
 
   if (!post) {
     notFound();

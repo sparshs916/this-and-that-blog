@@ -23,6 +23,40 @@ export type Post = $Result.DefaultSelection<Prisma.$PostPayload>
  * 
  */
 export type Recipe = $Result.DefaultSelection<Prisma.$RecipePayload>
+/**
+ * Model RecipeCategory
+ * 
+ */
+export type RecipeCategory = $Result.DefaultSelection<Prisma.$RecipeCategoryPayload>
+/**
+ * Model NewsletterSubscription
+ * 
+ */
+export type NewsletterSubscription = $Result.DefaultSelection<Prisma.$NewsletterSubscriptionPayload>
+/**
+ * Model NewsletterIssue
+ * 
+ */
+export type NewsletterIssue = $Result.DefaultSelection<Prisma.$NewsletterIssuePayload>
+
+/**
+ * Enums
+ */
+export namespace $Enums {
+  export const NewsletterStatus: {
+  DRAFT: 'DRAFT',
+  READY_TO_SEND: 'READY_TO_SEND',
+  SENT: 'SENT',
+  ARCHIVED: 'ARCHIVED'
+};
+
+export type NewsletterStatus = (typeof NewsletterStatus)[keyof typeof NewsletterStatus]
+
+}
+
+export type NewsletterStatus = $Enums.NewsletterStatus
+
+export const NewsletterStatus: typeof $Enums.NewsletterStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -168,6 +202,36 @@ export class PrismaClient<
     * ```
     */
   get recipe(): Prisma.RecipeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.recipeCategory`: Exposes CRUD operations for the **RecipeCategory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RecipeCategories
+    * const recipeCategories = await prisma.recipeCategory.findMany()
+    * ```
+    */
+  get recipeCategory(): Prisma.RecipeCategoryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.newsletterSubscription`: Exposes CRUD operations for the **NewsletterSubscription** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more NewsletterSubscriptions
+    * const newsletterSubscriptions = await prisma.newsletterSubscription.findMany()
+    * ```
+    */
+  get newsletterSubscription(): Prisma.NewsletterSubscriptionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.newsletterIssue`: Exposes CRUD operations for the **NewsletterIssue** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more NewsletterIssues
+    * const newsletterIssues = await prisma.newsletterIssue.findMany()
+    * ```
+    */
+  get newsletterIssue(): Prisma.NewsletterIssueDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -609,7 +673,10 @@ export namespace Prisma {
 
   export const ModelName: {
     Post: 'Post',
-    Recipe: 'Recipe'
+    Recipe: 'Recipe',
+    RecipeCategory: 'RecipeCategory',
+    NewsletterSubscription: 'NewsletterSubscription',
+    NewsletterIssue: 'NewsletterIssue'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -628,7 +695,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "post" | "recipe"
+      modelProps: "post" | "recipe" | "recipeCategory" | "newsletterSubscription" | "newsletterIssue"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -780,6 +847,228 @@ export namespace Prisma {
           }
         }
       }
+      RecipeCategory: {
+        payload: Prisma.$RecipeCategoryPayload<ExtArgs>
+        fields: Prisma.RecipeCategoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RecipeCategoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipeCategoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RecipeCategoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipeCategoryPayload>
+          }
+          findFirst: {
+            args: Prisma.RecipeCategoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipeCategoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RecipeCategoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipeCategoryPayload>
+          }
+          findMany: {
+            args: Prisma.RecipeCategoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipeCategoryPayload>[]
+          }
+          create: {
+            args: Prisma.RecipeCategoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipeCategoryPayload>
+          }
+          createMany: {
+            args: Prisma.RecipeCategoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RecipeCategoryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipeCategoryPayload>[]
+          }
+          delete: {
+            args: Prisma.RecipeCategoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipeCategoryPayload>
+          }
+          update: {
+            args: Prisma.RecipeCategoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipeCategoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.RecipeCategoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RecipeCategoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RecipeCategoryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipeCategoryPayload>[]
+          }
+          upsert: {
+            args: Prisma.RecipeCategoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RecipeCategoryPayload>
+          }
+          aggregate: {
+            args: Prisma.RecipeCategoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRecipeCategory>
+          }
+          groupBy: {
+            args: Prisma.RecipeCategoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RecipeCategoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RecipeCategoryCountArgs<ExtArgs>
+            result: $Utils.Optional<RecipeCategoryCountAggregateOutputType> | number
+          }
+        }
+      }
+      NewsletterSubscription: {
+        payload: Prisma.$NewsletterSubscriptionPayload<ExtArgs>
+        fields: Prisma.NewsletterSubscriptionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.NewsletterSubscriptionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterSubscriptionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.NewsletterSubscriptionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterSubscriptionPayload>
+          }
+          findFirst: {
+            args: Prisma.NewsletterSubscriptionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterSubscriptionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.NewsletterSubscriptionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterSubscriptionPayload>
+          }
+          findMany: {
+            args: Prisma.NewsletterSubscriptionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterSubscriptionPayload>[]
+          }
+          create: {
+            args: Prisma.NewsletterSubscriptionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterSubscriptionPayload>
+          }
+          createMany: {
+            args: Prisma.NewsletterSubscriptionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.NewsletterSubscriptionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterSubscriptionPayload>[]
+          }
+          delete: {
+            args: Prisma.NewsletterSubscriptionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterSubscriptionPayload>
+          }
+          update: {
+            args: Prisma.NewsletterSubscriptionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterSubscriptionPayload>
+          }
+          deleteMany: {
+            args: Prisma.NewsletterSubscriptionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.NewsletterSubscriptionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.NewsletterSubscriptionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterSubscriptionPayload>[]
+          }
+          upsert: {
+            args: Prisma.NewsletterSubscriptionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterSubscriptionPayload>
+          }
+          aggregate: {
+            args: Prisma.NewsletterSubscriptionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateNewsletterSubscription>
+          }
+          groupBy: {
+            args: Prisma.NewsletterSubscriptionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<NewsletterSubscriptionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.NewsletterSubscriptionCountArgs<ExtArgs>
+            result: $Utils.Optional<NewsletterSubscriptionCountAggregateOutputType> | number
+          }
+        }
+      }
+      NewsletterIssue: {
+        payload: Prisma.$NewsletterIssuePayload<ExtArgs>
+        fields: Prisma.NewsletterIssueFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.NewsletterIssueFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterIssuePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.NewsletterIssueFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterIssuePayload>
+          }
+          findFirst: {
+            args: Prisma.NewsletterIssueFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterIssuePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.NewsletterIssueFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterIssuePayload>
+          }
+          findMany: {
+            args: Prisma.NewsletterIssueFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterIssuePayload>[]
+          }
+          create: {
+            args: Prisma.NewsletterIssueCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterIssuePayload>
+          }
+          createMany: {
+            args: Prisma.NewsletterIssueCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.NewsletterIssueCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterIssuePayload>[]
+          }
+          delete: {
+            args: Prisma.NewsletterIssueDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterIssuePayload>
+          }
+          update: {
+            args: Prisma.NewsletterIssueUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterIssuePayload>
+          }
+          deleteMany: {
+            args: Prisma.NewsletterIssueDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.NewsletterIssueUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.NewsletterIssueUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterIssuePayload>[]
+          }
+          upsert: {
+            args: Prisma.NewsletterIssueUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NewsletterIssuePayload>
+          }
+          aggregate: {
+            args: Prisma.NewsletterIssueAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateNewsletterIssue>
+          }
+          groupBy: {
+            args: Prisma.NewsletterIssueGroupByArgs<ExtArgs>
+            result: $Utils.Optional<NewsletterIssueGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.NewsletterIssueCountArgs<ExtArgs>
+            result: $Utils.Optional<NewsletterIssueCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -866,6 +1155,9 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     post?: PostOmit
     recipe?: RecipeOmit
+    recipeCategory?: RecipeCategoryOmit
+    newsletterSubscription?: NewsletterSubscriptionOmit
+    newsletterIssue?: NewsletterIssueOmit
   }
 
   /* Types for Logging */
@@ -954,6 +1246,36 @@ export namespace Prisma {
    * Count Types
    */
 
+
+  /**
+   * Count Type RecipeCategoryCountOutputType
+   */
+
+  export type RecipeCategoryCountOutputType = {
+    recipes: number
+  }
+
+  export type RecipeCategoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    recipes?: boolean | RecipeCategoryCountOutputTypeCountRecipesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * RecipeCategoryCountOutputType without action
+   */
+  export type RecipeCategoryCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipeCategoryCountOutputType
+     */
+    select?: RecipeCategoryCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * RecipeCategoryCountOutputType without action
+   */
+  export type RecipeCategoryCountOutputTypeCountRecipesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RecipeWhereInput
+  }
 
 
   /**
@@ -2045,6 +2367,7 @@ export namespace Prisma {
     published: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
+    recipeCategoryId: string | null
   }
 
   export type RecipeMaxAggregateOutputType = {
@@ -2062,6 +2385,7 @@ export namespace Prisma {
     published: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
+    recipeCategoryId: string | null
   }
 
   export type RecipeCountAggregateOutputType = {
@@ -2079,6 +2403,7 @@ export namespace Prisma {
     published: number
     createdAt: number
     updatedAt: number
+    recipeCategoryId: number
     _all: number
   }
 
@@ -2098,6 +2423,7 @@ export namespace Prisma {
     published?: true
     createdAt?: true
     updatedAt?: true
+    recipeCategoryId?: true
   }
 
   export type RecipeMaxAggregateInputType = {
@@ -2115,6 +2441,7 @@ export namespace Prisma {
     published?: true
     createdAt?: true
     updatedAt?: true
+    recipeCategoryId?: true
   }
 
   export type RecipeCountAggregateInputType = {
@@ -2132,6 +2459,7 @@ export namespace Prisma {
     published?: true
     createdAt?: true
     updatedAt?: true
+    recipeCategoryId?: true
     _all?: true
   }
 
@@ -2222,6 +2550,7 @@ export namespace Prisma {
     published: boolean
     createdAt: Date
     updatedAt: Date
+    recipeCategoryId: string | null
     _count: RecipeCountAggregateOutputType | null
     _min: RecipeMinAggregateOutputType | null
     _max: RecipeMaxAggregateOutputType | null
@@ -2256,6 +2585,8 @@ export namespace Prisma {
     published?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    recipeCategoryId?: boolean
+    recipeCategory?: boolean | Recipe$recipeCategoryArgs<ExtArgs>
   }, ExtArgs["result"]["recipe"]>
 
   export type RecipeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2273,6 +2604,8 @@ export namespace Prisma {
     published?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    recipeCategoryId?: boolean
+    recipeCategory?: boolean | Recipe$recipeCategoryArgs<ExtArgs>
   }, ExtArgs["result"]["recipe"]>
 
   export type RecipeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2290,6 +2623,8 @@ export namespace Prisma {
     published?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    recipeCategoryId?: boolean
+    recipeCategory?: boolean | Recipe$recipeCategoryArgs<ExtArgs>
   }, ExtArgs["result"]["recipe"]>
 
   export type RecipeSelectScalar = {
@@ -2307,13 +2642,25 @@ export namespace Prisma {
     published?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    recipeCategoryId?: boolean
   }
 
-  export type RecipeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "description" | "ingredients" | "instructions" | "prepTime" | "cookTime" | "servings" | "category" | "imageUrl" | "published" | "createdAt" | "updatedAt", ExtArgs["result"]["recipe"]>
+  export type RecipeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "description" | "ingredients" | "instructions" | "prepTime" | "cookTime" | "servings" | "category" | "imageUrl" | "published" | "createdAt" | "updatedAt" | "recipeCategoryId", ExtArgs["result"]["recipe"]>
+  export type RecipeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    recipeCategory?: boolean | Recipe$recipeCategoryArgs<ExtArgs>
+  }
+  export type RecipeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    recipeCategory?: boolean | Recipe$recipeCategoryArgs<ExtArgs>
+  }
+  export type RecipeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    recipeCategory?: boolean | Recipe$recipeCategoryArgs<ExtArgs>
+  }
 
   export type $RecipePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Recipe"
-    objects: {}
+    objects: {
+      recipeCategory: Prisma.$RecipeCategoryPayload<ExtArgs> | null
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       title: string
@@ -2329,6 +2676,7 @@ export namespace Prisma {
       published: boolean
       createdAt: Date
       updatedAt: Date
+      recipeCategoryId: string | null
     }, ExtArgs["result"]["recipe"]>
     composites: {}
   }
@@ -2723,6 +3071,7 @@ export namespace Prisma {
    */
   export interface Prisma__RecipeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    recipeCategory<T extends Recipe$recipeCategoryArgs<ExtArgs> = {}>(args?: Subset<T, Recipe$recipeCategoryArgs<ExtArgs>>): Prisma__RecipeCategoryClient<$Result.GetResult<Prisma.$RecipeCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2766,6 +3115,7 @@ export namespace Prisma {
     readonly published: FieldRef<"Recipe", 'Boolean'>
     readonly createdAt: FieldRef<"Recipe", 'DateTime'>
     readonly updatedAt: FieldRef<"Recipe", 'DateTime'>
+    readonly recipeCategoryId: FieldRef<"Recipe", 'String'>
   }
     
 
@@ -2782,6 +3132,10 @@ export namespace Prisma {
      * Omit specific fields from the Recipe
      */
     omit?: RecipeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeInclude<ExtArgs> | null
     /**
      * Filter, which Recipe to fetch.
      */
@@ -2801,6 +3155,10 @@ export namespace Prisma {
      */
     omit?: RecipeOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeInclude<ExtArgs> | null
+    /**
      * Filter, which Recipe to fetch.
      */
     where: RecipeWhereUniqueInput
@@ -2818,6 +3176,10 @@ export namespace Prisma {
      * Omit specific fields from the Recipe
      */
     omit?: RecipeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeInclude<ExtArgs> | null
     /**
      * Filter, which Recipe to fetch.
      */
@@ -2867,6 +3229,10 @@ export namespace Prisma {
      */
     omit?: RecipeOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeInclude<ExtArgs> | null
+    /**
      * Filter, which Recipe to fetch.
      */
     where?: RecipeWhereInput
@@ -2915,6 +3281,10 @@ export namespace Prisma {
      */
     omit?: RecipeOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeInclude<ExtArgs> | null
+    /**
      * Filter, which Recipes to fetch.
      */
     where?: RecipeWhereInput
@@ -2958,6 +3328,10 @@ export namespace Prisma {
      */
     omit?: RecipeOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeInclude<ExtArgs> | null
+    /**
      * The data needed to create a Recipe.
      */
     data: XOR<RecipeCreateInput, RecipeUncheckedCreateInput>
@@ -2991,6 +3365,10 @@ export namespace Prisma {
      */
     data: RecipeCreateManyInput | RecipeCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -3005,6 +3383,10 @@ export namespace Prisma {
      * Omit specific fields from the Recipe
      */
     omit?: RecipeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeInclude<ExtArgs> | null
     /**
      * The data needed to update a Recipe.
      */
@@ -3057,6 +3439,10 @@ export namespace Prisma {
      * Limit how many Recipes to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -3071,6 +3457,10 @@ export namespace Prisma {
      * Omit specific fields from the Recipe
      */
     omit?: RecipeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeInclude<ExtArgs> | null
     /**
      * The filter to search for the Recipe to update in case it exists.
      */
@@ -3098,6 +3488,10 @@ export namespace Prisma {
      */
     omit?: RecipeOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeInclude<ExtArgs> | null
+    /**
      * Filter which Recipe to delete.
      */
     where: RecipeWhereUniqueInput
@@ -3118,6 +3512,25 @@ export namespace Prisma {
   }
 
   /**
+   * Recipe.recipeCategory
+   */
+  export type Recipe$recipeCategoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipeCategory
+     */
+    select?: RecipeCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipeCategory
+     */
+    omit?: RecipeCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeCategoryInclude<ExtArgs> | null
+    where?: RecipeCategoryWhereInput
+  }
+
+  /**
    * Recipe without action
    */
   export type RecipeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3129,6 +3542,3109 @@ export namespace Prisma {
      * Omit specific fields from the Recipe
      */
     omit?: RecipeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RecipeCategory
+   */
+
+  export type AggregateRecipeCategory = {
+    _count: RecipeCategoryCountAggregateOutputType | null
+    _min: RecipeCategoryMinAggregateOutputType | null
+    _max: RecipeCategoryMaxAggregateOutputType | null
+  }
+
+  export type RecipeCategoryMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RecipeCategoryMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type RecipeCategoryCountAggregateOutputType = {
+    id: number
+    name: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type RecipeCategoryMinAggregateInputType = {
+    id?: true
+    name?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RecipeCategoryMaxAggregateInputType = {
+    id?: true
+    name?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type RecipeCategoryCountAggregateInputType = {
+    id?: true
+    name?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type RecipeCategoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RecipeCategory to aggregate.
+     */
+    where?: RecipeCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RecipeCategories to fetch.
+     */
+    orderBy?: RecipeCategoryOrderByWithRelationInput | RecipeCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RecipeCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RecipeCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RecipeCategories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RecipeCategories
+    **/
+    _count?: true | RecipeCategoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RecipeCategoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RecipeCategoryMaxAggregateInputType
+  }
+
+  export type GetRecipeCategoryAggregateType<T extends RecipeCategoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateRecipeCategory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRecipeCategory[P]>
+      : GetScalarType<T[P], AggregateRecipeCategory[P]>
+  }
+
+
+
+
+  export type RecipeCategoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RecipeCategoryWhereInput
+    orderBy?: RecipeCategoryOrderByWithAggregationInput | RecipeCategoryOrderByWithAggregationInput[]
+    by: RecipeCategoryScalarFieldEnum[] | RecipeCategoryScalarFieldEnum
+    having?: RecipeCategoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RecipeCategoryCountAggregateInputType | true
+    _min?: RecipeCategoryMinAggregateInputType
+    _max?: RecipeCategoryMaxAggregateInputType
+  }
+
+  export type RecipeCategoryGroupByOutputType = {
+    id: string
+    name: string
+    createdAt: Date
+    updatedAt: Date
+    _count: RecipeCategoryCountAggregateOutputType | null
+    _min: RecipeCategoryMinAggregateOutputType | null
+    _max: RecipeCategoryMaxAggregateOutputType | null
+  }
+
+  type GetRecipeCategoryGroupByPayload<T extends RecipeCategoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RecipeCategoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RecipeCategoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RecipeCategoryGroupByOutputType[P]>
+            : GetScalarType<T[P], RecipeCategoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RecipeCategorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    recipes?: boolean | RecipeCategory$recipesArgs<ExtArgs>
+    _count?: boolean | RecipeCategoryCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["recipeCategory"]>
+
+  export type RecipeCategorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["recipeCategory"]>
+
+  export type RecipeCategorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["recipeCategory"]>
+
+  export type RecipeCategorySelectScalar = {
+    id?: boolean
+    name?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type RecipeCategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["recipeCategory"]>
+  export type RecipeCategoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    recipes?: boolean | RecipeCategory$recipesArgs<ExtArgs>
+    _count?: boolean | RecipeCategoryCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type RecipeCategoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type RecipeCategoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $RecipeCategoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RecipeCategory"
+    objects: {
+      recipes: Prisma.$RecipePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["recipeCategory"]>
+    composites: {}
+  }
+
+  type RecipeCategoryGetPayload<S extends boolean | null | undefined | RecipeCategoryDefaultArgs> = $Result.GetResult<Prisma.$RecipeCategoryPayload, S>
+
+  type RecipeCategoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RecipeCategoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RecipeCategoryCountAggregateInputType | true
+    }
+
+  export interface RecipeCategoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RecipeCategory'], meta: { name: 'RecipeCategory' } }
+    /**
+     * Find zero or one RecipeCategory that matches the filter.
+     * @param {RecipeCategoryFindUniqueArgs} args - Arguments to find a RecipeCategory
+     * @example
+     * // Get one RecipeCategory
+     * const recipeCategory = await prisma.recipeCategory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RecipeCategoryFindUniqueArgs>(args: SelectSubset<T, RecipeCategoryFindUniqueArgs<ExtArgs>>): Prisma__RecipeCategoryClient<$Result.GetResult<Prisma.$RecipeCategoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RecipeCategory that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RecipeCategoryFindUniqueOrThrowArgs} args - Arguments to find a RecipeCategory
+     * @example
+     * // Get one RecipeCategory
+     * const recipeCategory = await prisma.recipeCategory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RecipeCategoryFindUniqueOrThrowArgs>(args: SelectSubset<T, RecipeCategoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RecipeCategoryClient<$Result.GetResult<Prisma.$RecipeCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RecipeCategory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecipeCategoryFindFirstArgs} args - Arguments to find a RecipeCategory
+     * @example
+     * // Get one RecipeCategory
+     * const recipeCategory = await prisma.recipeCategory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RecipeCategoryFindFirstArgs>(args?: SelectSubset<T, RecipeCategoryFindFirstArgs<ExtArgs>>): Prisma__RecipeCategoryClient<$Result.GetResult<Prisma.$RecipeCategoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RecipeCategory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecipeCategoryFindFirstOrThrowArgs} args - Arguments to find a RecipeCategory
+     * @example
+     * // Get one RecipeCategory
+     * const recipeCategory = await prisma.recipeCategory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RecipeCategoryFindFirstOrThrowArgs>(args?: SelectSubset<T, RecipeCategoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__RecipeCategoryClient<$Result.GetResult<Prisma.$RecipeCategoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RecipeCategories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecipeCategoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RecipeCategories
+     * const recipeCategories = await prisma.recipeCategory.findMany()
+     * 
+     * // Get first 10 RecipeCategories
+     * const recipeCategories = await prisma.recipeCategory.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const recipeCategoryWithIdOnly = await prisma.recipeCategory.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RecipeCategoryFindManyArgs>(args?: SelectSubset<T, RecipeCategoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RecipeCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RecipeCategory.
+     * @param {RecipeCategoryCreateArgs} args - Arguments to create a RecipeCategory.
+     * @example
+     * // Create one RecipeCategory
+     * const RecipeCategory = await prisma.recipeCategory.create({
+     *   data: {
+     *     // ... data to create a RecipeCategory
+     *   }
+     * })
+     * 
+     */
+    create<T extends RecipeCategoryCreateArgs>(args: SelectSubset<T, RecipeCategoryCreateArgs<ExtArgs>>): Prisma__RecipeCategoryClient<$Result.GetResult<Prisma.$RecipeCategoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RecipeCategories.
+     * @param {RecipeCategoryCreateManyArgs} args - Arguments to create many RecipeCategories.
+     * @example
+     * // Create many RecipeCategories
+     * const recipeCategory = await prisma.recipeCategory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RecipeCategoryCreateManyArgs>(args?: SelectSubset<T, RecipeCategoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RecipeCategories and returns the data saved in the database.
+     * @param {RecipeCategoryCreateManyAndReturnArgs} args - Arguments to create many RecipeCategories.
+     * @example
+     * // Create many RecipeCategories
+     * const recipeCategory = await prisma.recipeCategory.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RecipeCategories and only return the `id`
+     * const recipeCategoryWithIdOnly = await prisma.recipeCategory.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RecipeCategoryCreateManyAndReturnArgs>(args?: SelectSubset<T, RecipeCategoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RecipeCategoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RecipeCategory.
+     * @param {RecipeCategoryDeleteArgs} args - Arguments to delete one RecipeCategory.
+     * @example
+     * // Delete one RecipeCategory
+     * const RecipeCategory = await prisma.recipeCategory.delete({
+     *   where: {
+     *     // ... filter to delete one RecipeCategory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RecipeCategoryDeleteArgs>(args: SelectSubset<T, RecipeCategoryDeleteArgs<ExtArgs>>): Prisma__RecipeCategoryClient<$Result.GetResult<Prisma.$RecipeCategoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RecipeCategory.
+     * @param {RecipeCategoryUpdateArgs} args - Arguments to update one RecipeCategory.
+     * @example
+     * // Update one RecipeCategory
+     * const recipeCategory = await prisma.recipeCategory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RecipeCategoryUpdateArgs>(args: SelectSubset<T, RecipeCategoryUpdateArgs<ExtArgs>>): Prisma__RecipeCategoryClient<$Result.GetResult<Prisma.$RecipeCategoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RecipeCategories.
+     * @param {RecipeCategoryDeleteManyArgs} args - Arguments to filter RecipeCategories to delete.
+     * @example
+     * // Delete a few RecipeCategories
+     * const { count } = await prisma.recipeCategory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RecipeCategoryDeleteManyArgs>(args?: SelectSubset<T, RecipeCategoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RecipeCategories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecipeCategoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RecipeCategories
+     * const recipeCategory = await prisma.recipeCategory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RecipeCategoryUpdateManyArgs>(args: SelectSubset<T, RecipeCategoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RecipeCategories and returns the data updated in the database.
+     * @param {RecipeCategoryUpdateManyAndReturnArgs} args - Arguments to update many RecipeCategories.
+     * @example
+     * // Update many RecipeCategories
+     * const recipeCategory = await prisma.recipeCategory.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RecipeCategories and only return the `id`
+     * const recipeCategoryWithIdOnly = await prisma.recipeCategory.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RecipeCategoryUpdateManyAndReturnArgs>(args: SelectSubset<T, RecipeCategoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RecipeCategoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RecipeCategory.
+     * @param {RecipeCategoryUpsertArgs} args - Arguments to update or create a RecipeCategory.
+     * @example
+     * // Update or create a RecipeCategory
+     * const recipeCategory = await prisma.recipeCategory.upsert({
+     *   create: {
+     *     // ... data to create a RecipeCategory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RecipeCategory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RecipeCategoryUpsertArgs>(args: SelectSubset<T, RecipeCategoryUpsertArgs<ExtArgs>>): Prisma__RecipeCategoryClient<$Result.GetResult<Prisma.$RecipeCategoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RecipeCategories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecipeCategoryCountArgs} args - Arguments to filter RecipeCategories to count.
+     * @example
+     * // Count the number of RecipeCategories
+     * const count = await prisma.recipeCategory.count({
+     *   where: {
+     *     // ... the filter for the RecipeCategories we want to count
+     *   }
+     * })
+    **/
+    count<T extends RecipeCategoryCountArgs>(
+      args?: Subset<T, RecipeCategoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RecipeCategoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RecipeCategory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecipeCategoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RecipeCategoryAggregateArgs>(args: Subset<T, RecipeCategoryAggregateArgs>): Prisma.PrismaPromise<GetRecipeCategoryAggregateType<T>>
+
+    /**
+     * Group by RecipeCategory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RecipeCategoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RecipeCategoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RecipeCategoryGroupByArgs['orderBy'] }
+        : { orderBy?: RecipeCategoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RecipeCategoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRecipeCategoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RecipeCategory model
+   */
+  readonly fields: RecipeCategoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RecipeCategory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RecipeCategoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    recipes<T extends RecipeCategory$recipesArgs<ExtArgs> = {}>(args?: Subset<T, RecipeCategory$recipesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RecipePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RecipeCategory model
+   */
+  interface RecipeCategoryFieldRefs {
+    readonly id: FieldRef<"RecipeCategory", 'String'>
+    readonly name: FieldRef<"RecipeCategory", 'String'>
+    readonly createdAt: FieldRef<"RecipeCategory", 'DateTime'>
+    readonly updatedAt: FieldRef<"RecipeCategory", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RecipeCategory findUnique
+   */
+  export type RecipeCategoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipeCategory
+     */
+    select?: RecipeCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipeCategory
+     */
+    omit?: RecipeCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which RecipeCategory to fetch.
+     */
+    where: RecipeCategoryWhereUniqueInput
+  }
+
+  /**
+   * RecipeCategory findUniqueOrThrow
+   */
+  export type RecipeCategoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipeCategory
+     */
+    select?: RecipeCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipeCategory
+     */
+    omit?: RecipeCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which RecipeCategory to fetch.
+     */
+    where: RecipeCategoryWhereUniqueInput
+  }
+
+  /**
+   * RecipeCategory findFirst
+   */
+  export type RecipeCategoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipeCategory
+     */
+    select?: RecipeCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipeCategory
+     */
+    omit?: RecipeCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which RecipeCategory to fetch.
+     */
+    where?: RecipeCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RecipeCategories to fetch.
+     */
+    orderBy?: RecipeCategoryOrderByWithRelationInput | RecipeCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RecipeCategories.
+     */
+    cursor?: RecipeCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RecipeCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RecipeCategories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RecipeCategories.
+     */
+    distinct?: RecipeCategoryScalarFieldEnum | RecipeCategoryScalarFieldEnum[]
+  }
+
+  /**
+   * RecipeCategory findFirstOrThrow
+   */
+  export type RecipeCategoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipeCategory
+     */
+    select?: RecipeCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipeCategory
+     */
+    omit?: RecipeCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which RecipeCategory to fetch.
+     */
+    where?: RecipeCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RecipeCategories to fetch.
+     */
+    orderBy?: RecipeCategoryOrderByWithRelationInput | RecipeCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RecipeCategories.
+     */
+    cursor?: RecipeCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RecipeCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RecipeCategories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RecipeCategories.
+     */
+    distinct?: RecipeCategoryScalarFieldEnum | RecipeCategoryScalarFieldEnum[]
+  }
+
+  /**
+   * RecipeCategory findMany
+   */
+  export type RecipeCategoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipeCategory
+     */
+    select?: RecipeCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipeCategory
+     */
+    omit?: RecipeCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeCategoryInclude<ExtArgs> | null
+    /**
+     * Filter, which RecipeCategories to fetch.
+     */
+    where?: RecipeCategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RecipeCategories to fetch.
+     */
+    orderBy?: RecipeCategoryOrderByWithRelationInput | RecipeCategoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RecipeCategories.
+     */
+    cursor?: RecipeCategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RecipeCategories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RecipeCategories.
+     */
+    skip?: number
+    distinct?: RecipeCategoryScalarFieldEnum | RecipeCategoryScalarFieldEnum[]
+  }
+
+  /**
+   * RecipeCategory create
+   */
+  export type RecipeCategoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipeCategory
+     */
+    select?: RecipeCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipeCategory
+     */
+    omit?: RecipeCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeCategoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RecipeCategory.
+     */
+    data: XOR<RecipeCategoryCreateInput, RecipeCategoryUncheckedCreateInput>
+  }
+
+  /**
+   * RecipeCategory createMany
+   */
+  export type RecipeCategoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RecipeCategories.
+     */
+    data: RecipeCategoryCreateManyInput | RecipeCategoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RecipeCategory createManyAndReturn
+   */
+  export type RecipeCategoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipeCategory
+     */
+    select?: RecipeCategorySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipeCategory
+     */
+    omit?: RecipeCategoryOmit<ExtArgs> | null
+    /**
+     * The data used to create many RecipeCategories.
+     */
+    data: RecipeCategoryCreateManyInput | RecipeCategoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RecipeCategory update
+   */
+  export type RecipeCategoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipeCategory
+     */
+    select?: RecipeCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipeCategory
+     */
+    omit?: RecipeCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeCategoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RecipeCategory.
+     */
+    data: XOR<RecipeCategoryUpdateInput, RecipeCategoryUncheckedUpdateInput>
+    /**
+     * Choose, which RecipeCategory to update.
+     */
+    where: RecipeCategoryWhereUniqueInput
+  }
+
+  /**
+   * RecipeCategory updateMany
+   */
+  export type RecipeCategoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RecipeCategories.
+     */
+    data: XOR<RecipeCategoryUpdateManyMutationInput, RecipeCategoryUncheckedUpdateManyInput>
+    /**
+     * Filter which RecipeCategories to update
+     */
+    where?: RecipeCategoryWhereInput
+    /**
+     * Limit how many RecipeCategories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RecipeCategory updateManyAndReturn
+   */
+  export type RecipeCategoryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipeCategory
+     */
+    select?: RecipeCategorySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipeCategory
+     */
+    omit?: RecipeCategoryOmit<ExtArgs> | null
+    /**
+     * The data used to update RecipeCategories.
+     */
+    data: XOR<RecipeCategoryUpdateManyMutationInput, RecipeCategoryUncheckedUpdateManyInput>
+    /**
+     * Filter which RecipeCategories to update
+     */
+    where?: RecipeCategoryWhereInput
+    /**
+     * Limit how many RecipeCategories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RecipeCategory upsert
+   */
+  export type RecipeCategoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipeCategory
+     */
+    select?: RecipeCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipeCategory
+     */
+    omit?: RecipeCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeCategoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RecipeCategory to update in case it exists.
+     */
+    where: RecipeCategoryWhereUniqueInput
+    /**
+     * In case the RecipeCategory found by the `where` argument doesn't exist, create a new RecipeCategory with this data.
+     */
+    create: XOR<RecipeCategoryCreateInput, RecipeCategoryUncheckedCreateInput>
+    /**
+     * In case the RecipeCategory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RecipeCategoryUpdateInput, RecipeCategoryUncheckedUpdateInput>
+  }
+
+  /**
+   * RecipeCategory delete
+   */
+  export type RecipeCategoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipeCategory
+     */
+    select?: RecipeCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipeCategory
+     */
+    omit?: RecipeCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeCategoryInclude<ExtArgs> | null
+    /**
+     * Filter which RecipeCategory to delete.
+     */
+    where: RecipeCategoryWhereUniqueInput
+  }
+
+  /**
+   * RecipeCategory deleteMany
+   */
+  export type RecipeCategoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RecipeCategories to delete
+     */
+    where?: RecipeCategoryWhereInput
+    /**
+     * Limit how many RecipeCategories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RecipeCategory.recipes
+   */
+  export type RecipeCategory$recipesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Recipe
+     */
+    select?: RecipeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Recipe
+     */
+    omit?: RecipeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeInclude<ExtArgs> | null
+    where?: RecipeWhereInput
+    orderBy?: RecipeOrderByWithRelationInput | RecipeOrderByWithRelationInput[]
+    cursor?: RecipeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RecipeScalarFieldEnum | RecipeScalarFieldEnum[]
+  }
+
+  /**
+   * RecipeCategory without action
+   */
+  export type RecipeCategoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RecipeCategory
+     */
+    select?: RecipeCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RecipeCategory
+     */
+    omit?: RecipeCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RecipeCategoryInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model NewsletterSubscription
+   */
+
+  export type AggregateNewsletterSubscription = {
+    _count: NewsletterSubscriptionCountAggregateOutputType | null
+    _min: NewsletterSubscriptionMinAggregateOutputType | null
+    _max: NewsletterSubscriptionMaxAggregateOutputType | null
+  }
+
+  export type NewsletterSubscriptionMinAggregateOutputType = {
+    id: string | null
+    email: string | null
+    subscribed: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type NewsletterSubscriptionMaxAggregateOutputType = {
+    id: string | null
+    email: string | null
+    subscribed: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type NewsletterSubscriptionCountAggregateOutputType = {
+    id: number
+    email: number
+    subscribed: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type NewsletterSubscriptionMinAggregateInputType = {
+    id?: true
+    email?: true
+    subscribed?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type NewsletterSubscriptionMaxAggregateInputType = {
+    id?: true
+    email?: true
+    subscribed?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type NewsletterSubscriptionCountAggregateInputType = {
+    id?: true
+    email?: true
+    subscribed?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type NewsletterSubscriptionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which NewsletterSubscription to aggregate.
+     */
+    where?: NewsletterSubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NewsletterSubscriptions to fetch.
+     */
+    orderBy?: NewsletterSubscriptionOrderByWithRelationInput | NewsletterSubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: NewsletterSubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NewsletterSubscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NewsletterSubscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned NewsletterSubscriptions
+    **/
+    _count?: true | NewsletterSubscriptionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: NewsletterSubscriptionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: NewsletterSubscriptionMaxAggregateInputType
+  }
+
+  export type GetNewsletterSubscriptionAggregateType<T extends NewsletterSubscriptionAggregateArgs> = {
+        [P in keyof T & keyof AggregateNewsletterSubscription]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateNewsletterSubscription[P]>
+      : GetScalarType<T[P], AggregateNewsletterSubscription[P]>
+  }
+
+
+
+
+  export type NewsletterSubscriptionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NewsletterSubscriptionWhereInput
+    orderBy?: NewsletterSubscriptionOrderByWithAggregationInput | NewsletterSubscriptionOrderByWithAggregationInput[]
+    by: NewsletterSubscriptionScalarFieldEnum[] | NewsletterSubscriptionScalarFieldEnum
+    having?: NewsletterSubscriptionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: NewsletterSubscriptionCountAggregateInputType | true
+    _min?: NewsletterSubscriptionMinAggregateInputType
+    _max?: NewsletterSubscriptionMaxAggregateInputType
+  }
+
+  export type NewsletterSubscriptionGroupByOutputType = {
+    id: string
+    email: string
+    subscribed: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: NewsletterSubscriptionCountAggregateOutputType | null
+    _min: NewsletterSubscriptionMinAggregateOutputType | null
+    _max: NewsletterSubscriptionMaxAggregateOutputType | null
+  }
+
+  type GetNewsletterSubscriptionGroupByPayload<T extends NewsletterSubscriptionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<NewsletterSubscriptionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof NewsletterSubscriptionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], NewsletterSubscriptionGroupByOutputType[P]>
+            : GetScalarType<T[P], NewsletterSubscriptionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type NewsletterSubscriptionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    subscribed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["newsletterSubscription"]>
+
+  export type NewsletterSubscriptionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    subscribed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["newsletterSubscription"]>
+
+  export type NewsletterSubscriptionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    email?: boolean
+    subscribed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["newsletterSubscription"]>
+
+  export type NewsletterSubscriptionSelectScalar = {
+    id?: boolean
+    email?: boolean
+    subscribed?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type NewsletterSubscriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "subscribed" | "createdAt" | "updatedAt", ExtArgs["result"]["newsletterSubscription"]>
+
+  export type $NewsletterSubscriptionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "NewsletterSubscription"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      email: string
+      subscribed: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["newsletterSubscription"]>
+    composites: {}
+  }
+
+  type NewsletterSubscriptionGetPayload<S extends boolean | null | undefined | NewsletterSubscriptionDefaultArgs> = $Result.GetResult<Prisma.$NewsletterSubscriptionPayload, S>
+
+  type NewsletterSubscriptionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<NewsletterSubscriptionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: NewsletterSubscriptionCountAggregateInputType | true
+    }
+
+  export interface NewsletterSubscriptionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['NewsletterSubscription'], meta: { name: 'NewsletterSubscription' } }
+    /**
+     * Find zero or one NewsletterSubscription that matches the filter.
+     * @param {NewsletterSubscriptionFindUniqueArgs} args - Arguments to find a NewsletterSubscription
+     * @example
+     * // Get one NewsletterSubscription
+     * const newsletterSubscription = await prisma.newsletterSubscription.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends NewsletterSubscriptionFindUniqueArgs>(args: SelectSubset<T, NewsletterSubscriptionFindUniqueArgs<ExtArgs>>): Prisma__NewsletterSubscriptionClient<$Result.GetResult<Prisma.$NewsletterSubscriptionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one NewsletterSubscription that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {NewsletterSubscriptionFindUniqueOrThrowArgs} args - Arguments to find a NewsletterSubscription
+     * @example
+     * // Get one NewsletterSubscription
+     * const newsletterSubscription = await prisma.newsletterSubscription.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends NewsletterSubscriptionFindUniqueOrThrowArgs>(args: SelectSubset<T, NewsletterSubscriptionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__NewsletterSubscriptionClient<$Result.GetResult<Prisma.$NewsletterSubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first NewsletterSubscription that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NewsletterSubscriptionFindFirstArgs} args - Arguments to find a NewsletterSubscription
+     * @example
+     * // Get one NewsletterSubscription
+     * const newsletterSubscription = await prisma.newsletterSubscription.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends NewsletterSubscriptionFindFirstArgs>(args?: SelectSubset<T, NewsletterSubscriptionFindFirstArgs<ExtArgs>>): Prisma__NewsletterSubscriptionClient<$Result.GetResult<Prisma.$NewsletterSubscriptionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first NewsletterSubscription that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NewsletterSubscriptionFindFirstOrThrowArgs} args - Arguments to find a NewsletterSubscription
+     * @example
+     * // Get one NewsletterSubscription
+     * const newsletterSubscription = await prisma.newsletterSubscription.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends NewsletterSubscriptionFindFirstOrThrowArgs>(args?: SelectSubset<T, NewsletterSubscriptionFindFirstOrThrowArgs<ExtArgs>>): Prisma__NewsletterSubscriptionClient<$Result.GetResult<Prisma.$NewsletterSubscriptionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more NewsletterSubscriptions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NewsletterSubscriptionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all NewsletterSubscriptions
+     * const newsletterSubscriptions = await prisma.newsletterSubscription.findMany()
+     * 
+     * // Get first 10 NewsletterSubscriptions
+     * const newsletterSubscriptions = await prisma.newsletterSubscription.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const newsletterSubscriptionWithIdOnly = await prisma.newsletterSubscription.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends NewsletterSubscriptionFindManyArgs>(args?: SelectSubset<T, NewsletterSubscriptionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NewsletterSubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a NewsletterSubscription.
+     * @param {NewsletterSubscriptionCreateArgs} args - Arguments to create a NewsletterSubscription.
+     * @example
+     * // Create one NewsletterSubscription
+     * const NewsletterSubscription = await prisma.newsletterSubscription.create({
+     *   data: {
+     *     // ... data to create a NewsletterSubscription
+     *   }
+     * })
+     * 
+     */
+    create<T extends NewsletterSubscriptionCreateArgs>(args: SelectSubset<T, NewsletterSubscriptionCreateArgs<ExtArgs>>): Prisma__NewsletterSubscriptionClient<$Result.GetResult<Prisma.$NewsletterSubscriptionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many NewsletterSubscriptions.
+     * @param {NewsletterSubscriptionCreateManyArgs} args - Arguments to create many NewsletterSubscriptions.
+     * @example
+     * // Create many NewsletterSubscriptions
+     * const newsletterSubscription = await prisma.newsletterSubscription.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends NewsletterSubscriptionCreateManyArgs>(args?: SelectSubset<T, NewsletterSubscriptionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many NewsletterSubscriptions and returns the data saved in the database.
+     * @param {NewsletterSubscriptionCreateManyAndReturnArgs} args - Arguments to create many NewsletterSubscriptions.
+     * @example
+     * // Create many NewsletterSubscriptions
+     * const newsletterSubscription = await prisma.newsletterSubscription.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many NewsletterSubscriptions and only return the `id`
+     * const newsletterSubscriptionWithIdOnly = await prisma.newsletterSubscription.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends NewsletterSubscriptionCreateManyAndReturnArgs>(args?: SelectSubset<T, NewsletterSubscriptionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NewsletterSubscriptionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a NewsletterSubscription.
+     * @param {NewsletterSubscriptionDeleteArgs} args - Arguments to delete one NewsletterSubscription.
+     * @example
+     * // Delete one NewsletterSubscription
+     * const NewsletterSubscription = await prisma.newsletterSubscription.delete({
+     *   where: {
+     *     // ... filter to delete one NewsletterSubscription
+     *   }
+     * })
+     * 
+     */
+    delete<T extends NewsletterSubscriptionDeleteArgs>(args: SelectSubset<T, NewsletterSubscriptionDeleteArgs<ExtArgs>>): Prisma__NewsletterSubscriptionClient<$Result.GetResult<Prisma.$NewsletterSubscriptionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one NewsletterSubscription.
+     * @param {NewsletterSubscriptionUpdateArgs} args - Arguments to update one NewsletterSubscription.
+     * @example
+     * // Update one NewsletterSubscription
+     * const newsletterSubscription = await prisma.newsletterSubscription.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends NewsletterSubscriptionUpdateArgs>(args: SelectSubset<T, NewsletterSubscriptionUpdateArgs<ExtArgs>>): Prisma__NewsletterSubscriptionClient<$Result.GetResult<Prisma.$NewsletterSubscriptionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more NewsletterSubscriptions.
+     * @param {NewsletterSubscriptionDeleteManyArgs} args - Arguments to filter NewsletterSubscriptions to delete.
+     * @example
+     * // Delete a few NewsletterSubscriptions
+     * const { count } = await prisma.newsletterSubscription.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends NewsletterSubscriptionDeleteManyArgs>(args?: SelectSubset<T, NewsletterSubscriptionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more NewsletterSubscriptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NewsletterSubscriptionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many NewsletterSubscriptions
+     * const newsletterSubscription = await prisma.newsletterSubscription.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends NewsletterSubscriptionUpdateManyArgs>(args: SelectSubset<T, NewsletterSubscriptionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more NewsletterSubscriptions and returns the data updated in the database.
+     * @param {NewsletterSubscriptionUpdateManyAndReturnArgs} args - Arguments to update many NewsletterSubscriptions.
+     * @example
+     * // Update many NewsletterSubscriptions
+     * const newsletterSubscription = await prisma.newsletterSubscription.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more NewsletterSubscriptions and only return the `id`
+     * const newsletterSubscriptionWithIdOnly = await prisma.newsletterSubscription.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends NewsletterSubscriptionUpdateManyAndReturnArgs>(args: SelectSubset<T, NewsletterSubscriptionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NewsletterSubscriptionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one NewsletterSubscription.
+     * @param {NewsletterSubscriptionUpsertArgs} args - Arguments to update or create a NewsletterSubscription.
+     * @example
+     * // Update or create a NewsletterSubscription
+     * const newsletterSubscription = await prisma.newsletterSubscription.upsert({
+     *   create: {
+     *     // ... data to create a NewsletterSubscription
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the NewsletterSubscription we want to update
+     *   }
+     * })
+     */
+    upsert<T extends NewsletterSubscriptionUpsertArgs>(args: SelectSubset<T, NewsletterSubscriptionUpsertArgs<ExtArgs>>): Prisma__NewsletterSubscriptionClient<$Result.GetResult<Prisma.$NewsletterSubscriptionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of NewsletterSubscriptions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NewsletterSubscriptionCountArgs} args - Arguments to filter NewsletterSubscriptions to count.
+     * @example
+     * // Count the number of NewsletterSubscriptions
+     * const count = await prisma.newsletterSubscription.count({
+     *   where: {
+     *     // ... the filter for the NewsletterSubscriptions we want to count
+     *   }
+     * })
+    **/
+    count<T extends NewsletterSubscriptionCountArgs>(
+      args?: Subset<T, NewsletterSubscriptionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], NewsletterSubscriptionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a NewsletterSubscription.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NewsletterSubscriptionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends NewsletterSubscriptionAggregateArgs>(args: Subset<T, NewsletterSubscriptionAggregateArgs>): Prisma.PrismaPromise<GetNewsletterSubscriptionAggregateType<T>>
+
+    /**
+     * Group by NewsletterSubscription.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NewsletterSubscriptionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends NewsletterSubscriptionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: NewsletterSubscriptionGroupByArgs['orderBy'] }
+        : { orderBy?: NewsletterSubscriptionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, NewsletterSubscriptionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNewsletterSubscriptionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the NewsletterSubscription model
+   */
+  readonly fields: NewsletterSubscriptionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for NewsletterSubscription.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__NewsletterSubscriptionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the NewsletterSubscription model
+   */
+  interface NewsletterSubscriptionFieldRefs {
+    readonly id: FieldRef<"NewsletterSubscription", 'String'>
+    readonly email: FieldRef<"NewsletterSubscription", 'String'>
+    readonly subscribed: FieldRef<"NewsletterSubscription", 'Boolean'>
+    readonly createdAt: FieldRef<"NewsletterSubscription", 'DateTime'>
+    readonly updatedAt: FieldRef<"NewsletterSubscription", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * NewsletterSubscription findUnique
+   */
+  export type NewsletterSubscriptionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterSubscription
+     */
+    select?: NewsletterSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterSubscription
+     */
+    omit?: NewsletterSubscriptionOmit<ExtArgs> | null
+    /**
+     * Filter, which NewsletterSubscription to fetch.
+     */
+    where: NewsletterSubscriptionWhereUniqueInput
+  }
+
+  /**
+   * NewsletterSubscription findUniqueOrThrow
+   */
+  export type NewsletterSubscriptionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterSubscription
+     */
+    select?: NewsletterSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterSubscription
+     */
+    omit?: NewsletterSubscriptionOmit<ExtArgs> | null
+    /**
+     * Filter, which NewsletterSubscription to fetch.
+     */
+    where: NewsletterSubscriptionWhereUniqueInput
+  }
+
+  /**
+   * NewsletterSubscription findFirst
+   */
+  export type NewsletterSubscriptionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterSubscription
+     */
+    select?: NewsletterSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterSubscription
+     */
+    omit?: NewsletterSubscriptionOmit<ExtArgs> | null
+    /**
+     * Filter, which NewsletterSubscription to fetch.
+     */
+    where?: NewsletterSubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NewsletterSubscriptions to fetch.
+     */
+    orderBy?: NewsletterSubscriptionOrderByWithRelationInput | NewsletterSubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for NewsletterSubscriptions.
+     */
+    cursor?: NewsletterSubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NewsletterSubscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NewsletterSubscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of NewsletterSubscriptions.
+     */
+    distinct?: NewsletterSubscriptionScalarFieldEnum | NewsletterSubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * NewsletterSubscription findFirstOrThrow
+   */
+  export type NewsletterSubscriptionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterSubscription
+     */
+    select?: NewsletterSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterSubscription
+     */
+    omit?: NewsletterSubscriptionOmit<ExtArgs> | null
+    /**
+     * Filter, which NewsletterSubscription to fetch.
+     */
+    where?: NewsletterSubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NewsletterSubscriptions to fetch.
+     */
+    orderBy?: NewsletterSubscriptionOrderByWithRelationInput | NewsletterSubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for NewsletterSubscriptions.
+     */
+    cursor?: NewsletterSubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NewsletterSubscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NewsletterSubscriptions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of NewsletterSubscriptions.
+     */
+    distinct?: NewsletterSubscriptionScalarFieldEnum | NewsletterSubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * NewsletterSubscription findMany
+   */
+  export type NewsletterSubscriptionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterSubscription
+     */
+    select?: NewsletterSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterSubscription
+     */
+    omit?: NewsletterSubscriptionOmit<ExtArgs> | null
+    /**
+     * Filter, which NewsletterSubscriptions to fetch.
+     */
+    where?: NewsletterSubscriptionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NewsletterSubscriptions to fetch.
+     */
+    orderBy?: NewsletterSubscriptionOrderByWithRelationInput | NewsletterSubscriptionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing NewsletterSubscriptions.
+     */
+    cursor?: NewsletterSubscriptionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NewsletterSubscriptions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NewsletterSubscriptions.
+     */
+    skip?: number
+    distinct?: NewsletterSubscriptionScalarFieldEnum | NewsletterSubscriptionScalarFieldEnum[]
+  }
+
+  /**
+   * NewsletterSubscription create
+   */
+  export type NewsletterSubscriptionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterSubscription
+     */
+    select?: NewsletterSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterSubscription
+     */
+    omit?: NewsletterSubscriptionOmit<ExtArgs> | null
+    /**
+     * The data needed to create a NewsletterSubscription.
+     */
+    data: XOR<NewsletterSubscriptionCreateInput, NewsletterSubscriptionUncheckedCreateInput>
+  }
+
+  /**
+   * NewsletterSubscription createMany
+   */
+  export type NewsletterSubscriptionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many NewsletterSubscriptions.
+     */
+    data: NewsletterSubscriptionCreateManyInput | NewsletterSubscriptionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * NewsletterSubscription createManyAndReturn
+   */
+  export type NewsletterSubscriptionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterSubscription
+     */
+    select?: NewsletterSubscriptionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterSubscription
+     */
+    omit?: NewsletterSubscriptionOmit<ExtArgs> | null
+    /**
+     * The data used to create many NewsletterSubscriptions.
+     */
+    data: NewsletterSubscriptionCreateManyInput | NewsletterSubscriptionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * NewsletterSubscription update
+   */
+  export type NewsletterSubscriptionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterSubscription
+     */
+    select?: NewsletterSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterSubscription
+     */
+    omit?: NewsletterSubscriptionOmit<ExtArgs> | null
+    /**
+     * The data needed to update a NewsletterSubscription.
+     */
+    data: XOR<NewsletterSubscriptionUpdateInput, NewsletterSubscriptionUncheckedUpdateInput>
+    /**
+     * Choose, which NewsletterSubscription to update.
+     */
+    where: NewsletterSubscriptionWhereUniqueInput
+  }
+
+  /**
+   * NewsletterSubscription updateMany
+   */
+  export type NewsletterSubscriptionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update NewsletterSubscriptions.
+     */
+    data: XOR<NewsletterSubscriptionUpdateManyMutationInput, NewsletterSubscriptionUncheckedUpdateManyInput>
+    /**
+     * Filter which NewsletterSubscriptions to update
+     */
+    where?: NewsletterSubscriptionWhereInput
+    /**
+     * Limit how many NewsletterSubscriptions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * NewsletterSubscription updateManyAndReturn
+   */
+  export type NewsletterSubscriptionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterSubscription
+     */
+    select?: NewsletterSubscriptionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterSubscription
+     */
+    omit?: NewsletterSubscriptionOmit<ExtArgs> | null
+    /**
+     * The data used to update NewsletterSubscriptions.
+     */
+    data: XOR<NewsletterSubscriptionUpdateManyMutationInput, NewsletterSubscriptionUncheckedUpdateManyInput>
+    /**
+     * Filter which NewsletterSubscriptions to update
+     */
+    where?: NewsletterSubscriptionWhereInput
+    /**
+     * Limit how many NewsletterSubscriptions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * NewsletterSubscription upsert
+   */
+  export type NewsletterSubscriptionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterSubscription
+     */
+    select?: NewsletterSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterSubscription
+     */
+    omit?: NewsletterSubscriptionOmit<ExtArgs> | null
+    /**
+     * The filter to search for the NewsletterSubscription to update in case it exists.
+     */
+    where: NewsletterSubscriptionWhereUniqueInput
+    /**
+     * In case the NewsletterSubscription found by the `where` argument doesn't exist, create a new NewsletterSubscription with this data.
+     */
+    create: XOR<NewsletterSubscriptionCreateInput, NewsletterSubscriptionUncheckedCreateInput>
+    /**
+     * In case the NewsletterSubscription was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<NewsletterSubscriptionUpdateInput, NewsletterSubscriptionUncheckedUpdateInput>
+  }
+
+  /**
+   * NewsletterSubscription delete
+   */
+  export type NewsletterSubscriptionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterSubscription
+     */
+    select?: NewsletterSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterSubscription
+     */
+    omit?: NewsletterSubscriptionOmit<ExtArgs> | null
+    /**
+     * Filter which NewsletterSubscription to delete.
+     */
+    where: NewsletterSubscriptionWhereUniqueInput
+  }
+
+  /**
+   * NewsletterSubscription deleteMany
+   */
+  export type NewsletterSubscriptionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which NewsletterSubscriptions to delete
+     */
+    where?: NewsletterSubscriptionWhereInput
+    /**
+     * Limit how many NewsletterSubscriptions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * NewsletterSubscription without action
+   */
+  export type NewsletterSubscriptionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterSubscription
+     */
+    select?: NewsletterSubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterSubscription
+     */
+    omit?: NewsletterSubscriptionOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model NewsletterIssue
+   */
+
+  export type AggregateNewsletterIssue = {
+    _count: NewsletterIssueCountAggregateOutputType | null
+    _min: NewsletterIssueMinAggregateOutputType | null
+    _max: NewsletterIssueMaxAggregateOutputType | null
+  }
+
+  export type NewsletterIssueMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    content: string | null
+    newsletterImage: string | null
+    status: $Enums.NewsletterStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    sentAt: Date | null
+    scheduledAt: Date | null
+  }
+
+  export type NewsletterIssueMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    content: string | null
+    newsletterImage: string | null
+    status: $Enums.NewsletterStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    sentAt: Date | null
+    scheduledAt: Date | null
+  }
+
+  export type NewsletterIssueCountAggregateOutputType = {
+    id: number
+    title: number
+    content: number
+    newsletterImage: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    sentAt: number
+    scheduledAt: number
+    _all: number
+  }
+
+
+  export type NewsletterIssueMinAggregateInputType = {
+    id?: true
+    title?: true
+    content?: true
+    newsletterImage?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    sentAt?: true
+    scheduledAt?: true
+  }
+
+  export type NewsletterIssueMaxAggregateInputType = {
+    id?: true
+    title?: true
+    content?: true
+    newsletterImage?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    sentAt?: true
+    scheduledAt?: true
+  }
+
+  export type NewsletterIssueCountAggregateInputType = {
+    id?: true
+    title?: true
+    content?: true
+    newsletterImage?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    sentAt?: true
+    scheduledAt?: true
+    _all?: true
+  }
+
+  export type NewsletterIssueAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which NewsletterIssue to aggregate.
+     */
+    where?: NewsletterIssueWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NewsletterIssues to fetch.
+     */
+    orderBy?: NewsletterIssueOrderByWithRelationInput | NewsletterIssueOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: NewsletterIssueWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NewsletterIssues from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NewsletterIssues.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned NewsletterIssues
+    **/
+    _count?: true | NewsletterIssueCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: NewsletterIssueMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: NewsletterIssueMaxAggregateInputType
+  }
+
+  export type GetNewsletterIssueAggregateType<T extends NewsletterIssueAggregateArgs> = {
+        [P in keyof T & keyof AggregateNewsletterIssue]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateNewsletterIssue[P]>
+      : GetScalarType<T[P], AggregateNewsletterIssue[P]>
+  }
+
+
+
+
+  export type NewsletterIssueGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NewsletterIssueWhereInput
+    orderBy?: NewsletterIssueOrderByWithAggregationInput | NewsletterIssueOrderByWithAggregationInput[]
+    by: NewsletterIssueScalarFieldEnum[] | NewsletterIssueScalarFieldEnum
+    having?: NewsletterIssueScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: NewsletterIssueCountAggregateInputType | true
+    _min?: NewsletterIssueMinAggregateInputType
+    _max?: NewsletterIssueMaxAggregateInputType
+  }
+
+  export type NewsletterIssueGroupByOutputType = {
+    id: string
+    title: string
+    content: string
+    newsletterImage: string | null
+    status: $Enums.NewsletterStatus
+    createdAt: Date
+    updatedAt: Date
+    sentAt: Date | null
+    scheduledAt: Date | null
+    _count: NewsletterIssueCountAggregateOutputType | null
+    _min: NewsletterIssueMinAggregateOutputType | null
+    _max: NewsletterIssueMaxAggregateOutputType | null
+  }
+
+  type GetNewsletterIssueGroupByPayload<T extends NewsletterIssueGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<NewsletterIssueGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof NewsletterIssueGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], NewsletterIssueGroupByOutputType[P]>
+            : GetScalarType<T[P], NewsletterIssueGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type NewsletterIssueSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    content?: boolean
+    newsletterImage?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sentAt?: boolean
+    scheduledAt?: boolean
+  }, ExtArgs["result"]["newsletterIssue"]>
+
+  export type NewsletterIssueSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    content?: boolean
+    newsletterImage?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sentAt?: boolean
+    scheduledAt?: boolean
+  }, ExtArgs["result"]["newsletterIssue"]>
+
+  export type NewsletterIssueSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    content?: boolean
+    newsletterImage?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sentAt?: boolean
+    scheduledAt?: boolean
+  }, ExtArgs["result"]["newsletterIssue"]>
+
+  export type NewsletterIssueSelectScalar = {
+    id?: boolean
+    title?: boolean
+    content?: boolean
+    newsletterImage?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    sentAt?: boolean
+    scheduledAt?: boolean
+  }
+
+  export type NewsletterIssueOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "newsletterImage" | "status" | "createdAt" | "updatedAt" | "sentAt" | "scheduledAt", ExtArgs["result"]["newsletterIssue"]>
+
+  export type $NewsletterIssuePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "NewsletterIssue"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      content: string
+      newsletterImage: string | null
+      status: $Enums.NewsletterStatus
+      createdAt: Date
+      updatedAt: Date
+      sentAt: Date | null
+      scheduledAt: Date | null
+    }, ExtArgs["result"]["newsletterIssue"]>
+    composites: {}
+  }
+
+  type NewsletterIssueGetPayload<S extends boolean | null | undefined | NewsletterIssueDefaultArgs> = $Result.GetResult<Prisma.$NewsletterIssuePayload, S>
+
+  type NewsletterIssueCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<NewsletterIssueFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: NewsletterIssueCountAggregateInputType | true
+    }
+
+  export interface NewsletterIssueDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['NewsletterIssue'], meta: { name: 'NewsletterIssue' } }
+    /**
+     * Find zero or one NewsletterIssue that matches the filter.
+     * @param {NewsletterIssueFindUniqueArgs} args - Arguments to find a NewsletterIssue
+     * @example
+     * // Get one NewsletterIssue
+     * const newsletterIssue = await prisma.newsletterIssue.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends NewsletterIssueFindUniqueArgs>(args: SelectSubset<T, NewsletterIssueFindUniqueArgs<ExtArgs>>): Prisma__NewsletterIssueClient<$Result.GetResult<Prisma.$NewsletterIssuePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one NewsletterIssue that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {NewsletterIssueFindUniqueOrThrowArgs} args - Arguments to find a NewsletterIssue
+     * @example
+     * // Get one NewsletterIssue
+     * const newsletterIssue = await prisma.newsletterIssue.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends NewsletterIssueFindUniqueOrThrowArgs>(args: SelectSubset<T, NewsletterIssueFindUniqueOrThrowArgs<ExtArgs>>): Prisma__NewsletterIssueClient<$Result.GetResult<Prisma.$NewsletterIssuePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first NewsletterIssue that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NewsletterIssueFindFirstArgs} args - Arguments to find a NewsletterIssue
+     * @example
+     * // Get one NewsletterIssue
+     * const newsletterIssue = await prisma.newsletterIssue.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends NewsletterIssueFindFirstArgs>(args?: SelectSubset<T, NewsletterIssueFindFirstArgs<ExtArgs>>): Prisma__NewsletterIssueClient<$Result.GetResult<Prisma.$NewsletterIssuePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first NewsletterIssue that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NewsletterIssueFindFirstOrThrowArgs} args - Arguments to find a NewsletterIssue
+     * @example
+     * // Get one NewsletterIssue
+     * const newsletterIssue = await prisma.newsletterIssue.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends NewsletterIssueFindFirstOrThrowArgs>(args?: SelectSubset<T, NewsletterIssueFindFirstOrThrowArgs<ExtArgs>>): Prisma__NewsletterIssueClient<$Result.GetResult<Prisma.$NewsletterIssuePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more NewsletterIssues that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NewsletterIssueFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all NewsletterIssues
+     * const newsletterIssues = await prisma.newsletterIssue.findMany()
+     * 
+     * // Get first 10 NewsletterIssues
+     * const newsletterIssues = await prisma.newsletterIssue.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const newsletterIssueWithIdOnly = await prisma.newsletterIssue.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends NewsletterIssueFindManyArgs>(args?: SelectSubset<T, NewsletterIssueFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NewsletterIssuePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a NewsletterIssue.
+     * @param {NewsletterIssueCreateArgs} args - Arguments to create a NewsletterIssue.
+     * @example
+     * // Create one NewsletterIssue
+     * const NewsletterIssue = await prisma.newsletterIssue.create({
+     *   data: {
+     *     // ... data to create a NewsletterIssue
+     *   }
+     * })
+     * 
+     */
+    create<T extends NewsletterIssueCreateArgs>(args: SelectSubset<T, NewsletterIssueCreateArgs<ExtArgs>>): Prisma__NewsletterIssueClient<$Result.GetResult<Prisma.$NewsletterIssuePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many NewsletterIssues.
+     * @param {NewsletterIssueCreateManyArgs} args - Arguments to create many NewsletterIssues.
+     * @example
+     * // Create many NewsletterIssues
+     * const newsletterIssue = await prisma.newsletterIssue.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends NewsletterIssueCreateManyArgs>(args?: SelectSubset<T, NewsletterIssueCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many NewsletterIssues and returns the data saved in the database.
+     * @param {NewsletterIssueCreateManyAndReturnArgs} args - Arguments to create many NewsletterIssues.
+     * @example
+     * // Create many NewsletterIssues
+     * const newsletterIssue = await prisma.newsletterIssue.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many NewsletterIssues and only return the `id`
+     * const newsletterIssueWithIdOnly = await prisma.newsletterIssue.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends NewsletterIssueCreateManyAndReturnArgs>(args?: SelectSubset<T, NewsletterIssueCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NewsletterIssuePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a NewsletterIssue.
+     * @param {NewsletterIssueDeleteArgs} args - Arguments to delete one NewsletterIssue.
+     * @example
+     * // Delete one NewsletterIssue
+     * const NewsletterIssue = await prisma.newsletterIssue.delete({
+     *   where: {
+     *     // ... filter to delete one NewsletterIssue
+     *   }
+     * })
+     * 
+     */
+    delete<T extends NewsletterIssueDeleteArgs>(args: SelectSubset<T, NewsletterIssueDeleteArgs<ExtArgs>>): Prisma__NewsletterIssueClient<$Result.GetResult<Prisma.$NewsletterIssuePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one NewsletterIssue.
+     * @param {NewsletterIssueUpdateArgs} args - Arguments to update one NewsletterIssue.
+     * @example
+     * // Update one NewsletterIssue
+     * const newsletterIssue = await prisma.newsletterIssue.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends NewsletterIssueUpdateArgs>(args: SelectSubset<T, NewsletterIssueUpdateArgs<ExtArgs>>): Prisma__NewsletterIssueClient<$Result.GetResult<Prisma.$NewsletterIssuePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more NewsletterIssues.
+     * @param {NewsletterIssueDeleteManyArgs} args - Arguments to filter NewsletterIssues to delete.
+     * @example
+     * // Delete a few NewsletterIssues
+     * const { count } = await prisma.newsletterIssue.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends NewsletterIssueDeleteManyArgs>(args?: SelectSubset<T, NewsletterIssueDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more NewsletterIssues.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NewsletterIssueUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many NewsletterIssues
+     * const newsletterIssue = await prisma.newsletterIssue.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends NewsletterIssueUpdateManyArgs>(args: SelectSubset<T, NewsletterIssueUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more NewsletterIssues and returns the data updated in the database.
+     * @param {NewsletterIssueUpdateManyAndReturnArgs} args - Arguments to update many NewsletterIssues.
+     * @example
+     * // Update many NewsletterIssues
+     * const newsletterIssue = await prisma.newsletterIssue.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more NewsletterIssues and only return the `id`
+     * const newsletterIssueWithIdOnly = await prisma.newsletterIssue.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends NewsletterIssueUpdateManyAndReturnArgs>(args: SelectSubset<T, NewsletterIssueUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NewsletterIssuePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one NewsletterIssue.
+     * @param {NewsletterIssueUpsertArgs} args - Arguments to update or create a NewsletterIssue.
+     * @example
+     * // Update or create a NewsletterIssue
+     * const newsletterIssue = await prisma.newsletterIssue.upsert({
+     *   create: {
+     *     // ... data to create a NewsletterIssue
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the NewsletterIssue we want to update
+     *   }
+     * })
+     */
+    upsert<T extends NewsletterIssueUpsertArgs>(args: SelectSubset<T, NewsletterIssueUpsertArgs<ExtArgs>>): Prisma__NewsletterIssueClient<$Result.GetResult<Prisma.$NewsletterIssuePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of NewsletterIssues.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NewsletterIssueCountArgs} args - Arguments to filter NewsletterIssues to count.
+     * @example
+     * // Count the number of NewsletterIssues
+     * const count = await prisma.newsletterIssue.count({
+     *   where: {
+     *     // ... the filter for the NewsletterIssues we want to count
+     *   }
+     * })
+    **/
+    count<T extends NewsletterIssueCountArgs>(
+      args?: Subset<T, NewsletterIssueCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], NewsletterIssueCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a NewsletterIssue.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NewsletterIssueAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends NewsletterIssueAggregateArgs>(args: Subset<T, NewsletterIssueAggregateArgs>): Prisma.PrismaPromise<GetNewsletterIssueAggregateType<T>>
+
+    /**
+     * Group by NewsletterIssue.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NewsletterIssueGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends NewsletterIssueGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: NewsletterIssueGroupByArgs['orderBy'] }
+        : { orderBy?: NewsletterIssueGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, NewsletterIssueGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNewsletterIssueGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the NewsletterIssue model
+   */
+  readonly fields: NewsletterIssueFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for NewsletterIssue.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__NewsletterIssueClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the NewsletterIssue model
+   */
+  interface NewsletterIssueFieldRefs {
+    readonly id: FieldRef<"NewsletterIssue", 'String'>
+    readonly title: FieldRef<"NewsletterIssue", 'String'>
+    readonly content: FieldRef<"NewsletterIssue", 'String'>
+    readonly newsletterImage: FieldRef<"NewsletterIssue", 'String'>
+    readonly status: FieldRef<"NewsletterIssue", 'NewsletterStatus'>
+    readonly createdAt: FieldRef<"NewsletterIssue", 'DateTime'>
+    readonly updatedAt: FieldRef<"NewsletterIssue", 'DateTime'>
+    readonly sentAt: FieldRef<"NewsletterIssue", 'DateTime'>
+    readonly scheduledAt: FieldRef<"NewsletterIssue", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * NewsletterIssue findUnique
+   */
+  export type NewsletterIssueFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterIssue
+     */
+    select?: NewsletterIssueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterIssue
+     */
+    omit?: NewsletterIssueOmit<ExtArgs> | null
+    /**
+     * Filter, which NewsletterIssue to fetch.
+     */
+    where: NewsletterIssueWhereUniqueInput
+  }
+
+  /**
+   * NewsletterIssue findUniqueOrThrow
+   */
+  export type NewsletterIssueFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterIssue
+     */
+    select?: NewsletterIssueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterIssue
+     */
+    omit?: NewsletterIssueOmit<ExtArgs> | null
+    /**
+     * Filter, which NewsletterIssue to fetch.
+     */
+    where: NewsletterIssueWhereUniqueInput
+  }
+
+  /**
+   * NewsletterIssue findFirst
+   */
+  export type NewsletterIssueFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterIssue
+     */
+    select?: NewsletterIssueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterIssue
+     */
+    omit?: NewsletterIssueOmit<ExtArgs> | null
+    /**
+     * Filter, which NewsletterIssue to fetch.
+     */
+    where?: NewsletterIssueWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NewsletterIssues to fetch.
+     */
+    orderBy?: NewsletterIssueOrderByWithRelationInput | NewsletterIssueOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for NewsletterIssues.
+     */
+    cursor?: NewsletterIssueWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NewsletterIssues from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NewsletterIssues.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of NewsletterIssues.
+     */
+    distinct?: NewsletterIssueScalarFieldEnum | NewsletterIssueScalarFieldEnum[]
+  }
+
+  /**
+   * NewsletterIssue findFirstOrThrow
+   */
+  export type NewsletterIssueFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterIssue
+     */
+    select?: NewsletterIssueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterIssue
+     */
+    omit?: NewsletterIssueOmit<ExtArgs> | null
+    /**
+     * Filter, which NewsletterIssue to fetch.
+     */
+    where?: NewsletterIssueWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NewsletterIssues to fetch.
+     */
+    orderBy?: NewsletterIssueOrderByWithRelationInput | NewsletterIssueOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for NewsletterIssues.
+     */
+    cursor?: NewsletterIssueWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NewsletterIssues from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NewsletterIssues.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of NewsletterIssues.
+     */
+    distinct?: NewsletterIssueScalarFieldEnum | NewsletterIssueScalarFieldEnum[]
+  }
+
+  /**
+   * NewsletterIssue findMany
+   */
+  export type NewsletterIssueFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterIssue
+     */
+    select?: NewsletterIssueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterIssue
+     */
+    omit?: NewsletterIssueOmit<ExtArgs> | null
+    /**
+     * Filter, which NewsletterIssues to fetch.
+     */
+    where?: NewsletterIssueWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of NewsletterIssues to fetch.
+     */
+    orderBy?: NewsletterIssueOrderByWithRelationInput | NewsletterIssueOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing NewsletterIssues.
+     */
+    cursor?: NewsletterIssueWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` NewsletterIssues from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` NewsletterIssues.
+     */
+    skip?: number
+    distinct?: NewsletterIssueScalarFieldEnum | NewsletterIssueScalarFieldEnum[]
+  }
+
+  /**
+   * NewsletterIssue create
+   */
+  export type NewsletterIssueCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterIssue
+     */
+    select?: NewsletterIssueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterIssue
+     */
+    omit?: NewsletterIssueOmit<ExtArgs> | null
+    /**
+     * The data needed to create a NewsletterIssue.
+     */
+    data: XOR<NewsletterIssueCreateInput, NewsletterIssueUncheckedCreateInput>
+  }
+
+  /**
+   * NewsletterIssue createMany
+   */
+  export type NewsletterIssueCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many NewsletterIssues.
+     */
+    data: NewsletterIssueCreateManyInput | NewsletterIssueCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * NewsletterIssue createManyAndReturn
+   */
+  export type NewsletterIssueCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterIssue
+     */
+    select?: NewsletterIssueSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterIssue
+     */
+    omit?: NewsletterIssueOmit<ExtArgs> | null
+    /**
+     * The data used to create many NewsletterIssues.
+     */
+    data: NewsletterIssueCreateManyInput | NewsletterIssueCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * NewsletterIssue update
+   */
+  export type NewsletterIssueUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterIssue
+     */
+    select?: NewsletterIssueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterIssue
+     */
+    omit?: NewsletterIssueOmit<ExtArgs> | null
+    /**
+     * The data needed to update a NewsletterIssue.
+     */
+    data: XOR<NewsletterIssueUpdateInput, NewsletterIssueUncheckedUpdateInput>
+    /**
+     * Choose, which NewsletterIssue to update.
+     */
+    where: NewsletterIssueWhereUniqueInput
+  }
+
+  /**
+   * NewsletterIssue updateMany
+   */
+  export type NewsletterIssueUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update NewsletterIssues.
+     */
+    data: XOR<NewsletterIssueUpdateManyMutationInput, NewsletterIssueUncheckedUpdateManyInput>
+    /**
+     * Filter which NewsletterIssues to update
+     */
+    where?: NewsletterIssueWhereInput
+    /**
+     * Limit how many NewsletterIssues to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * NewsletterIssue updateManyAndReturn
+   */
+  export type NewsletterIssueUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterIssue
+     */
+    select?: NewsletterIssueSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterIssue
+     */
+    omit?: NewsletterIssueOmit<ExtArgs> | null
+    /**
+     * The data used to update NewsletterIssues.
+     */
+    data: XOR<NewsletterIssueUpdateManyMutationInput, NewsletterIssueUncheckedUpdateManyInput>
+    /**
+     * Filter which NewsletterIssues to update
+     */
+    where?: NewsletterIssueWhereInput
+    /**
+     * Limit how many NewsletterIssues to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * NewsletterIssue upsert
+   */
+  export type NewsletterIssueUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterIssue
+     */
+    select?: NewsletterIssueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterIssue
+     */
+    omit?: NewsletterIssueOmit<ExtArgs> | null
+    /**
+     * The filter to search for the NewsletterIssue to update in case it exists.
+     */
+    where: NewsletterIssueWhereUniqueInput
+    /**
+     * In case the NewsletterIssue found by the `where` argument doesn't exist, create a new NewsletterIssue with this data.
+     */
+    create: XOR<NewsletterIssueCreateInput, NewsletterIssueUncheckedCreateInput>
+    /**
+     * In case the NewsletterIssue was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<NewsletterIssueUpdateInput, NewsletterIssueUncheckedUpdateInput>
+  }
+
+  /**
+   * NewsletterIssue delete
+   */
+  export type NewsletterIssueDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterIssue
+     */
+    select?: NewsletterIssueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterIssue
+     */
+    omit?: NewsletterIssueOmit<ExtArgs> | null
+    /**
+     * Filter which NewsletterIssue to delete.
+     */
+    where: NewsletterIssueWhereUniqueInput
+  }
+
+  /**
+   * NewsletterIssue deleteMany
+   */
+  export type NewsletterIssueDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which NewsletterIssues to delete
+     */
+    where?: NewsletterIssueWhereInput
+    /**
+     * Limit how many NewsletterIssues to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * NewsletterIssue without action
+   */
+  export type NewsletterIssueDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the NewsletterIssue
+     */
+    select?: NewsletterIssueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the NewsletterIssue
+     */
+    omit?: NewsletterIssueOmit<ExtArgs> | null
   }
 
 
@@ -3176,10 +6692,47 @@ export namespace Prisma {
     imageUrl: 'imageUrl',
     published: 'published',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    recipeCategoryId: 'recipeCategoryId'
   };
 
   export type RecipeScalarFieldEnum = (typeof RecipeScalarFieldEnum)[keyof typeof RecipeScalarFieldEnum]
+
+
+  export const RecipeCategoryScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type RecipeCategoryScalarFieldEnum = (typeof RecipeCategoryScalarFieldEnum)[keyof typeof RecipeCategoryScalarFieldEnum]
+
+
+  export const NewsletterSubscriptionScalarFieldEnum: {
+    id: 'id',
+    email: 'email',
+    subscribed: 'subscribed',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type NewsletterSubscriptionScalarFieldEnum = (typeof NewsletterSubscriptionScalarFieldEnum)[keyof typeof NewsletterSubscriptionScalarFieldEnum]
+
+
+  export const NewsletterIssueScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    content: 'content',
+    newsletterImage: 'newsletterImage',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    sentAt: 'sentAt',
+    scheduledAt: 'scheduledAt'
+  };
+
+  export type NewsletterIssueScalarFieldEnum = (typeof NewsletterIssueScalarFieldEnum)[keyof typeof NewsletterIssueScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -3243,6 +6796,20 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'NewsletterStatus'
+   */
+  export type EnumNewsletterStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NewsletterStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'NewsletterStatus[]'
+   */
+  export type ListEnumNewsletterStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NewsletterStatus[]'>
     
 
 
@@ -3358,6 +6925,8 @@ export namespace Prisma {
     published?: BoolFilter<"Recipe"> | boolean
     createdAt?: DateTimeFilter<"Recipe"> | Date | string
     updatedAt?: DateTimeFilter<"Recipe"> | Date | string
+    recipeCategoryId?: StringNullableFilter<"Recipe"> | string | null
+    recipeCategory?: XOR<RecipeCategoryNullableScalarRelationFilter, RecipeCategoryWhereInput> | null
   }
 
   export type RecipeOrderByWithRelationInput = {
@@ -3375,6 +6944,8 @@ export namespace Prisma {
     published?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    recipeCategoryId?: SortOrderInput | SortOrder
+    recipeCategory?: RecipeCategoryOrderByWithRelationInput
   }
 
   export type RecipeWhereUniqueInput = Prisma.AtLeast<{
@@ -3395,6 +6966,8 @@ export namespace Prisma {
     published?: BoolFilter<"Recipe"> | boolean
     createdAt?: DateTimeFilter<"Recipe"> | Date | string
     updatedAt?: DateTimeFilter<"Recipe"> | Date | string
+    recipeCategoryId?: StringNullableFilter<"Recipe"> | string | null
+    recipeCategory?: XOR<RecipeCategoryNullableScalarRelationFilter, RecipeCategoryWhereInput> | null
   }, "id" | "slug">
 
   export type RecipeOrderByWithAggregationInput = {
@@ -3412,6 +6985,7 @@ export namespace Prisma {
     published?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    recipeCategoryId?: SortOrderInput | SortOrder
     _count?: RecipeCountOrderByAggregateInput
     _max?: RecipeMaxOrderByAggregateInput
     _min?: RecipeMinOrderByAggregateInput
@@ -3435,6 +7009,181 @@ export namespace Prisma {
     published?: BoolWithAggregatesFilter<"Recipe"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Recipe"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Recipe"> | Date | string
+    recipeCategoryId?: StringNullableWithAggregatesFilter<"Recipe"> | string | null
+  }
+
+  export type RecipeCategoryWhereInput = {
+    AND?: RecipeCategoryWhereInput | RecipeCategoryWhereInput[]
+    OR?: RecipeCategoryWhereInput[]
+    NOT?: RecipeCategoryWhereInput | RecipeCategoryWhereInput[]
+    id?: StringFilter<"RecipeCategory"> | string
+    name?: StringFilter<"RecipeCategory"> | string
+    createdAt?: DateTimeFilter<"RecipeCategory"> | Date | string
+    updatedAt?: DateTimeFilter<"RecipeCategory"> | Date | string
+    recipes?: RecipeListRelationFilter
+  }
+
+  export type RecipeCategoryOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    recipes?: RecipeOrderByRelationAggregateInput
+  }
+
+  export type RecipeCategoryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    name?: string
+    AND?: RecipeCategoryWhereInput | RecipeCategoryWhereInput[]
+    OR?: RecipeCategoryWhereInput[]
+    NOT?: RecipeCategoryWhereInput | RecipeCategoryWhereInput[]
+    createdAt?: DateTimeFilter<"RecipeCategory"> | Date | string
+    updatedAt?: DateTimeFilter<"RecipeCategory"> | Date | string
+    recipes?: RecipeListRelationFilter
+  }, "id" | "name">
+
+  export type RecipeCategoryOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: RecipeCategoryCountOrderByAggregateInput
+    _max?: RecipeCategoryMaxOrderByAggregateInput
+    _min?: RecipeCategoryMinOrderByAggregateInput
+  }
+
+  export type RecipeCategoryScalarWhereWithAggregatesInput = {
+    AND?: RecipeCategoryScalarWhereWithAggregatesInput | RecipeCategoryScalarWhereWithAggregatesInput[]
+    OR?: RecipeCategoryScalarWhereWithAggregatesInput[]
+    NOT?: RecipeCategoryScalarWhereWithAggregatesInput | RecipeCategoryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RecipeCategory"> | string
+    name?: StringWithAggregatesFilter<"RecipeCategory"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"RecipeCategory"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"RecipeCategory"> | Date | string
+  }
+
+  export type NewsletterSubscriptionWhereInput = {
+    AND?: NewsletterSubscriptionWhereInput | NewsletterSubscriptionWhereInput[]
+    OR?: NewsletterSubscriptionWhereInput[]
+    NOT?: NewsletterSubscriptionWhereInput | NewsletterSubscriptionWhereInput[]
+    id?: StringFilter<"NewsletterSubscription"> | string
+    email?: StringFilter<"NewsletterSubscription"> | string
+    subscribed?: BoolFilter<"NewsletterSubscription"> | boolean
+    createdAt?: DateTimeFilter<"NewsletterSubscription"> | Date | string
+    updatedAt?: DateTimeFilter<"NewsletterSubscription"> | Date | string
+  }
+
+  export type NewsletterSubscriptionOrderByWithRelationInput = {
+    id?: SortOrder
+    email?: SortOrder
+    subscribed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type NewsletterSubscriptionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    email?: string
+    AND?: NewsletterSubscriptionWhereInput | NewsletterSubscriptionWhereInput[]
+    OR?: NewsletterSubscriptionWhereInput[]
+    NOT?: NewsletterSubscriptionWhereInput | NewsletterSubscriptionWhereInput[]
+    subscribed?: BoolFilter<"NewsletterSubscription"> | boolean
+    createdAt?: DateTimeFilter<"NewsletterSubscription"> | Date | string
+    updatedAt?: DateTimeFilter<"NewsletterSubscription"> | Date | string
+  }, "id" | "email">
+
+  export type NewsletterSubscriptionOrderByWithAggregationInput = {
+    id?: SortOrder
+    email?: SortOrder
+    subscribed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: NewsletterSubscriptionCountOrderByAggregateInput
+    _max?: NewsletterSubscriptionMaxOrderByAggregateInput
+    _min?: NewsletterSubscriptionMinOrderByAggregateInput
+  }
+
+  export type NewsletterSubscriptionScalarWhereWithAggregatesInput = {
+    AND?: NewsletterSubscriptionScalarWhereWithAggregatesInput | NewsletterSubscriptionScalarWhereWithAggregatesInput[]
+    OR?: NewsletterSubscriptionScalarWhereWithAggregatesInput[]
+    NOT?: NewsletterSubscriptionScalarWhereWithAggregatesInput | NewsletterSubscriptionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"NewsletterSubscription"> | string
+    email?: StringWithAggregatesFilter<"NewsletterSubscription"> | string
+    subscribed?: BoolWithAggregatesFilter<"NewsletterSubscription"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"NewsletterSubscription"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"NewsletterSubscription"> | Date | string
+  }
+
+  export type NewsletterIssueWhereInput = {
+    AND?: NewsletterIssueWhereInput | NewsletterIssueWhereInput[]
+    OR?: NewsletterIssueWhereInput[]
+    NOT?: NewsletterIssueWhereInput | NewsletterIssueWhereInput[]
+    id?: StringFilter<"NewsletterIssue"> | string
+    title?: StringFilter<"NewsletterIssue"> | string
+    content?: StringFilter<"NewsletterIssue"> | string
+    newsletterImage?: StringNullableFilter<"NewsletterIssue"> | string | null
+    status?: EnumNewsletterStatusFilter<"NewsletterIssue"> | $Enums.NewsletterStatus
+    createdAt?: DateTimeFilter<"NewsletterIssue"> | Date | string
+    updatedAt?: DateTimeFilter<"NewsletterIssue"> | Date | string
+    sentAt?: DateTimeNullableFilter<"NewsletterIssue"> | Date | string | null
+    scheduledAt?: DateTimeNullableFilter<"NewsletterIssue"> | Date | string | null
+  }
+
+  export type NewsletterIssueOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    newsletterImage?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    sentAt?: SortOrderInput | SortOrder
+    scheduledAt?: SortOrderInput | SortOrder
+  }
+
+  export type NewsletterIssueWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: NewsletterIssueWhereInput | NewsletterIssueWhereInput[]
+    OR?: NewsletterIssueWhereInput[]
+    NOT?: NewsletterIssueWhereInput | NewsletterIssueWhereInput[]
+    title?: StringFilter<"NewsletterIssue"> | string
+    content?: StringFilter<"NewsletterIssue"> | string
+    newsletterImage?: StringNullableFilter<"NewsletterIssue"> | string | null
+    status?: EnumNewsletterStatusFilter<"NewsletterIssue"> | $Enums.NewsletterStatus
+    createdAt?: DateTimeFilter<"NewsletterIssue"> | Date | string
+    updatedAt?: DateTimeFilter<"NewsletterIssue"> | Date | string
+    sentAt?: DateTimeNullableFilter<"NewsletterIssue"> | Date | string | null
+    scheduledAt?: DateTimeNullableFilter<"NewsletterIssue"> | Date | string | null
+  }, "id">
+
+  export type NewsletterIssueOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    newsletterImage?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    sentAt?: SortOrderInput | SortOrder
+    scheduledAt?: SortOrderInput | SortOrder
+    _count?: NewsletterIssueCountOrderByAggregateInput
+    _max?: NewsletterIssueMaxOrderByAggregateInput
+    _min?: NewsletterIssueMinOrderByAggregateInput
+  }
+
+  export type NewsletterIssueScalarWhereWithAggregatesInput = {
+    AND?: NewsletterIssueScalarWhereWithAggregatesInput | NewsletterIssueScalarWhereWithAggregatesInput[]
+    OR?: NewsletterIssueScalarWhereWithAggregatesInput[]
+    NOT?: NewsletterIssueScalarWhereWithAggregatesInput | NewsletterIssueScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"NewsletterIssue"> | string
+    title?: StringWithAggregatesFilter<"NewsletterIssue"> | string
+    content?: StringWithAggregatesFilter<"NewsletterIssue"> | string
+    newsletterImage?: StringNullableWithAggregatesFilter<"NewsletterIssue"> | string | null
+    status?: EnumNewsletterStatusWithAggregatesFilter<"NewsletterIssue"> | $Enums.NewsletterStatus
+    createdAt?: DateTimeWithAggregatesFilter<"NewsletterIssue"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"NewsletterIssue"> | Date | string
+    sentAt?: DateTimeNullableWithAggregatesFilter<"NewsletterIssue"> | Date | string | null
+    scheduledAt?: DateTimeNullableWithAggregatesFilter<"NewsletterIssue"> | Date | string | null
   }
 
   export type PostCreateInput = {
@@ -3543,6 +7292,7 @@ export namespace Prisma {
     published?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    recipeCategory?: RecipeCategoryCreateNestedOneWithoutRecipesInput
   }
 
   export type RecipeUncheckedCreateInput = {
@@ -3560,6 +7310,7 @@ export namespace Prisma {
     published?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    recipeCategoryId?: string | null
   }
 
   export type RecipeUpdateInput = {
@@ -3577,6 +7328,7 @@ export namespace Prisma {
     published?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    recipeCategory?: RecipeCategoryUpdateOneWithoutRecipesNestedInput
   }
 
   export type RecipeUncheckedUpdateInput = {
@@ -3594,6 +7346,7 @@ export namespace Prisma {
     published?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    recipeCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RecipeCreateManyInput = {
@@ -3611,6 +7364,7 @@ export namespace Prisma {
     published?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    recipeCategoryId?: string | null
   }
 
   export type RecipeUpdateManyMutationInput = {
@@ -3645,6 +7399,200 @@ export namespace Prisma {
     published?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    recipeCategoryId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type RecipeCategoryCreateInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    recipes?: RecipeCreateNestedManyWithoutRecipeCategoryInput
+  }
+
+  export type RecipeCategoryUncheckedCreateInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    recipes?: RecipeUncheckedCreateNestedManyWithoutRecipeCategoryInput
+  }
+
+  export type RecipeCategoryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    recipes?: RecipeUpdateManyWithoutRecipeCategoryNestedInput
+  }
+
+  export type RecipeCategoryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    recipes?: RecipeUncheckedUpdateManyWithoutRecipeCategoryNestedInput
+  }
+
+  export type RecipeCategoryCreateManyInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RecipeCategoryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RecipeCategoryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NewsletterSubscriptionCreateInput = {
+    id?: string
+    email: string
+    subscribed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NewsletterSubscriptionUncheckedCreateInput = {
+    id?: string
+    email: string
+    subscribed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NewsletterSubscriptionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    subscribed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NewsletterSubscriptionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    subscribed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NewsletterSubscriptionCreateManyInput = {
+    id?: string
+    email: string
+    subscribed?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NewsletterSubscriptionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    subscribed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NewsletterSubscriptionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    subscribed?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NewsletterIssueCreateInput = {
+    id?: string
+    title: string
+    content: string
+    newsletterImage?: string | null
+    status?: $Enums.NewsletterStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sentAt?: Date | string | null
+    scheduledAt?: Date | string | null
+  }
+
+  export type NewsletterIssueUncheckedCreateInput = {
+    id?: string
+    title: string
+    content: string
+    newsletterImage?: string | null
+    status?: $Enums.NewsletterStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sentAt?: Date | string | null
+    scheduledAt?: Date | string | null
+  }
+
+  export type NewsletterIssueUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    newsletterImage?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumNewsletterStatusFieldUpdateOperationsInput | $Enums.NewsletterStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type NewsletterIssueUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    newsletterImage?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumNewsletterStatusFieldUpdateOperationsInput | $Enums.NewsletterStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type NewsletterIssueCreateManyInput = {
+    id?: string
+    title: string
+    content: string
+    newsletterImage?: string | null
+    status?: $Enums.NewsletterStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sentAt?: Date | string | null
+    scheduledAt?: Date | string | null
+  }
+
+  export type NewsletterIssueUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    newsletterImage?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumNewsletterStatusFieldUpdateOperationsInput | $Enums.NewsletterStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type NewsletterIssueUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    newsletterImage?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumNewsletterStatusFieldUpdateOperationsInput | $Enums.NewsletterStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sentAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scheduledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -3795,6 +7743,11 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type RecipeCategoryNullableScalarRelationFilter = {
+    is?: RecipeCategoryWhereInput | null
+    isNot?: RecipeCategoryWhereInput | null
+  }
+
   export type RecipeCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
@@ -3810,6 +7763,7 @@ export namespace Prisma {
     published?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    recipeCategoryId?: SortOrder
   }
 
   export type RecipeMaxOrderByAggregateInput = {
@@ -3827,6 +7781,7 @@ export namespace Prisma {
     published?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    recipeCategoryId?: SortOrder
   }
 
   export type RecipeMinOrderByAggregateInput = {
@@ -3844,6 +7799,140 @@ export namespace Prisma {
     published?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    recipeCategoryId?: SortOrder
+  }
+
+  export type RecipeListRelationFilter = {
+    every?: RecipeWhereInput
+    some?: RecipeWhereInput
+    none?: RecipeWhereInput
+  }
+
+  export type RecipeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RecipeCategoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RecipeCategoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type RecipeCategoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type NewsletterSubscriptionCountOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    subscribed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type NewsletterSubscriptionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    subscribed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type NewsletterSubscriptionMinOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    subscribed?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumNewsletterStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.NewsletterStatus | EnumNewsletterStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.NewsletterStatus[] | ListEnumNewsletterStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NewsletterStatus[] | ListEnumNewsletterStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumNewsletterStatusFilter<$PrismaModel> | $Enums.NewsletterStatus
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NewsletterIssueCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    newsletterImage?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    sentAt?: SortOrder
+    scheduledAt?: SortOrder
+  }
+
+  export type NewsletterIssueMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    newsletterImage?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    sentAt?: SortOrder
+    scheduledAt?: SortOrder
+  }
+
+  export type NewsletterIssueMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    newsletterImage?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    sentAt?: SortOrder
+    scheduledAt?: SortOrder
+  }
+
+  export type EnumNewsletterStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.NewsletterStatus | EnumNewsletterStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.NewsletterStatus[] | ListEnumNewsletterStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NewsletterStatus[] | ListEnumNewsletterStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumNewsletterStatusWithAggregatesFilter<$PrismaModel> | $Enums.NewsletterStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumNewsletterStatusFilter<$PrismaModel>
+    _max?: NestedEnumNewsletterStatusFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -3860,6 +7949,72 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type RecipeCategoryCreateNestedOneWithoutRecipesInput = {
+    create?: XOR<RecipeCategoryCreateWithoutRecipesInput, RecipeCategoryUncheckedCreateWithoutRecipesInput>
+    connectOrCreate?: RecipeCategoryCreateOrConnectWithoutRecipesInput
+    connect?: RecipeCategoryWhereUniqueInput
+  }
+
+  export type RecipeCategoryUpdateOneWithoutRecipesNestedInput = {
+    create?: XOR<RecipeCategoryCreateWithoutRecipesInput, RecipeCategoryUncheckedCreateWithoutRecipesInput>
+    connectOrCreate?: RecipeCategoryCreateOrConnectWithoutRecipesInput
+    upsert?: RecipeCategoryUpsertWithoutRecipesInput
+    disconnect?: RecipeCategoryWhereInput | boolean
+    delete?: RecipeCategoryWhereInput | boolean
+    connect?: RecipeCategoryWhereUniqueInput
+    update?: XOR<XOR<RecipeCategoryUpdateToOneWithWhereWithoutRecipesInput, RecipeCategoryUpdateWithoutRecipesInput>, RecipeCategoryUncheckedUpdateWithoutRecipesInput>
+  }
+
+  export type RecipeCreateNestedManyWithoutRecipeCategoryInput = {
+    create?: XOR<RecipeCreateWithoutRecipeCategoryInput, RecipeUncheckedCreateWithoutRecipeCategoryInput> | RecipeCreateWithoutRecipeCategoryInput[] | RecipeUncheckedCreateWithoutRecipeCategoryInput[]
+    connectOrCreate?: RecipeCreateOrConnectWithoutRecipeCategoryInput | RecipeCreateOrConnectWithoutRecipeCategoryInput[]
+    createMany?: RecipeCreateManyRecipeCategoryInputEnvelope
+    connect?: RecipeWhereUniqueInput | RecipeWhereUniqueInput[]
+  }
+
+  export type RecipeUncheckedCreateNestedManyWithoutRecipeCategoryInput = {
+    create?: XOR<RecipeCreateWithoutRecipeCategoryInput, RecipeUncheckedCreateWithoutRecipeCategoryInput> | RecipeCreateWithoutRecipeCategoryInput[] | RecipeUncheckedCreateWithoutRecipeCategoryInput[]
+    connectOrCreate?: RecipeCreateOrConnectWithoutRecipeCategoryInput | RecipeCreateOrConnectWithoutRecipeCategoryInput[]
+    createMany?: RecipeCreateManyRecipeCategoryInputEnvelope
+    connect?: RecipeWhereUniqueInput | RecipeWhereUniqueInput[]
+  }
+
+  export type RecipeUpdateManyWithoutRecipeCategoryNestedInput = {
+    create?: XOR<RecipeCreateWithoutRecipeCategoryInput, RecipeUncheckedCreateWithoutRecipeCategoryInput> | RecipeCreateWithoutRecipeCategoryInput[] | RecipeUncheckedCreateWithoutRecipeCategoryInput[]
+    connectOrCreate?: RecipeCreateOrConnectWithoutRecipeCategoryInput | RecipeCreateOrConnectWithoutRecipeCategoryInput[]
+    upsert?: RecipeUpsertWithWhereUniqueWithoutRecipeCategoryInput | RecipeUpsertWithWhereUniqueWithoutRecipeCategoryInput[]
+    createMany?: RecipeCreateManyRecipeCategoryInputEnvelope
+    set?: RecipeWhereUniqueInput | RecipeWhereUniqueInput[]
+    disconnect?: RecipeWhereUniqueInput | RecipeWhereUniqueInput[]
+    delete?: RecipeWhereUniqueInput | RecipeWhereUniqueInput[]
+    connect?: RecipeWhereUniqueInput | RecipeWhereUniqueInput[]
+    update?: RecipeUpdateWithWhereUniqueWithoutRecipeCategoryInput | RecipeUpdateWithWhereUniqueWithoutRecipeCategoryInput[]
+    updateMany?: RecipeUpdateManyWithWhereWithoutRecipeCategoryInput | RecipeUpdateManyWithWhereWithoutRecipeCategoryInput[]
+    deleteMany?: RecipeScalarWhereInput | RecipeScalarWhereInput[]
+  }
+
+  export type RecipeUncheckedUpdateManyWithoutRecipeCategoryNestedInput = {
+    create?: XOR<RecipeCreateWithoutRecipeCategoryInput, RecipeUncheckedCreateWithoutRecipeCategoryInput> | RecipeCreateWithoutRecipeCategoryInput[] | RecipeUncheckedCreateWithoutRecipeCategoryInput[]
+    connectOrCreate?: RecipeCreateOrConnectWithoutRecipeCategoryInput | RecipeCreateOrConnectWithoutRecipeCategoryInput[]
+    upsert?: RecipeUpsertWithWhereUniqueWithoutRecipeCategoryInput | RecipeUpsertWithWhereUniqueWithoutRecipeCategoryInput[]
+    createMany?: RecipeCreateManyRecipeCategoryInputEnvelope
+    set?: RecipeWhereUniqueInput | RecipeWhereUniqueInput[]
+    disconnect?: RecipeWhereUniqueInput | RecipeWhereUniqueInput[]
+    delete?: RecipeWhereUniqueInput | RecipeWhereUniqueInput[]
+    connect?: RecipeWhereUniqueInput | RecipeWhereUniqueInput[]
+    update?: RecipeUpdateWithWhereUniqueWithoutRecipeCategoryInput | RecipeUpdateWithWhereUniqueWithoutRecipeCategoryInput[]
+    updateMany?: RecipeUpdateManyWithWhereWithoutRecipeCategoryInput | RecipeUpdateManyWithWhereWithoutRecipeCategoryInput[]
+    deleteMany?: RecipeScalarWhereInput | RecipeScalarWhereInput[]
+  }
+
+  export type EnumNewsletterStatusFieldUpdateOperationsInput = {
+    set?: $Enums.NewsletterStatus
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -3982,6 +8137,241 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumNewsletterStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.NewsletterStatus | EnumNewsletterStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.NewsletterStatus[] | ListEnumNewsletterStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NewsletterStatus[] | ListEnumNewsletterStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumNewsletterStatusFilter<$PrismaModel> | $Enums.NewsletterStatus
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedEnumNewsletterStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.NewsletterStatus | EnumNewsletterStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.NewsletterStatus[] | ListEnumNewsletterStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NewsletterStatus[] | ListEnumNewsletterStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumNewsletterStatusWithAggregatesFilter<$PrismaModel> | $Enums.NewsletterStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumNewsletterStatusFilter<$PrismaModel>
+    _max?: NestedEnumNewsletterStatusFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type RecipeCategoryCreateWithoutRecipesInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RecipeCategoryUncheckedCreateWithoutRecipesInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RecipeCategoryCreateOrConnectWithoutRecipesInput = {
+    where: RecipeCategoryWhereUniqueInput
+    create: XOR<RecipeCategoryCreateWithoutRecipesInput, RecipeCategoryUncheckedCreateWithoutRecipesInput>
+  }
+
+  export type RecipeCategoryUpsertWithoutRecipesInput = {
+    update: XOR<RecipeCategoryUpdateWithoutRecipesInput, RecipeCategoryUncheckedUpdateWithoutRecipesInput>
+    create: XOR<RecipeCategoryCreateWithoutRecipesInput, RecipeCategoryUncheckedCreateWithoutRecipesInput>
+    where?: RecipeCategoryWhereInput
+  }
+
+  export type RecipeCategoryUpdateToOneWithWhereWithoutRecipesInput = {
+    where?: RecipeCategoryWhereInput
+    data: XOR<RecipeCategoryUpdateWithoutRecipesInput, RecipeCategoryUncheckedUpdateWithoutRecipesInput>
+  }
+
+  export type RecipeCategoryUpdateWithoutRecipesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RecipeCategoryUncheckedUpdateWithoutRecipesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RecipeCreateWithoutRecipeCategoryInput = {
+    id?: string
+    title: string
+    slug: string
+    description: string
+    ingredients: string
+    instructions: string
+    prepTime?: string | null
+    cookTime?: string | null
+    servings?: string | null
+    category?: string | null
+    imageUrl?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RecipeUncheckedCreateWithoutRecipeCategoryInput = {
+    id?: string
+    title: string
+    slug: string
+    description: string
+    ingredients: string
+    instructions: string
+    prepTime?: string | null
+    cookTime?: string | null
+    servings?: string | null
+    category?: string | null
+    imageUrl?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RecipeCreateOrConnectWithoutRecipeCategoryInput = {
+    where: RecipeWhereUniqueInput
+    create: XOR<RecipeCreateWithoutRecipeCategoryInput, RecipeUncheckedCreateWithoutRecipeCategoryInput>
+  }
+
+  export type RecipeCreateManyRecipeCategoryInputEnvelope = {
+    data: RecipeCreateManyRecipeCategoryInput | RecipeCreateManyRecipeCategoryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RecipeUpsertWithWhereUniqueWithoutRecipeCategoryInput = {
+    where: RecipeWhereUniqueInput
+    update: XOR<RecipeUpdateWithoutRecipeCategoryInput, RecipeUncheckedUpdateWithoutRecipeCategoryInput>
+    create: XOR<RecipeCreateWithoutRecipeCategoryInput, RecipeUncheckedCreateWithoutRecipeCategoryInput>
+  }
+
+  export type RecipeUpdateWithWhereUniqueWithoutRecipeCategoryInput = {
+    where: RecipeWhereUniqueInput
+    data: XOR<RecipeUpdateWithoutRecipeCategoryInput, RecipeUncheckedUpdateWithoutRecipeCategoryInput>
+  }
+
+  export type RecipeUpdateManyWithWhereWithoutRecipeCategoryInput = {
+    where: RecipeScalarWhereInput
+    data: XOR<RecipeUpdateManyMutationInput, RecipeUncheckedUpdateManyWithoutRecipeCategoryInput>
+  }
+
+  export type RecipeScalarWhereInput = {
+    AND?: RecipeScalarWhereInput | RecipeScalarWhereInput[]
+    OR?: RecipeScalarWhereInput[]
+    NOT?: RecipeScalarWhereInput | RecipeScalarWhereInput[]
+    id?: StringFilter<"Recipe"> | string
+    title?: StringFilter<"Recipe"> | string
+    slug?: StringFilter<"Recipe"> | string
+    description?: StringFilter<"Recipe"> | string
+    ingredients?: StringFilter<"Recipe"> | string
+    instructions?: StringFilter<"Recipe"> | string
+    prepTime?: StringNullableFilter<"Recipe"> | string | null
+    cookTime?: StringNullableFilter<"Recipe"> | string | null
+    servings?: StringNullableFilter<"Recipe"> | string | null
+    category?: StringNullableFilter<"Recipe"> | string | null
+    imageUrl?: StringNullableFilter<"Recipe"> | string | null
+    published?: BoolFilter<"Recipe"> | boolean
+    createdAt?: DateTimeFilter<"Recipe"> | Date | string
+    updatedAt?: DateTimeFilter<"Recipe"> | Date | string
+    recipeCategoryId?: StringNullableFilter<"Recipe"> | string | null
+  }
+
+  export type RecipeCreateManyRecipeCategoryInput = {
+    id?: string
+    title: string
+    slug: string
+    description: string
+    ingredients: string
+    instructions: string
+    prepTime?: string | null
+    cookTime?: string | null
+    servings?: string | null
+    category?: string | null
+    imageUrl?: string | null
+    published?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RecipeUpdateWithoutRecipeCategoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    ingredients?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    prepTime?: NullableStringFieldUpdateOperationsInput | string | null
+    cookTime?: NullableStringFieldUpdateOperationsInput | string | null
+    servings?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RecipeUncheckedUpdateWithoutRecipeCategoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    ingredients?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    prepTime?: NullableStringFieldUpdateOperationsInput | string | null
+    cookTime?: NullableStringFieldUpdateOperationsInput | string | null
+    servings?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RecipeUncheckedUpdateManyWithoutRecipeCategoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    ingredients?: StringFieldUpdateOperationsInput | string
+    instructions?: StringFieldUpdateOperationsInput | string
+    prepTime?: NullableStringFieldUpdateOperationsInput | string | null
+    cookTime?: NullableStringFieldUpdateOperationsInput | string | null
+    servings?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    published?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

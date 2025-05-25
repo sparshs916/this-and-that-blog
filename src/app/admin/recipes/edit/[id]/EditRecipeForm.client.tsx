@@ -14,7 +14,7 @@ interface EditRecipeFormClientProps {
   existingCategories?: string[]; // Add this prop
 }
 
-const initialState: State | undefined = undefined; // Initial state can be undefined
+const initialState: State = { message: null, errors: {} }; // Ensured initialState is not undefined
 
 export default function EditRecipeFormClient({
   recipe,

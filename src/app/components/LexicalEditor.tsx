@@ -594,13 +594,13 @@ const blockTypeToBlockName = {
 };
 
 interface LexicalEditorProps {
-  initialContent?: string;
-  onChange: (htmlContent: string) => void;
+  initialContent?: string; // Expects an HTML string
+  onChange: (htmlContent: string) => void; // Will provide an HTML string
   editorRef?: React.MutableRefObject<LexicalEditor | null>;
 }
 
 const LexicalEditorComponent: React.FC<LexicalEditorProps> = ({
-  initialContent = "",
+  initialContent = "", // Default to empty HTML string for an empty editor
   onChange,
   editorRef,
 }) => {
@@ -618,9 +618,9 @@ const LexicalEditorComponent: React.FC<LexicalEditorProps> = ({
 
   const handleOnChange = useCallback(
     (editorState: EditorState, editor: LexicalEditor) => {
-      editorState.read(() => {
-        const html = $generateHtmlFromNodes(editor, null);
-        onChange(html);
+      editor.update(() => {
+        const htmlString = $generateHtmlFromNodes(editor, null);
+        onChange(htmlString);
       });
     },
     [onChange]
@@ -666,10 +666,11 @@ const LexicalEditorComponent: React.FC<LexicalEditorProps> = ({
 function InitialContentPlugin({
   initialContent,
 }: {
-  initialContent?: string;
+  initialContent?: string; // Expects an HTML string
 }): null {
   const [editor] = useLexicalComposerContext();
   const isInitialized = useRef(false);
+  // Store initialContent in a ref to ensure the effect uses the initial value
   const initialContentRef = useRef(initialContent);
   const editorId = useRef(
     `editor-${Math.random().toString(36).substring(7)}`
@@ -677,84 +678,61 @@ function InitialContentPlugin({
 
   useEffect(() => {
     if (editor && !isInitialized.current) {
-      const contentToLoad = initialContentRef.current;
-      const isEffectivelyEmpty =
-        !contentToLoad ||
-        contentToLoad.trim() === "<p><br></p>" ||
-        contentToLoad.trim() === "";
+      const htmlContentToLoad = initialContentRef.current;
 
-      if (!isEffectivelyEmpty) {
-        editor.update(
-          () => {
-            const root = $getRoot();
-            try {
-              const parser = new DOMParser();
-              const dom = parser.parseFromString(contentToLoad, "text/html");
-              const nodes = $generateNodesFromDOM(editor, dom);
-              const validRootNodes = nodes.filter($isElementNode);
+      editor.update(() => {
+        const root = $getRoot();
+        root.clear(); // Clear any existing content
 
-              if (validRootNodes.length > 0) {
-                root.clear();
-                root.select();
-                root.append(...validRootNodes);
-              } else if (nodes.length > 0) {
-                console.warn(
-                  `[${editorId}] InitialContentPlugin: Generated nodes are not valid root elements. Wrapping in paragraph. Nodes count: ${
-                    nodes.length
-                  }. First node type: ${nodes[0]?.getType()}`
-                );
-                root.clear();
-                const wrapperParagraph = $createParagraphNode();
-                const validChildren = nodes.filter(
-                  (node) => node instanceof TextNode || $isElementNode(node)
-                );
-                if (validChildren.length > 0) {
-                  wrapperParagraph.append(...validChildren);
-                  root.append(wrapperParagraph);
-                } else {
-                  console.warn(
-                    `[${editorId}] InitialContentPlugin: No valid child nodes found after filtering for wrapping. Falling back to empty.`
-                  );
-                  root.append($createParagraphNode());
-                }
-              } else {
-                console.warn(
-                  `[${editorId}] InitialContentPlugin: Parsing yielded no nodes. Falling back to empty.`
-                );
-                root.clear();
-                root.append($createParagraphNode());
-              }
-            } catch (e) {
-              console.error(
-                `[${editorId}] InitialContentPlugin: Error setting initial state:`,
-                e
+        if (htmlContentToLoad && htmlContentToLoad.trim() !== "") {
+          try {
+            const parser = new DOMParser();
+            const dom = parser.parseFromString(htmlContentToLoad, "text/html");
+            // Corrected: Pass the document itself, not dom.body
+            const nodes = $generateNodesFromDOM(editor, dom);
+
+            if (nodes.length > 0) {
+              // Filter out potential head/body tags if the entire HTML document string was passed
+              // and append children of body if body is present, otherwise append nodes directly.
+              const bodyNode = nodes.find(
+                (node) =>
+                  node.getType() === "element" && (node as any).__tag === "body"
               );
-              root.clear();
+              if (bodyNode && $isElementNode(bodyNode)) {
+                const children = bodyNode.getChildren();
+                root.append(...children);
+              } else {
+                root.append(...nodes);
+              }
+            } else {
+              // HTML was empty or only comments, etc.
               root.append($createParagraphNode());
             }
-          },
-          { tag: `InitialContentPluginLoad-${editorId}` }
-        );
-      } else {
-        editor.update(
-          () => {
-            const root = $getRoot();
-            const firstChild = root.getFirstChild();
-            const isAlreadyEmptyParagraph =
-              root.getChildrenSize() === 1 &&
-              $isParagraphNode(firstChild) &&
-              firstChild.getTextContent() === "";
-            if (!isAlreadyEmptyParagraph) {
-              root.clear();
-              root.append($createParagraphNode());
-            }
-          },
-          { tag: `InitialContentPluginEmpty-${editorId}` }
-        );
-      }
+            // console.log(`[${editorId}] InitialContentPlugin: Successfully parsed initial HTML content.`);
+          } catch (htmlParseError) {
+            console.error(
+              `[${editorId}] InitialContentPlugin: Error parsing initial HTML content. Setting to default empty paragraph. Error:`,
+              htmlParseError,
+              "Initial HTML was:",
+              htmlContentToLoad
+            );
+            root.append($createParagraphNode()); // Fallback to empty paragraph
+          }
+        } else {
+          // initialContent was empty or undefined
+          root.append($createParagraphNode());
+          // console.log(
+          //   `[${editorId}] InitialContentPlugin: initialContent was empty. Set to default empty paragraph.`
+          // );
+        }
+        // Ensure selection is at a valid place, e.g. at the end of the content
+        // This helps prevent issues if the editor is focused immediately after initialization
+        root.selectEnd();
+      });
+
       isInitialized.current = true;
     }
-  }, [editor, editorId]);
+  }, [editor, editorId]); // initialContentRef is stable, no need to include
 
   return null;
 }

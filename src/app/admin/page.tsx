@@ -1,8 +1,12 @@
 import React from "react";
 import Link from "next/link";
-import type { Post, Recipe } from "@/generated/prisma/client";
+import type { Post, Recipe, NewsletterIssue } from "@/generated/prisma/client";
+import { NewsletterStatus } from "@/generated/prisma/client";
 import PostActions from "./PostActions";
 import RecipeActions from "./RecipeActions";
+import SendNewsletterButton from "./newsletter/SendNewsletterButton";
+import DeleteNewsletterButton from "./newsletter/DeleteNewsletterButton";
+
 import {
   getPosts,
   type SortablePostFields,
@@ -13,6 +17,11 @@ import {
   type SortableRecipeFields,
   type SortOrder as RecipeSortOrder,
 } from "@/lib/recipes";
+import {
+  getNewsletterIssues,
+  type SortableNewsletterFields,
+  type SortOrder as NewsletterSortOrder,
+} from "@/lib/newsletters";
 
 // Interface for the raw searchParams prop from Next.js
 interface AdminDashboardSearchParams {
@@ -22,6 +31,9 @@ interface AdminDashboardSearchParams {
   recipePage?: string;
   recipeSortBy?: SortableRecipeFields;
   recipeSortOrder?: RecipeSortOrder;
+  newsletterPage?: string;
+  newsletterSortBy?: SortableNewsletterFields;
+  newsletterSortOrder?: NewsletterSortOrder;
 }
 
 // Interface for the processed parameters passed to getData
@@ -32,6 +44,9 @@ interface GetDataParams {
   recipePage: number;
   recipeSortBy: SortableRecipeFields;
   recipeSortOrder: RecipeSortOrder;
+  newsletterPage: number;
+  newsletterSortBy: SortableNewsletterFields;
+  newsletterSortOrder: NewsletterSortOrder;
 }
 
 async function getData(params: GetDataParams) {
@@ -50,7 +65,14 @@ async function getData(params: GetDataParams) {
       limit: 5,
     });
 
-    return { postsData, recipesData };
+    const newsletterIssuesData = await getNewsletterIssues({
+      page: params.newsletterPage,
+      sortBy: params.newsletterSortBy,
+      sortOrder: params.newsletterSortOrder,
+      limit: 5,
+    });
+
+    return { postsData, recipesData, newsletterIssuesData };
   } catch (error) {
     console.error("Failed to fetch admin data:", error);
     return {
@@ -61,6 +83,12 @@ async function getData(params: GetDataParams) {
         totalPages: 0,
         currentPage: 1,
       },
+      newsletterIssuesData: {
+        issues: [],
+        totalIssues: 0,
+        totalPages: 0,
+        currentPage: 1,
+      },
     };
   }
 }
@@ -68,16 +96,13 @@ async function getData(params: GetDataParams) {
 export default async function AdminDashboard({
   searchParams,
 }: {
-  searchParams: Promise<AdminDashboardSearchParams>; // searchParams is now a Promise
+  searchParams: Promise<AdminDashboardSearchParams>;
 }) {
-  // Helper function to process searchParams asynchronously
   async function getProcessedSearchParams(
-    rawParamsPromise: Promise<AdminDashboardSearchParams> // Parameter is now a Promise
+    rawParamsPromise: Promise<AdminDashboardSearchParams>
   ) {
-    const rawParams = await rawParamsPromise; // Await the promise to get the raw parameters
-    // It's good practice to ensure this runs after the current macrotask,
-    // though simply awaiting this function call might be sufficient.
-    await new Promise((resolve) => setTimeout(resolve, 0)); // Ensure async boundary for searchParams resolution
+    const rawParams = await rawParamsPromise;
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     const pageForPosts = rawParams.page ? parseInt(rawParams.page, 10) : 1;
     const sortByForPosts = rawParams.sortBy || "createdAt";
@@ -89,6 +114,13 @@ export default async function AdminDashboard({
     const sortByForRecipes = rawParams.recipeSortBy || "createdAt";
     const sortOrderForRecipes = rawParams.recipeSortOrder || "desc";
 
+    const pageForNewsletterIssues = rawParams.newsletterPage
+      ? parseInt(rawParams.newsletterPage, 10)
+      : 1;
+    const sortByForNewsletterIssues = rawParams.newsletterSortBy || "createdAt";
+    const sortOrderForNewsletterIssues =
+      rawParams.newsletterSortOrder || "desc";
+
     return {
       pageForPosts,
       sortByForPosts,
@@ -96,10 +128,12 @@ export default async function AdminDashboard({
       pageForRecipes,
       sortByForRecipes,
       sortOrderForRecipes,
+      pageForNewsletterIssues,
+      sortByForNewsletterIssues,
+      sortOrderForNewsletterIssues,
     };
   }
 
-  // Await the processed search parameters
   const {
     pageForPosts,
     sortByForPosts,
@@ -107,16 +141,21 @@ export default async function AdminDashboard({
     pageForRecipes,
     sortByForRecipes,
     sortOrderForRecipes,
-  } = await getProcessedSearchParams(searchParams); // Pass the searchParams Promise directly
+    pageForNewsletterIssues,
+    sortByForNewsletterIssues,
+    sortOrderForNewsletterIssues,
+  } = await getProcessedSearchParams(searchParams);
 
-  // Fetch data using the processed parameters
-  const { postsData, recipesData } = await getData({
+  const { postsData, recipesData, newsletterIssuesData } = await getData({
     page: pageForPosts,
     sortBy: sortByForPosts,
     sortOrder: sortOrderForPosts,
     recipePage: pageForRecipes,
     recipeSortBy: sortByForRecipes,
     recipeSortOrder: sortOrderForRecipes,
+    newsletterPage: pageForNewsletterIssues,
+    newsletterSortBy: sortByForNewsletterIssues,
+    newsletterSortOrder: sortOrderForNewsletterIssues,
   });
 
   const { posts, totalPages, currentPage } = postsData;
@@ -125,24 +164,45 @@ export default async function AdminDashboard({
     totalPages: recipeTotalPages,
     currentPage: recipeCurrentPage,
   } = recipesData;
+  const {
+    issues: newsletterIssues,
+    totalPages: newsletterTotalPages,
+    currentPage: newsletterCurrentPage,
+  } = newsletterIssuesData;
 
-  // Use the processed values for UI logic
   const currentSortBy = sortByForPosts;
   const currentSortOrder = sortOrderForPosts;
-  // For pagination, currentPage (from postsData) is used directly.
 
   const currentRecipeSortBy = sortByForRecipes;
   const currentRecipeSortOrder = sortOrderForRecipes;
-  // For recipe pagination, recipeCurrentPage (from recipesData) is used directly.
+
+  const currentNewsletterSortBy = sortByForNewsletterIssues;
+  const currentNewsletterSortOrder = sortOrderForNewsletterIssues;
+
+  // Define base query strings for each section to preserve their states
+  const postParams = `page=${currentPage}&sortBy=${currentSortBy}&sortOrder=${currentSortOrder}`;
+  const recipeParams = `recipePage=${recipeCurrentPage}&recipeSortBy=${currentRecipeSortBy}&recipeSortOrder=${currentRecipeSortOrder}`;
+  const newsletterParams = `newsletterPage=${newsletterCurrentPage}&newsletterSortBy=${currentNewsletterSortBy}&newsletterSortOrder=${currentNewsletterSortOrder}`;
 
   const renderSortIcon = (
-    field: SortablePostFields | SortableRecipeFields,
-    type: "post" | "recipe"
+    field: SortablePostFields | SortableRecipeFields | SortableNewsletterFields,
+    type: "post" | "recipe" | "newsletter"
   ) => {
-    const currentSortField =
-      type === "post" ? currentSortBy : currentRecipeSortBy;
-    const currentOrder =
-      type === "post" ? currentSortOrder : currentRecipeSortOrder;
+    let currentSortField: string;
+    let currentOrder: string;
+
+    if (type === "post") {
+      currentSortField = currentSortBy;
+      currentOrder = currentSortOrder;
+    } else if (type === "recipe") {
+      currentSortField = currentRecipeSortBy;
+      currentOrder = currentRecipeSortOrder;
+    } else {
+      // newsletter
+      currentSortField = currentNewsletterSortBy;
+      currentOrder = currentNewsletterSortOrder;
+    }
+
     if (currentSortField === field) {
       return currentOrder === "asc" ? " ↑" : " ↓";
     }
@@ -150,22 +210,31 @@ export default async function AdminDashboard({
   };
 
   const getSortLink = (
-    field: SortablePostFields | SortableRecipeFields,
-    type: "post" | "recipe"
+    field: SortablePostFields | SortableRecipeFields | SortableNewsletterFields,
+    type: "post" | "recipe" | "newsletter"
   ) => {
+    let order: PostSortOrder | RecipeSortOrder | NewsletterSortOrder;
+    const baseLink = "/admin?";
+
     if (type === "post") {
-      const order =
+      order =
         currentSortBy === field && currentSortOrder === "asc" ? "desc" : "asc";
-      // Use currentPage for post pagination state
-      return `/admin?page=${currentPage}&sortBy=${field}&sortOrder=${order}&recipePage=${recipeCurrentPage}&recipeSortBy=${currentRecipeSortBy}&recipeSortOrder=${currentRecipeSortOrder}`;
+      return `${baseLink}page=${currentPage}&sortBy=${field}&sortOrder=${order}&${recipeParams}&${newsletterParams}`;
+    } else if (type === "recipe") {
+      order =
+        currentRecipeSortBy === field && currentRecipeSortOrder === "asc"
+          ? "desc"
+          : "asc";
+      return `${baseLink}${postParams}&recipePage=${recipeCurrentPage}&recipeSortBy=${field}&recipeSortOrder=${order}&${newsletterParams}`;
+    } else {
+      // newsletter
+      order =
+        currentNewsletterSortBy === field &&
+        currentNewsletterSortOrder === "asc"
+          ? "desc"
+          : "asc";
+      return `${baseLink}${postParams}&${recipeParams}&newsletterPage=${newsletterCurrentPage}&newsletterSortBy=${field}&newsletterSortOrder=${order}`;
     }
-    // For recipe
-    const order =
-      currentRecipeSortBy === field && currentRecipeSortOrder === "asc"
-        ? "desc"
-        : "asc";
-    // Use recipeCurrentPage for recipe pagination state
-    return `/admin?page=${currentPage}&sortBy=${currentSortBy}&sortOrder=${currentSortOrder}&recipePage=${recipeCurrentPage}&recipeSortBy=${field}&recipeSortOrder=${order}`;
   };
 
   return (
@@ -173,7 +242,6 @@ export default async function AdminDashboard({
       <h1 className="text-3xl font-bold mb-8 text-center text-black">
         Admin Dashboard
       </h1>
-
       {/* Posts Section */}
       <section className="mb-12">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
@@ -292,9 +360,7 @@ export default async function AdminDashboard({
             <div className="flex justify-center items-center space-x-2 mt-4 pb-4">
               {currentPage > 1 && (
                 <Link
-                  href={`/admin?page=${
-                    currentPage - 1
-                  }&sortBy=${currentSortBy}&sortOrder=${currentSortOrder}&recipePage=${recipeCurrentPage}&recipeSortBy=${currentRecipeSortBy}&recipeSortOrder=${currentRecipeSortOrder}`}
+                  href={`/admin?page=${currentPage - 1}&sortBy=${currentSortBy}&sortOrder=${currentSortOrder}&${recipeParams}&${newsletterParams}`}
                   className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
                 >
                   Previous
@@ -304,7 +370,7 @@ export default async function AdminDashboard({
                 (pageNumber) => (
                   <Link
                     key={pageNumber}
-                    href={`/admin?page=${pageNumber}&sortBy=${currentSortBy}&sortOrder=${currentSortOrder}&recipePage=${recipeCurrentPage}&recipeSortBy=${currentRecipeSortBy}&recipeSortOrder=${currentRecipeSortOrder}`}
+                    href={`/admin?page=${pageNumber}&sortBy=${currentSortBy}&sortOrder=${currentSortOrder}&${recipeParams}&${newsletterParams}`}
                     className={`px-4 py-2 text-sm font-medium rounded-md ${
                       pageNumber === currentPage
                         ? "bg-blue-500 text-white"
@@ -317,9 +383,7 @@ export default async function AdminDashboard({
               )}
               {currentPage < totalPages && (
                 <Link
-                  href={`/admin?page=${
-                    currentPage + 1
-                  }&sortBy=${currentSortBy}&sortOrder=${currentSortOrder}&recipePage=${recipeCurrentPage}&recipeSortBy=${currentRecipeSortBy}&recipeSortOrder=${currentRecipeSortOrder}`}
+                  href={`/admin?page=${currentPage + 1}&sortBy=${currentSortBy}&sortOrder=${currentSortOrder}&${recipeParams}&${newsletterParams}`}
                   className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
                 >
                   Next
@@ -329,9 +393,8 @@ export default async function AdminDashboard({
           )}
         </div>
       </section>
-
       {/* Recipes Section */}
-      <section>
+      <section className="mb-12">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
           <h2 className="text-2xl font-semibold text-black">Recipes</h2>
           <Link
@@ -444,37 +507,190 @@ export default async function AdminDashboard({
             </tbody>
           </table>
           {recipeTotalPages > 1 && (
-            <div className="flex justify-center items-center space-x-2 mt-4 pb-4">
+            <nav
+              aria-label="Recipe Pagination"
+              className="flex justify-center items-center space-x-2 mt-4 pb-4" // Added pb-4 for padding
+            >
               {recipeCurrentPage > 1 && (
                 <Link
-                  href={`/admin?page=${currentPage}&sortBy=${currentSortBy}&sortOrder=${currentSortOrder}&recipePage=${
-                    recipeCurrentPage - 1
-                  }&recipeSortBy=${currentRecipeSortBy}&recipeSortOrder=${currentRecipeSortOrder}`}
+                  href={`/admin?${postParams}&recipePage=${recipeCurrentPage - 1}&recipeSortBy=${currentRecipeSortBy}&recipeSortOrder=${currentRecipeSortOrder}&${newsletterParams}`}
+                  className="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
+                >
+                  Previous
+                </Link>
+              )}
+              {[...Array(recipeTotalPages)].map((_, i) => (
+                <Link
+                  key={i}
+                  href={`/admin?${postParams}&recipePage=${i + 1}&recipeSortBy=${currentRecipeSortBy}&recipeSortOrder=${currentRecipeSortOrder}&${newsletterParams}`}
+                  className={`px-3 py-1 border border-gray-300 rounded-md text-sm font-medium ${
+                    recipeCurrentPage === i + 1
+                      ? "bg-green-500 text-white" // Theme color for recipe pagination
+                      : "text-gray-700 hover:bg-gray-50"
+                  }`}
+                >
+                  {i + 1}
+                </Link>
+              ))}
+              {recipeCurrentPage < recipeTotalPages && (
+                <Link
+                  href={`/admin?${postParams}&recipePage=${recipeCurrentPage + 1}&recipeSortBy=${currentRecipeSortBy}&recipeSortOrder=${currentRecipeSortOrder}&${newsletterParams}`}
+                  className="px-3 py-1 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
+                >
+                  Next
+                </Link>
+              )}
+            </nav>
+          )}
+        </div>
+      </section>
+      {/* End of Recipes Section */}
+
+      {/* Newsletter Issues Section */}
+      <section className="mt-12 mb-12">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+          <h2 className="text-2xl font-semibold text-black">
+            Newsletter Issues
+          </h2>
+          <Link
+            href="/admin/newsletter/compose"
+            className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300 text-sm sm:text-base whitespace-nowrap"
+          >
+            Compose New Newsletter
+          </Link>
+        </div>
+
+        <div className="bg-white shadow-md rounded-lg overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider w-2/5"
+                >
+                  <Link
+                    href={getSortLink("title", "newsletter")}
+                    className="hover:underline"
+                  >
+                    Title{renderSortIcon("title", "newsletter")}
+                  </Link>
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider w-1/5"
+                >
+                  <Link
+                    href={getSortLink("status", "newsletter")}
+                    className="hover:underline"
+                  >
+                    Status{renderSortIcon("status", "newsletter")}
+                  </Link>
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider w-1/5"
+                >
+                  <Link
+                    href={getSortLink("createdAt", "newsletter")}
+                    className="hover:underline"
+                  >
+                    Date{renderSortIcon("createdAt", "newsletter")}
+                  </Link>
+                </th>
+                <th scope="col" className="relative px-6 py-3 w-auto">
+                  <span className="sr-only">Actions</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {newsletterIssues.length > 0 ? (
+                newsletterIssues.map((issue: NewsletterIssue) => (
+                  <tr key={issue.id}>
+                    <td className="px-6 py-4 whitespace-nowrap w-2/5">
+                      <div className="text-sm font-medium text-black">
+                        {issue.title}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap w-1/5">
+                      <span
+                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          issue.status === NewsletterStatus.SENT
+                            ? "bg-green-100 text-green-800"
+                            : issue.status === NewsletterStatus.DRAFT
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        {issue.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 w-1/5">
+                      {new Date(issue.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium w-auto">
+                      <div className="flex items-center justify-end space-x-3">
+                        <Link
+                          href={`/admin/newsletter/edit/${issue.id}`}
+                          className="text-indigo-600 hover:text-indigo-900"
+                        >
+                          Edit
+                        </Link>
+                        {issue.status === NewsletterStatus.DRAFT && (
+                          <SendNewsletterButton issueId={issue.id} />
+                        )}
+                        <Link
+                          href={`/admin/newsletter/view/${issue.id}`}
+                          className="text-blue-600 hover:text-blue-900"
+                        >
+                          View
+                        </Link>
+                        <DeleteNewsletterButton issueId={issue.id} />{" "}
+                        {/* Add this line */}
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan={4} // Adjusted colspan for newsletter table
+                    className="px-6 py-4 text-center text-gray-500"
+                  >
+                    No newsletter issues found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+          {newsletterTotalPages > 1 && (
+            <div className="flex justify-center items-center space-x-2 mt-4 pb-4">
+              {newsletterCurrentPage > 1 && (
+                <Link
+                  href={`/admin?${postParams}&${recipeParams}&newsletterPage=${newsletterCurrentPage - 1}&newsletterSortBy=${currentNewsletterSortBy}&newsletterSortOrder=${currentNewsletterSortOrder}`}
                   className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
                 >
                   Previous
                 </Link>
               )}
-              {Array.from({ length: recipeTotalPages }, (_, i) => i + 1).map(
-                (pageNumber) => (
-                  <Link
-                    key={pageNumber}
-                    href={`/admin?page=${currentPage}&sortBy=${currentSortBy}&sortOrder=${currentSortOrder}&recipePage=${pageNumber}&recipeSortBy=${currentRecipeSortBy}&recipeSortOrder=${currentRecipeSortOrder}`}
-                    className={`px-4 py-2 text-sm font-medium rounded-md ${
-                      pageNumber === recipeCurrentPage
-                        ? "bg-blue-500 text-white"
-                        : "text-gray-700 bg-white border border-gray-300 hover:bg-gray-50"
-                    }`}
-                  >
-                    {pageNumber}
-                  </Link>
-                )
-              )}
-              {recipeCurrentPage < recipeTotalPages && (
+              {Array.from(
+                { length: newsletterTotalPages },
+                (_, i) => i + 1
+              ).map((pageNumber) => (
                 <Link
-                  href={`/admin?page=${currentPage}&sortBy=${currentSortBy}&sortOrder=${currentSortOrder}&recipePage=${
-                    recipeCurrentPage + 1
-                  }&recipeSortBy=${currentRecipeSortBy}&recipeSortOrder=${currentRecipeSortOrder}`}
+                  key={pageNumber}
+                  href={`/admin?${postParams}&${recipeParams}&newsletterPage=${pageNumber}&newsletterSortBy=${currentNewsletterSortBy}&newsletterSortOrder=${currentNewsletterSortOrder}`}
+                  className={`px-4 py-2 text-sm font-medium rounded-md ${
+                    pageNumber === newsletterCurrentPage
+                      ? "bg-purple-500 text-white" // Theme color for newsletter pagination
+                      : "text-gray-700 bg-white border border-gray-300 hover:bg-gray-50"
+                  }`}
+                >
+                  {pageNumber}
+                </Link>
+              ))}
+              {newsletterCurrentPage < newsletterTotalPages && (
+                <Link
+                  href={`/admin?${postParams}&${recipeParams}&newsletterPage=${newsletterCurrentPage + 1}&newsletterSortBy=${currentNewsletterSortBy}&newsletterSortOrder=${currentNewsletterSortOrder}`}
                   className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
                 >
                   Next
@@ -484,6 +700,7 @@ export default async function AdminDashboard({
           )}
         </div>
       </section>
+      {/* End of Newsletter Issues Section */}
     </div>
   );
 }

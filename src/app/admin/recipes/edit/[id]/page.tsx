@@ -3,8 +3,8 @@ import React from "react";
 import prisma from "@/app/lib/prisma";
 import EditRecipeFormClient from "./EditRecipeForm.client";
 import type { Recipe } from "@/generated/prisma/client"; // Updated import path
-// Import the server action for getting recipe categories
-import { getRecipeCategories } from "@/app/lib/actions";
+// Import the function for getting recipe categories
+import { getUniqueRecipeCategories } from "@/app/lib/posts"; // Changed import
 import { notFound } from "next/navigation"; // Import notFound
 
 // Import PrismaClient for casting
@@ -26,8 +26,8 @@ interface EditRecipePageProps {
 export default async function EditRecipePage({ params }: EditRecipePageProps) {
   const { id } = await params; // Await params and destructure id
   const recipe = await getRecipeById(id); // Use the awaited id
-  // Fetch categories using the server action
-  const existingCategories = await getRecipeCategories();
+  // Fetch categories using the function from posts.ts
+  const existingCategories = await getUniqueRecipeCategories(); // Changed usage
 
   if (!recipe) {
     notFound(); // Show 404 if recipe doesn't exist

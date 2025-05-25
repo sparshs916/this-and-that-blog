@@ -147,7 +147,35 @@ exports.Prisma.RecipeScalarFieldEnum = {
   imageUrl: 'imageUrl',
   published: 'published',
   createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  recipeCategoryId: 'recipeCategoryId'
+};
+
+exports.Prisma.RecipeCategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.NewsletterSubscriptionScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  subscribed: 'subscribed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.NewsletterIssueScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  content: 'content',
+  newsletterImage: 'newsletterImage',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  sentAt: 'sentAt',
+  scheduledAt: 'scheduledAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -164,11 +192,19 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.NewsletterStatus = exports.$Enums.NewsletterStatus = {
+  DRAFT: 'DRAFT',
+  READY_TO_SEND: 'READY_TO_SEND',
+  SENT: 'SENT',
+  ARCHIVED: 'ARCHIVED'
+};
 
 exports.Prisma.ModelName = {
   Post: 'Post',
-  Recipe: 'Recipe'
+  Recipe: 'Recipe',
+  RecipeCategory: 'RecipeCategory',
+  NewsletterSubscription: 'NewsletterSubscription',
+  NewsletterIssue: 'NewsletterIssue'
 };
 
 /**
