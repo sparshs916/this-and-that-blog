@@ -21,7 +21,7 @@ export default function AboutPage() {
               {/* You can add an image of the blog author here */}
               <div className="w-full h-full bg-gray-300 flex items-center justify-center text-gray-500 text-4xl">
                 <Image
-                  src="/uploads/ally-about-cute.jpg"
+                  src="https://swjqyhhgihnowxwr.public.blob.vercel-storage.com/uploads/ally-about-cute-Cbx81KNGTToz7BjDgK0F59gacQ7uk9.jpg"
                   alt="Ally, the blog author"
                   layout="fill"
                   objectFit="cover"
