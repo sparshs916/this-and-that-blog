@@ -32,7 +32,7 @@ export default function Hero() {
             This
           </span>
         </div>
-        <div className="mr-1.5 md:mr-2">
+        <div className="mr-2.5 md:mr-3">
           {" "}
           {/* Increased margin-right */}
           <span

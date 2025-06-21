@@ -49,7 +49,7 @@ export default async function HomePage() {
 
         {posts.length > 0 && (
           <section className="mb-12">
-            <h2 className="text-3xl font-bold text-center mb-8 text-gray-900">
+            <h2 className="text-3xl font-bold text-center mb-8 text-gray-900 font-playfair-display">
               Recent Blog Posts
             </h2>
             {posts.map((post, index) => (
@@ -70,7 +70,7 @@ export default async function HomePage() {
 
         {recentRecipes.length > 0 && (
           <section className="mb-12">
-            <h2 className="text-3xl font-bold text-center mb-8 text-gray-900">
+            <h2 className="text-3xl font-bold text-center mb-8 text-gray-900 font-playfair-display">
               Recent Recipes
             </h2>
             {recentRecipes.map(
