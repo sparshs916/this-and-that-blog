@@ -7,6 +7,9 @@ import Footer from "@/app/components/Footer";
 export const metadata: Metadata = {
   title: "This and that blog",
   description: "This and that blog",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 const playfairDisplay = Playfair_Display({
