@@ -9,7 +9,7 @@ interface PostCardProps {
   description?: string | null; // Make description optional
   excerpt?: string; // Keep excerpt for fallback or other uses
   slug: string;
-  imageUrl: string;
+  imageUrl?: string | null;
 }
 
 export default function PostCard({
@@ -22,8 +22,13 @@ export default function PostCard({
   slug,
   imageUrl,
 }: PostCardProps) {
-  const cardClasses = `flex flex-col md:flex-row items-stretch w-full min-h-[20rem] md:min-h-[25rem] lg:min-h-[28rem] shadow-lg rounded-lg overflow-hidden my-6 md:my-8 ${
-    isOdd ? "md:flex-row-reverse" : ""
+  const hasImage = !!imageUrl;
+  const cardClasses = `flex flex-col ${
+    hasImage ? "md:flex-row" : ""
+  } items-stretch w-full ${
+    hasImage ? "min-h-[20rem] md:min-h-[25rem] lg:min-h-[28rem]" : ""
+  } shadow-lg rounded-lg overflow-hidden my-6 md:my-8 ${
+    isOdd && hasImage ? "md:flex-row-reverse" : ""
   }`;
 
   // textContentOrder variable removed
@@ -33,20 +38,24 @@ export default function PostCard({
 
   return (
     <article className={cardClasses}>
-      <Link
-        href={`/blog/${slug}`}
-        className="block w-full h-56 sm:h-64 md:w-1/2 md:h-auto relative group overflow-hidden" // Added md:h-auto
-      >
-        <Image
-          src={imageUrl}
-          alt={`Featured image for ${title}`}
-          layout="fill" // Changed to fill
-          objectFit="cover" // Added objectFit
-          className="group-hover:scale-105 transition-transform duration-300"
-        />
-      </Link>
+      {hasImage && (
+        <Link
+          href={`/blog/${slug}`}
+          className="block w-full h-56 sm:h-64 md:w-1/2 md:h-auto relative group overflow-hidden" // Added md:h-auto
+        >
+          <Image
+            src={imageUrl}
+            alt={`Featured image for ${title}`}
+            layout="fill" // Changed to fill
+            objectFit="cover" // Added objectFit
+            className="group-hover:scale-105 transition-transform duration-300"
+          />
+        </Link>
+      )}
       <div
-        className={`p-6 md:p-8 lg:p-10 flex-1 flex flex-col justify-between`}
+        className={`p-6 md:p-8 lg:p-10 flex-1 flex flex-col justify-between ${
+          !hasImage ? "items-start text-left" : ""
+        }`}
       >
         {/* Meta information: Adjusted text color and spacing */}
         <p className="text-xs text-gray-500 mb-3 uppercase tracking-wider">
@@ -54,6 +63,7 @@ export default function PostCard({
             year: "numeric",
             month: "long",
             day: "numeric",
+            timeZone: "UTC",
           })}{" "}
           / <span className="font-medium text-gray-600">{category}</span>
         </p>

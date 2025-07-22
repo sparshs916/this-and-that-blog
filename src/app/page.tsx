@@ -3,7 +3,7 @@ import PostCard from "@/app/components/PostCard";
 import RecipeCard from "@/app/components/RecipeCard"; // Import RecipeCard
 import NewsletterForm from "@/app/components/NewsletterForm.client"; // Import NewsletterForm
 // Import the correct function
-import { getAllPublishedPosts } from "@/app/lib/posts";
+import { getAllPublishedPosts, Post } from "@/app/lib/posts";
 import { getRecipes } from "@/lib/recipes"; // Import getRecipes
 import type { Recipe } from "@/generated/prisma/client"; // Import Recipe type
 
@@ -52,7 +52,7 @@ export default async function HomePage() {
             <h2 className="text-3xl font-bold text-center mb-8 text-gray-900 font-playfair-display">
               Recent Blog Posts
             </h2>
-            {posts.map((post, index) => (
+            {posts.map((post: Post, index: number) => (
               <PostCard
                 key={post.id}
                 isOdd={index % 2 !== 0}
@@ -62,7 +62,7 @@ export default async function HomePage() {
                 description={post.description} // Pass the new description
                 excerpt={createExcerpt(post.content)} // Keep fallback excerpt from content
                 slug={post.slug}
-                imageUrl={post.imageUrl || "/img/stock_photo.jpeg"}
+                imageUrl={post.imageUrl || ""}
               />
             ))}
           </section>

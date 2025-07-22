@@ -25,14 +25,21 @@ export default function RecipeCard({
   cookTime,
 }: RecipeCardProps) {
   const displayDescription = description; // Or a generated excerpt if you prefer
+  const hasImage = !!imageUrl;
 
   return (
-    <article className="flex flex-col md:flex-row items-stretch w-full min-h-[20rem] md:min-h-[25rem] lg:min-h-[28rem] shadow-lg rounded-lg overflow-hidden my-6 md:my-8">
-      <Link
-        href={`/recipes/${slug}`}
-        className="block w-full h-56 sm:h-64 md:w-1/2 md:h-auto relative group overflow-hidden"
-      >
-        {imageUrl && (
+    <article
+      className={`flex flex-col ${
+        hasImage ? "md:flex-row" : ""
+      } items-stretch w-full ${
+        hasImage ? "min-h-[20rem] md:min-h-[25rem] lg:min-h-[28rem]" : ""
+      } shadow-lg rounded-lg overflow-hidden my-6 md:my-8`}
+    >
+      {hasImage && (
+        <Link
+          href={`/recipes/${slug}`}
+          className="block w-full h-56 sm:h-64 md:w-1/2 md:h-auto relative group overflow-hidden"
+        >
           <Image
             src={imageUrl}
             alt={`Featured image for ${title}`}
@@ -40,9 +47,13 @@ export default function RecipeCard({
             objectFit="cover"
             className="group-hover:scale-105 transition-transform duration-300"
           />
-        )}
-      </Link>
-      <div className="p-6 md:p-8 lg:p-10 flex-1 flex flex-col justify-between">
+        </Link>
+      )}
+      <div
+        className={`p-6 md:p-8 lg:p-10 flex-1 flex flex-col justify-between ${
+          !hasImage ? "items-start text-left" : ""
+        }`}
+      >
         <div>
           <p className="text-xs text-gray-500 mb-3 uppercase tracking-wider">
             {new Date(date).toLocaleDateString("en-US", {
