@@ -5,10 +5,10 @@ import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 
 export const metadata: Metadata = {
-  title: "This and that blog",
-  description: "This and that blog",
+  title: "This and That",
+  description: "This and That",
   icons: {
-    icon: "/favicon.svg",
+    icon: "/favicon-32x32.png",
   },
 };
 
