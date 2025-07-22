@@ -49,6 +49,7 @@ export default function RecipeCard({
               year: "numeric",
               month: "long",
               day: "numeric",
+              timeZone: "UTC", // Add timeZone to prevent hydration mismatch
             })}
             {category && (
               <>

@@ -13,7 +13,7 @@ import { PrismaClient } from "@/generated/prisma/client";
 // Function to fetch a single recipe by its slug, considering admin status
 async function getRecipeBySlug(slug: string): Promise<Recipe | null> {
   console.log(
-    `[getRecipeBySlug] Attempting to fetch recipe with slug: '${slug}' (Type: ${typeof slug})`
+    `[getRecipeBySlug] Attempting to fetch recipe with slug: '${slug}'`
   );
   if (!slug || typeof slug !== "string" || slug.trim() === "") {
     console.error(
@@ -22,56 +22,66 @@ async function getRecipeBySlug(slug: string): Promise<Recipe | null> {
     return null;
   }
 
-  // Check if the user is an admin
+  // 1. Static-first query: Try to find a published recipe.
+  // This is safe for static generation.
+  const publishedRecipe = await (prisma as PrismaClient).recipe.findUnique({
+    where: { slug: slug.trim(), published: true },
+  });
+
+  if (publishedRecipe) {
+    console.log(
+      `[getRecipeBySlug] Found published recipe with slug '${slug}'.`
+    );
+    return publishedRecipe;
+  }
+
+  // 2. Dynamic fallback for admins: If no published recipe is found,
+  // check for an admin session and look for any recipe (including drafts).
+  // This part is dynamic and will only run at request time if needed.
+  console.log(
+    `[getRecipeBySlug] No published recipe found. Checking for admin session to find draft.`
+  );
   const session = await getAdminSession();
-  const isAdmin = session?.isLoggedIn === true;
+  console.log(`[getRecipeBySlug] Admin session:`, {
+    isLoggedIn: session?.isLoggedIn,
+  });
 
-  try {
-    const whereClause: { slug: string; published?: boolean } = {
-      slug: slug.trim(), // Use trimmed slug
-    };
-
-    // Only filter by published: true if the user is NOT an admin
-    if (!isAdmin) {
-      whereClause.published = true;
-    }
-
-    console.log(`[getRecipeBySlug] Fetching with where clause:`, whereClause);
-
-    const recipe = await (prisma as PrismaClient).recipe.findUnique({
-      where: whereClause,
+  if (session?.isLoggedIn) {
+    console.log(
+      "[getRecipeBySlug] Admin session found. Querying for any recipe (including drafts)."
+    );
+    // Try to find ANY recipe with this slug, regardless of published status
+    const draftRecipe = await (prisma as PrismaClient).recipe.findUnique({
+      where: { slug: slug.trim() },
     });
-
-    if (!recipe) {
+    if (draftRecipe) {
       console.log(
-        `[getRecipeBySlug] Recipe with slug '${slug}' ${
-          isAdmin ? "not found" : "not found or not published"
-        }.`
+        `[getRecipeBySlug] Found draft recipe for admin. Published status: ${draftRecipe.published}`
       );
     } else {
       console.log(
-        `[getRecipeBySlug] Successfully fetched recipe with slug '${slug}'. Published status: ${recipe.published}, Admin: ${isAdmin}`
+        `[getRecipeBySlug] No recipe found with slug: ${slug}, even for admin. This might be a real 404.`
       );
     }
-    return recipe;
-  } catch (error) {
-    console.error(
-      `[getRecipeBySlug] Prisma error fetching slug '${slug}':`,
-      error
-    );
-    return null;
+    return draftRecipe;
   }
+
+  console.log(
+    `[getRecipeBySlug] No published recipe found and no admin session.`
+  );
+  return null;
 }
 
-interface RecipePageProps {
-  params: Promise<{ slug: string }>; // params is now a Promise
-}
+type RecipePageProps = {
+  params: Promise<{ slug: string }>;
+};
 
 // Generate Metadata for SEO
-export async function generateMetadata({
-  params,
-}: RecipePageProps): Promise<Metadata> {
-  const { slug } = await params; // Await params and destructure slug
+export async function generateMetadata(
+  props: RecipePageProps
+): Promise<Metadata> {
+  const params = await props.params;
+  const { slug } = params;
   console.log(`[generateMetadata - Recipe] Received slug: '${slug}'`);
   if (!slug || typeof slug !== "string" || slug.trim() === "") {
     console.error(
@@ -79,7 +89,10 @@ export async function generateMetadata({
     );
     return { title: "Recipe Not Found" };
   }
-  const recipe = await getRecipeBySlug(slug);
+  // Fetch only published recipe for metadata generation to keep it static
+  const recipe = await (prisma as PrismaClient).recipe.findUnique({
+    where: { slug: slug.trim(), published: true },
+  });
 
   if (!recipe) {
     return {
@@ -144,8 +157,9 @@ export async function generateStaticParams() {
 }
 
 // The Page Component
-const RecipePage: React.FC<RecipePageProps> = async ({ params }) => {
-  const { slug } = await params; // Await params and destructure slug
+const RecipePage = async (props: RecipePageProps) => {
+  const params = await props.params;
+  const { slug } = params;
   console.log(`[RecipePage] Rendering page for slug: '${slug}'`);
   if (!slug || typeof slug !== "string" || slug.trim() === "") {
     console.error(
@@ -154,10 +168,14 @@ const RecipePage: React.FC<RecipePageProps> = async ({ params }) => {
     notFound();
   }
 
-  const recipe = await getRecipeBySlug(slug.trim());
+  // Check admin session first, to avoid duplicate checks
   const session = await getAdminSession();
   const isAdmin = session?.isLoggedIn === true;
+  console.log(`[RecipePage] Admin session check:`, { isAdmin });
 
+  const recipe = await getRecipeBySlug(slug.trim());
+
+  // If no recipe is found (neither published nor a draft for an admin), return 404.
   if (!recipe) {
     console.log(
       `[RecipePage] Recipe not found for slug '${slug}'. Triggering notFound.`
@@ -165,6 +183,7 @@ const RecipePage: React.FC<RecipePageProps> = async ({ params }) => {
     notFound();
   }
 
+  // If the recipe is a draft, only admins can view it
   if (!recipe.published && !isAdmin) {
     console.log(
       `[RecipePage] Non-admin attempting to view unpublished recipe '${slug}'. Triggering notFound.`
@@ -183,7 +202,7 @@ const RecipePage: React.FC<RecipePageProps> = async ({ params }) => {
       {" "}
       {/* Adjusted max-width */}
       {/* Draft Banner for Admins */}
-      {!recipe.published && isAdmin && (
+      {!recipe.published && (
         <div className="mb-6 p-4 bg-yellow-100 border border-yellow-300 text-yellow-800 rounded-md text-center">
           <strong>Draft Preview:</strong> This recipe is not published and is
           only visible to administrators.

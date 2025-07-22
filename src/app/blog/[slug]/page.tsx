@@ -31,60 +31,77 @@ async function getPostBySlug(slug: string): Promise<Post | null> {
     return null;
   }
 
-  // Check if the user is an admin
+  // 1. Static-first query: Try to find a published post.
+  const post = await (prisma as PrismaClient).post.findUnique({
+    where: {
+      slug: slug.trim(),
+      published: true,
+    },
+  });
+
+  // If found, return it. This path is safe for static generation.
+  if (post) {
+    return post;
+  }
+
+  // 2. Dynamic fallback for admins: If no published post is found,
+  // check for an admin session and look for any post (including drafts).
   const session = await getAdminSession();
-  const isAdmin = session?.isLoggedIn === true;
-
-  try {
-    const whereClause: { slug: string; published?: boolean } = {
-      slug: slug.trim(), // Use trimmed slug
-    };
-
-    // Only filter by published: true if the user is NOT an admin
-    if (!isAdmin) {
-      whereClause.published = true;
-    }
-
-    const post = await (prisma as PrismaClient).post.findUnique({
-      where: whereClause,
+  if (session?.isLoggedIn) {
+    const draftPost = await (prisma as PrismaClient).post.findUnique({
+      where: {
+        slug: slug.trim(),
+      },
     });
 
-    return post;
-  } catch (error) {
-    return null;
+    // Add explicit debug logging to trace what's happening
+    if (draftPost) {
+      console.log(
+        `[getPostBySlug] Found draft post for admin: ${slug}, published: ${draftPost.published}`
+      );
+    } else {
+      console.log(
+        `[getPostBySlug] No post found with slug: ${slug}, even for admin`
+      );
+    }
+
+    return draftPost;
   }
+
+  // If not an admin and no published post was found, return null.
+  return null;
 }
 
-interface BlogPostPageProps {
-  params: Promise<{ slug: string }>; // params is now a Promise
-}
+type BlogPostPageProps = {
+  params: Promise<{ slug: string }>;
+};
 
 // Generate Metadata for SEO
-export async function generateMetadata({
-  params, // This is Promise<{ slug: string }>
-}: BlogPostPageProps): Promise<Metadata> {
-  const actualParams = await params; // Await the promise to get the actual params
-  const { slug } = actualParams; // Destructure slug from the resolved params
-  if (!slug || typeof slug !== "string" || slug.trim() === "") {
-    return { title: "Post Not Found" };
-  }
-  const post = await getPostBySlug(slug);
+export async function generateMetadata(
+  props: BlogPostPageProps
+): Promise<Metadata> {
+  const params = await props.params;
+  const { slug } = params;
+  // Fetch only published post for metadata generation to keep it static
+  const post = await (prisma as PrismaClient).post.findUnique({
+    where: { slug: slug.trim(), published: true },
+  });
 
   if (!post) {
     return {
-      title: "Post Not Found",
+      title: "Blog Post Not Found",
     };
   }
 
-  // Use post.description if available, otherwise generate from content
-  const metaDescription = post.description || post.content.substring(0, 160);
+  // Create a plain text description excerpt
+  const descriptionText = post.description?.replace(/<[^>]+>/g, "") || "";
 
   return {
     title: post.title,
-    description: metaDescription,
+    description: descriptionText.substring(0, 160),
     openGraph: {
       title: post.title,
-      description: metaDescription,
+      description: descriptionText.substring(0, 160),
       images: post.imageUrl ? [{ url: post.imageUrl }] : [],
     },
   };
@@ -113,25 +130,33 @@ export async function generateStaticParams() {
 }
 
 // The Page Component
-const BlogPostPage: React.FC<BlogPostPageProps> = async ({ params }) => {
-  // params is Promise<{ slug: string }>
-  const actualParams = await params; // Await the promise
-  const { slug } = actualParams; // Destructure slug from the resolved params
+export default async function BlogPostPage(props: BlogPostPageProps) {
+  const params = await props.params;
+  const { slug } = params;
   console.log(`[BlogPostPage] Rendering page for slug: '${slug}'`);
   if (!slug || typeof slug !== "string" || slug.trim() === "") {
     notFound();
   }
 
-  const post = await getPostBySlug(slug.trim());
+  // Check admin session first, to avoid duplicate checks
   const session = await getAdminSession();
   const isAdmin = session?.isLoggedIn === true;
+  console.log(`[BlogPostPage] Admin session check:`, { isAdmin });
 
+  const post = await getPostBySlug(slug.trim());
+
+  // If no post is found (neither published nor a draft for an admin), return 404.
   if (!post) {
+    console.log(`[BlogPostPage] No post found for slug: ${slug}. Showing 404.`);
     notFound();
   }
 
+  // If the post is a draft, only admins can view it
   if (!post.published && !isAdmin) {
-    notFound();
+    console.log(
+      `[BlogPostPage] Post is unpublished and user is not admin. Showing 404.`
+    );
+    notFound(); // Non-admin trying to access a draft.
   }
 
   const formattedDate = new Date(post.createdAt).toLocaleDateString("en-US", {
@@ -143,7 +168,7 @@ const BlogPostPage: React.FC<BlogPostPageProps> = async ({ params }) => {
   return (
     <div className="container mx-auto max-w-4xl px-4 py-12">
       {/* Draft Banner for Admins */}
-      {!post.published && isAdmin && (
+      {!post.published && (
         <div className="mb-6 p-4 bg-yellow-100 border border-yellow-300 text-yellow-800 rounded-md text-center">
           <strong>Draft Preview:</strong> This post is not published and is only
           visible to administrators.
@@ -191,6 +216,4 @@ const BlogPostPage: React.FC<BlogPostPageProps> = async ({ params }) => {
       </div>
     </div>
   );
-};
-
-export default BlogPostPage;
+}
