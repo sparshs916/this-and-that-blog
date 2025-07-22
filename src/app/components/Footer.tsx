@@ -7,9 +7,6 @@ export default function Footer() {
   return (
     <footer className="bg-gray-100 border-t border-gray-200 mt-auto">
       <div className="container mx-auto px-4 py-8 text-center text-gray-600">
-        <p className="mb-2">
-          &copy; {currentYear} - This and That. All rights reserved.
-        </p>
         <div className="space-x-4">
           <Link
             href="/about"
