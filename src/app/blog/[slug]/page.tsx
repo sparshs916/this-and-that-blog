@@ -9,6 +9,8 @@ import { getAdminSession } from "@/app/lib/auth"; // Import admin session helper
 // Import PrismaClient for casting
 import { PrismaClient } from "@/generated/prisma/client";
 
+export const dynamic = "force-dynamic";
+
 // Define the structure for a Post (matching Prisma schema)
 // You might already have this in a definitions file, import if so
 interface Post {

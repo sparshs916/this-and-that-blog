@@ -10,6 +10,8 @@ import type { Recipe } from "@/generated/prisma/client"; // Updated import path
 // Import PrismaClient for casting
 import { PrismaClient } from "@/generated/prisma/client";
 
+export const dynamic = "force-dynamic";
+
 // Function to fetch a single recipe by its slug, considering admin status
 async function getRecipeBySlug(slug: string): Promise<Recipe | null> {
   console.log(
