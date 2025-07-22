@@ -49,6 +49,9 @@ export default function Hero() {
           </span>
         </div>
       </h1>
+      <p className="mx-auto max-w-xl text-lg text-black sm:items-center mt-2 md:mt-4">
+        a space for contradictions, curiosities, and creative chaos
+      </p>
     </section>
   );
 }
